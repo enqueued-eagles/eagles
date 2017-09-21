@@ -260,7 +260,6 @@ router.put('/lessons', function(req, res) {
 
     console.log('lesson.keyWords',lesson.keyWords, req.body.keyWords)
     lesson.save()
-<<<<<<< HEAD
     .then(function (result) {
       res.send(result);
     })
@@ -268,14 +267,6 @@ router.put('/lessons', function(req, res) {
       console.log('line 271', err);
       throw err;
       return;
-=======
-    .then(function (err, result) {
-      if (err) {
-        throw err;
-        return;
-      }
-      res.send(result);
->>>>>>> a57c713121af7013f66a0e36c51e1e70f3acc440
     })
   })
 })
