@@ -42,6 +42,22 @@ class LessonCreator extends React.Component {
       console.log('state now is ', this.state);
     })
   }
+  keyWordSubmit (event) {
+    event.preventDefault();
+    console.log('keyWordSubmit triggered');
+    var body = {keyWords: this.state.keyWords, lessonid: this.state.lessonid};
+    axios.put('/lessons', body)
+    .then(function(result) {
+      console.log('from line43 lessoncreator result is', result);
+    })
+  }
+  changeKeyWords (event) {
+    var arr = [];
+    arr.push(event.target.value);
+    this.setState({
+      keyWords: arr
+    })
+  }
   changeName (event) {
     this.setState({
       name: event.target.value
@@ -88,6 +104,7 @@ class LessonCreator extends React.Component {
               {this.state.lessonid === 'No ID Yet' ? "You can make a slide after you make a lesson" : <Button onClick={this.changeCreateState.bind(this)}>Go To Slide Creator</Button>}
             </Col>
           </FormGroup>
+
           <FormGroup>
             <Col smOffset={1} sm={6}>
               <ControlLabel>Lesson ID: {this.state.lessonid}</ControlLabel>
@@ -102,6 +119,7 @@ class LessonCreator extends React.Component {
               />
             </Col>
           </FormGroup>
+          
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}>userRef:</Col>
             <Col sm={10}>
@@ -111,6 +129,7 @@ class LessonCreator extends React.Component {
               />
             </Col>
           </FormGroup>
+          
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}>Lesson description</Col>
             <Col sm={10}>
@@ -120,6 +139,26 @@ class LessonCreator extends React.Component {
               />
             </Col>
           </FormGroup>
+          
+<<<<<<< HEAD
+          <FormGroup>
+=======
+          {this.state.lessonid === 'No ID Yet' ? null : <FormGroup>
+>>>>>>> lessonandslide
+            <Col componentClass={ControlLabel} sm={2}>keyWords</Col>
+            <Col sm={10}>
+                <FormControl type='text' 
+                  value={this.state.keyWords}
+                  onChange={this.changeKeyWords.bind(this)}
+                />
+                <Button onClick={this.keyWordSubmit.bind(this)}> Add keyWord </Button>
+            </Col>
+<<<<<<< HEAD
+          </FormGroup>
+=======
+          </FormGroup>}
+>>>>>>> lessonandslide
+          
           <FormGroup>
             <Col smOffset={1} sm={2}>
               <ControlLabel>Has The Following Slides</ControlLabel>

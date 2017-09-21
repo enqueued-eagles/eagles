@@ -108,7 +108,8 @@ router.get('/slides/:slideId', function(req, res) {
     res.send(slides);
   })
   .catch(function(err) {
-    res.send(err);
+    throw err;
+    return;
   })
 });
 
@@ -120,7 +121,8 @@ router.get('/slides', function(req, res) {
     res.send(slides);
   })
   .catch(function(err) {
-    res.send(err);
+    throw err;
+    return;
   })
 });
 
@@ -233,24 +235,36 @@ router.put('/users', function(req, res) {
     if (req.body.createdLessons) user.createdLessons = req.body.createdLessons;
 
     User.save(function (err) {
-      if (err) res.send(err);
+      if (err) {
+        throw err;
+        return;
+      };
       res.send('user updated')
     })
   })
 })
 
 router.put('/lessons', function(req, res) {
-  Lesson.findById(req.query._id, function(err, lesson) {
+  console.log('hello line239 router.js req is ', req.body);
+  Lesson.findById(req.body.lessonid, function(err, lesson) {
+    //console.log('lesson is ', lesson, 'err is ', err)
+    console.log('Lesson is ', Lesson, lesson.keyWords)
     if (err) res.send(err);
 
     if (req.body.name) lesson.name = req.body.name;
     if (req.body.userRef) lesson.userRef = req.body.userRef;
     if (req.body.description) lesson.description = req.body.description;
     if (req.body.slides) lesson.slides = req.body.slides;
+    if (req.body.keyWords) lesson.keyWords = req.body.keyWords;
 
-    Lesson.save(function (err) {
-      if (err) res.send(err);
-      res.send(lesson);
+    console.log('lesson.keyWords',lesson.keyWords, req.body.keyWords)
+    lesson.save()
+    .then(function (err, result) {
+      if (err) {
+        throw err;
+        return;
+      }
+      res.send(result);
     })
   })
 })
@@ -268,7 +282,10 @@ router.put('/slides', function(req, res) {
     if (req.body.youTubeTags) slide.youTubeTags = req.body.youTubeTags;
 
     Slide.save(function (err) {
-      if (err) res.send(err);
+      if (err) {
+        throw err;
+        return;
+      }
       res.send('slide updated');
     })
   })

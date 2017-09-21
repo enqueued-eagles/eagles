@@ -26,7 +26,7 @@ var lessonSchema = new Schema({
   name: {type: String, required: true},
   userRef: String,
   description: String,
-  keywords: [String],
+  keyWords: [String],
   slides: []
 });
 var Lesson = mongoose.model('Lesson', lessonSchema);
