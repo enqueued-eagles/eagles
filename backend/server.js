@@ -35,7 +35,7 @@ app.use(session({
 }))
 
 // public file with static routes
-app.use(express.static('../frontend/public'));
+app.use(express.static(path.join(__dirname,'../frontend/public')));
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
