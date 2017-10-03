@@ -15,22 +15,22 @@ class LessonPreviewContainer extends Component {
     return (
       <div className="LessonPreviewContainer">
         Order by:
-        
+
         <Button bsStyle="primary" bsSize="small" onClick={this.props.organizeSearchResultsBasedOnMostLikes} >by Likes</Button>
         <Button bsStyle="primary" bsSize="small" >by Date</Button>
         <ListGroup>
-        {this.props.lessons.map((lesson, i) => 
-          <LessonPreview 
-            lesson={lesson} 
+        {this.props.lessons.map((lesson, i) =>
+          <LessonPreview
+            lesson={lesson}
             index={i}
             key={i}
-          /> 
+          />
         )}
         </ListGroup>
       </div>
     )
   };
-} 
-  
+}
+
 
 export default LessonPreviewContainer;

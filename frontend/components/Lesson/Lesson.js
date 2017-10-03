@@ -2,7 +2,9 @@ import React from 'react';
 import LessonSlideListEntry from './LessonSlideListEntry.js';
 import Slide from './Slide.js';
 import { Button, Grid, Row } from 'react-bootstrap';
-
+import {Link} from 'react-router-dom';
+import Test from './test.js';
+import LessonPreview from './LessonPreview'
 
 class Lesson extends React.Component {
   constructor(props) {
@@ -13,25 +15,51 @@ class Lesson extends React.Component {
       currentSlide: null,
       index: 0,
       videoIdOfClickedOnVideo: '',
-      liked: false
+      liked: false,
+      keyWords: [],
+      relatedLessons: []
     }
   }
 
   componentDidMount() {
-    return fetch('/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" }) 
+    // console.log(this.props)
+    console.log('fetchingggg.g.......')
+    fetch('/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" })
       .then((response) => response.json())
       .then((lessonDataJSON) => {
-        // console.log('LESSON DATA', lessonDataJSON); 
         this.setState({
           specificLesson: lessonDataJSON,
-          slides: lessonDataJSON.slides
+          slides: lessonDataJSON.slides,
+          keyWords: lessonDataJSON.keyWords
         });
         console.log(this.state.specificLesson);
       })
+      .then((res) => {
+         fetch('/lessons', {
+           method: "GET",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           credentials: "include"
+         })
+         .then((res) => res.json())
+         .then((lessons) => {
+           this.state.keyWords.forEach(keyword => {
+             for (let i = 0; i < lessons.length; i++) {
+               if (lessons[i].keyWords.includes(keyword) && lessons[i]._id !== this.state.specificLesson._id && !this.state.relatedLessons.includes(lessons[i])) {
+                 this.setState({
+                   relatedLessons: [...this.state.relatedLessons, lessons[i]]
+                 })
+               }
+             }
+           })
+           console.log('related lessons', this.state.relatedLessons)
+         })
+       })
   }
 
   onLessonSlideListEntryClick(index) {
-    
+
     var videoIdInUrl = this.state.slides[index].youTubeUrl;
     var sliceFrom = videoIdInUrl.indexOf('=');
     var videoId = videoIdInUrl.slice(sliceFrom + 1);
@@ -41,7 +69,7 @@ class Lesson extends React.Component {
       videoIdOfClickedOnVideo: videoId
     });
   }
-  
+
   exit() {
     this.setState({
       currentSlide: '',
@@ -78,7 +106,7 @@ class Lesson extends React.Component {
   renderVideo(thereIsAVideo) {
     if (thereIsAVideo) {
       return <iframe style={{width: 500, height: 350, float: "left"}} className="youtubeVideo" src={'https://www.youtube.com/embed/' + thereIsAVideo} allowFullScreen></iframe>
-    } 
+    }
   }
 
   likeALesson() {
@@ -113,8 +141,8 @@ class Lesson extends React.Component {
     return (
       <div>
         { this.state.currentSlide ? (
-          <Slide 
-          slideData={this.state.currentSlide} 
+          <Slide
+          slideData={this.state.currentSlide}
           videoIdOfClickedOnVideo={this.state.videoIdOfClickedOnVideo}
           renderVideo={this.renderVideo(this.state.videoIdOfClickedOnVideo)}
           previousSlideClick={this.previousSlideClick.bind(this)}
@@ -127,6 +155,7 @@ class Lesson extends React.Component {
             <div className="lesson">
               <h1 className="lessonTitle">{this.state.specificLesson.name}</h1>
               <p className="lessonDescription">{this.state.specificLesson.description}</p>
+              <p className="lessonKeyWords"> Keywords: {this.state.keyWords.join(', ')}</p>
               <Grid>
                 <Row>
                 {this.state.slides.map((slide, i) => (
@@ -143,6 +172,16 @@ class Lesson extends React.Component {
             <Button type="button" onClick={this.likeALesson.bind(this)}>Like</Button>
           </div>
         )}
+        <div className="relatedLessons">
+          Related Lessons:
+          {this.state.relatedLessons.map((lesson, i) => (
+            <LessonPreview
+              lesson={lesson}
+              index={i}
+              key={i}
+            />
+          ))}
+        </div>
       </div>
     );
   }
