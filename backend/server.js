@@ -61,4 +61,4 @@ app.use((req, res) => {
 });
 
 // server listens for requests
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
