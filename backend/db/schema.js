@@ -16,8 +16,11 @@ var userSchema = new Schema({
   password: {type: String, required: true},
   lessons: [String],
   favorites: [String],
-  createdLessons:[String],
-  email: String
+  email: String,
+  githubURL: String,
+  emailPublic: String,
+  emailLikeGoal: Number,
+  avatarURL: String
 });
 var User = mongoose.model('User', userSchema);
 

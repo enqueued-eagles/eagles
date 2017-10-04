@@ -35,7 +35,6 @@ router.put('/users', function(req, res) {
     if (req.body.username) user.username = req.body.username;
     if (req.body.lessons) user.lessons = req.body.lessons;
     if (req.body.favorites) user.favorites = req.body.favorites;
-    if (req.body.createdLessons) user.createdLessons = req.body.createdLessons;
 
     User.save(function (err) {
       if (err) {

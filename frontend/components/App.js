@@ -15,6 +15,7 @@ class App extends Component {
           queryDataBaseWithSearchInput={this.props.queryDataBaseWithSearchInput} 
           logout={ this.props.logout }
           getLessons={ this.props.getLessons }
+          user = {this.props.user}
         />
         { this.props.children || 'no children!' }
       </div>

@@ -27,7 +27,6 @@ class RouterWrapper extends Component {
   }
 
   componentDidMount() {
-    this.getLessons();
   }
 
   getUsers() {
@@ -55,6 +54,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((lessons) => {
+      console.log(lessons)
       this.setState({lessons});
       return lessons
     })
@@ -168,6 +168,7 @@ class RouterWrapper extends Component {
         queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput }
         logout={ this.logout }
         getLessons={ this.getLessons }
+        user = {this.state.user.username}
         >
           { this.state.loggedIn ? // If you are logged in allow all routes
          (<Switch>
@@ -194,8 +195,13 @@ class RouterWrapper extends Component {
                 />
               )}
             />
+<<<<<<< 4e69973547568a11e1b2856d6916a2b6110d70b4
             <Route path='/user' render={ () =>
                 <User
+=======
+            <Route path='/user/:id' render={ () => 
+                <User 
+>>>>>>> (feat) remove dead database entry, add more to user schema, split user
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />
