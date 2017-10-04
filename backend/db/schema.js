@@ -30,7 +30,8 @@ var lessonSchema = new Schema({
   keywords: [String],
   slides: [],
   likes: Number,
-  userLikes: [String]
+  userLikes: [String],
+  preReqLessons: [String]
 });
 var Lesson = mongoose.model('Lesson', lessonSchema);
 

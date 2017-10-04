@@ -155,7 +155,7 @@ class LessonCreator extends React.Component {
     console.log('preReqsubmit triggered preReq looks like ', this.state.preReqLessons);
     var preReqLessons = this.state.preReqLessons;
     console.log('preReqLessons is currently..', preReqLessons)
-    var body = {preReqLessons: this.state.preReqLessons, lessonid: this.state.lessonid};
+    var body = {preReqLessons: this.state.preReqLessons, lessonId: this.state.lessonId};
     fetch('/lessons', {
       method: "PUT",
       body: JSON.stringify(body),
@@ -273,12 +273,27 @@ class LessonCreator extends React.Component {
                   name={this.state.name}
                   description={this.state.description}
                   keywords={this.state.keywords}
+                  getNames={this.getNames}
                 />
                 <TagsEntry
                   keywords={this.state.displayedKeywords}
                   changeKeywords={this.changeDisplayedKeywords.bind(this)}
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
+                <div>
+                  Recommend Pre Requsites
+                  <form>
+                    <label>
+                      {/* Pick your favorite La Croix flavor: */}
+                      <select value={this.state.value} onChange={this.handlePreReq.bind(this)}>
+                        {this.state.allLessons.map((lesson, i) => (
+                          <option value={lesson._id} key={i}>{lesson.name}</option>
+                        ))}
+                      </select>
+                    </label>
+                    {/* <input type="submit" value="Submit" /> */}
+                  </form>
+                </div>
               </div>
             :
               <div>
