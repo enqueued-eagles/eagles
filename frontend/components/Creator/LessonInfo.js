@@ -7,7 +7,7 @@ class LessonInfo extends React.Component {
       <ListGroup>
         <ListGroupItem>Lesson Name: {this.props.name}</ListGroupItem>
         <ListGroupItem>Lesson Description: {this.props.description}</ListGroupItem>
-        <ListGroupItem>Lesson Tags: {this.props.keyWords.join(', ')}</ListGroupItem>
+        <ListGroupItem>Lesson Tags: {this.props.keywords.join(', ')}</ListGroupItem>
       </ListGroup>
     )
   }

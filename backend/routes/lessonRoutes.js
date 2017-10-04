@@ -128,16 +128,17 @@ router.post('/lessons', function(req, res) {
 })
 
 router.put('/lessons', function(req, res) {
-  Lesson.findById(req.body.lessonid, function(err, lesson) {
+  console.log('req.body.keywords:', req.body.keywords);
+  Lesson.findById(req.body.lessonId, function(err, lesson) {
     //console.log('lesson is ', lesson, 'err is ', err)
-    // console.log('Lesson is ', Lesson, lesson.keyWords)
+    // console.log('Lesson is ', Lesson, lesson.keywords)
     if (err) res.send(err);
 
     if (req.body.name) lesson.name = req.body.name;
     if (req.body.userRef) lesson.userRef = req.body.userRef;
     if (req.body.description) lesson.description = req.body.description;
     if (req.body.slides) lesson.slides = req.body.slides;
-    if (req.body.keyWords) lesson.keyWords = req.body.keyWords;
+    if (req.body.keywords) lesson.keywords = req.body.keywords;
     if (req.body.fromLike) { // Therefore likes will not be added on put requests not from lesson.js
       if (lesson.userLikes.length !== 0) {
         if (lesson.userLikes.indexOf(req.session.username) === -1) {
@@ -150,7 +151,7 @@ router.put('/lessons', function(req, res) {
          if (req.body.likes) lesson.likes = req.body.likes
       }
     }
-    // console.log('lesson.keyWords',lesson.keyWords, req.body.keyWords)
+    console.log('lesson.keywords:', lesson.keywords, req.body.keywords)
     lesson.save()
     .then(function (result) {
       res.send(result);

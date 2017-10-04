@@ -27,7 +27,7 @@ var lessonSchema = new Schema({
   name: {type: String, required: true},
   userRef: String,
   description: String,
-  keyWords: [String],
+  keywords: [String],
   slides: [],
   likes: Number,
   userLikes: [String]

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import SlideCreator from './SlideCreator.js';
 import LessonInfo from './LessonInfo.js';
 import LessonFieldEntry from './LessonFieldEntry.js';
+import TagsEntry from './TagsEntry.js';
 import ExistingSlides from './ExistingSlides.js';
 import { Form, FormGroup, Col, FormControl, ControlLabel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 
@@ -17,15 +18,15 @@ class LessonCreator extends React.Component {
       slides: [],
       slidesId: [],
       creatingSlide: false,
-      lessonid: 'No ID Yet',
-      keyWords: [],
-      clientShownKeyWords: '',
+      lessonId: '',
+      keywords: [],
+      displayedKeywords: '',
       editingOldSlide: false,
       oldSlide: ''
     };
   }
 
-  // submit new Lesson to the db and set the lesson to the lessonid state property
+  // submit new Lesson to the db and set the lesson to the lessonId state property
   onSubmit (event) {
     event.preventDefault();
     var lessonObj = {
@@ -47,7 +48,7 @@ class LessonCreator extends React.Component {
       .then((result) => {
         console.log('result is',result);
         this.setState({
-          lessonid: result._id // setting lessonid to the lesson object's id
+          lessonId: result._id // setting lessonId to the lesson object's id
         })
         console.log('state now is ', this.state);
       });
@@ -108,16 +109,17 @@ class LessonCreator extends React.Component {
   }
 
   // amends the keywords associated with the current lesson in the db and sets it in state
-  keyWordSubmit (event) {
+  keywordSubmit (event) {
     event.preventDefault();
-    console.log('keyWordSubmit triggered keyWords look like ', this.state.clientShownKeyWords);
-    var keyWords = this.state.clientShownKeyWords.trim();
+    console.log('keywordSubmit triggered keywords look like: ', this.state.displayedKeywords);
+    var keywords = this.state.displayedKeywords.trim();
+    var body = { keywords: [...this.state.keywords, keywords], lessonId: this.state.lessonId };
     this.setState({
-      keyWords: [...this.state.keyWords, keyWords]
-    })
-    var body = { keyWords: this.state.keyWords, lessonid: this.state.lessonid };
+      keywords: body.keywords
+    });
+    console.log('body:', body);
     fetch('/lessons', {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json"
@@ -135,10 +137,9 @@ class LessonCreator extends React.Component {
       })
   }
 
-  changeClientKeyWords (event) {
-    var keyWords = event.target.value;
+  changeDisplayedKeywords (event) {
     this.setState({
-      clientShownKeyWords: keyWords
+      displayedKeywords: event.target.value
     })
   }
 
@@ -177,9 +178,9 @@ class LessonCreator extends React.Component {
       slides: [],
       slidesId: [],
       creatingSlide: false,
-      lessonid: 'No ID Yet',
-      keyWords: [],
-      clientShownKeyWords: '',
+      lessonId: '',
+      keywords: [],
+      displayedKeywords: '',
       editingOldSlide: false,
       oldSlide: ''
     });
@@ -207,17 +208,21 @@ class LessonCreator extends React.Component {
             </div>
           </FormGroup>
 
-          { 
-            this.state.lessonid === 'No ID Yet' ? null : 
-              <LessonInfo
-                name={this.state.name}
-                description={this.state.description}
-                keyWords={this.state.keyWords}
-              />
-          }
-
           {
-            this.state.lessonid === 'No ID Yet' ? (
+            this.state.lessonId ?
+              <div>
+                <LessonInfo
+                  name={this.state.name}
+                  description={this.state.description}
+                  keywords={this.state.keywords}
+                />
+                <TagsEntry
+                  keywords={this.state.displayedKeywords}
+                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
+                  keywordSubmit={this.keywordSubmit.bind(this)}
+                />
+              </div>
+            :
               <div>
                 <LessonFieldEntry
                   field={'Lesson Name'}
@@ -230,29 +235,11 @@ class LessonCreator extends React.Component {
                   changeValue={this.changeDescription.bind(this)}
                 />
               </div>
-            ) : null
           }
-
-          {this.state.lessonid === 'No ID Yet' ? null : <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>Add Tags To Lesson</Col>
-            <Col sm={10}>
-                <FormControl 
-                  type='text' 
-                  value={this.state.clientShownKeyWords}
-                  onChange={this.changeClientKeyWords.bind(this)}
-                />
-                <Button
-                  onClick={this.keyWordSubmit.bind(this)} 
-                  bsStyle="info" 
-                  bsSize="small"
-                >Set Tags</Button>
-            </Col>
-          </FormGroup>}
-
           
           <FormGroup>
             { 
-              this.state.lessonid === 'No ID Yet' ? 
+              this.state.lessonId === '' ? 
               (<Col smOffset={1} sm={1}>
                 <Button type="submit" bsStyle="primary" bsSize="small">
                   Make Lesson
@@ -266,7 +253,7 @@ class LessonCreator extends React.Component {
                 >Go To Slide Creator</Button>
               </Col>)
             }
-            {this.state.lessonid === 'No ID Yet' ? null :
+            {this.state.lessonId === '' ? null :
               (<Col smOffset={1} sm={1}>
                 <Button 
                   type="button" 
@@ -290,15 +277,17 @@ class LessonCreator extends React.Component {
           </FormGroup>
 
           {
-            this.state.slides.length === 0 ?
-            <div>No Slides Yet</div> : 
-            <ExistingSlides
-              slides={this.state.slides}
-              creatingSlide={this.state.creatingSlide}
-              seeOldSlide={this.seeOldSlide.bind(this)}
-              seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
-            />
+            this.state.slides.length ? 
+              <ExistingSlides
+                slides={this.state.slides}
+                creatingSlide={this.state.creatingSlide}
+                seeOldSlide={this.seeOldSlide.bind(this)}
+                seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
+              />
+            :
+              <div>No Slides Yet</div>
           }
+
         </Form>
       )
     } else {
@@ -308,11 +297,11 @@ class LessonCreator extends React.Component {
             <LessonInfo
               name={this.state.name}
               description={this.state.description}
-              keyWords={this.state.keyWords}
+              keywords={this.state.keywords}
             />
             <SlideCreator 
               slide={{}} 
-              lessonRef={this.state.lessonid} 
+              lessonRef={this.state.lessonId} 
               fetch={this.fetchSlideFromSlideCreator.bind(this)} 
               changeCreateState={this.changeCreateState.bind(this)} 
               changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
@@ -331,11 +320,11 @@ class LessonCreator extends React.Component {
             <LessonInfo
               name={this.state.name}
               description={this.state.description}
-              keyWords={this.state.keyWords}
+              keywords={this.state.keywords}
             />
             <SlideCreator 
               slide={this.state.oldSlide} 
-              lessonRef={this.state.lessonid} 
+              lessonRef={this.state.lessonId} 
               fetch={this.fetchSlideFromSlideCreator.bind(this)} 
               changeCreateState={this.changeCreateState.bind(this)} 
               changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}

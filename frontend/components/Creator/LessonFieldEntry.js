@@ -2,10 +2,6 @@ import React from 'react';
 import { FormGroup, Col, FormControl, ControlLabel } from 'react-bootstrap';
 
 class LessonFieldEntry extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <FormGroup>
