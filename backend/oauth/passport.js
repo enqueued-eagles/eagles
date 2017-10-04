@@ -28,18 +28,16 @@ passport.use(new GoogleStrategy({
 
     profile.access = accessToken;
 
-    // gclass.getClasses(profile)
-    // .then((classes) => {
-    //   console.log('classes gotten', classes)
-    //   profile.classes = classes;
-    //   return done(null, profile);
-    // })
-    // .catch((err) => {
-    //   console.log('error in getting classes:', err)
-    //   return done(err);
-    // });
-
-    return done(null, profile)
+    gclass.getCourses(profile)
+    .then((results) => {
+      console.log('classes gotten', results.data.courses)
+      profile.courses = results.data.courses;
+      return done(null, profile);
+    })
+    .catch((err) => {
+      console.log('error in getting classes:', err)
+      return done(err, null);
+    });
   })
 );
 
