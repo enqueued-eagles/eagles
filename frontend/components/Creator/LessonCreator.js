@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';//use in functions
 import {Link} from 'react-router-dom';
 import SlideCreator from './SlideCreator.js';
+import LessonInfo from './LessonInfo.js';
 import { Form, FormGroup, Col, FormControl, ControlLabel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class LessonCreator extends React.Component {
@@ -21,6 +22,8 @@ class LessonCreator extends React.Component {
       oldSlide: ''
     };
   }
+
+  // submit new Lesson to the db and set the lesson to the lessonid state property
   onSubmit (event) {
     event.preventDefault();
     var lessonObj = {
@@ -48,6 +51,9 @@ class LessonCreator extends React.Component {
       console.log('state now is ', this.state);
     })
   }
+
+  // gets index of slide, fetches the slide from the db
+  // then sets the fetched slide in state and TOGGLE 'editingOldSlide' state
   seeOldSlide (slide) {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
@@ -72,6 +78,8 @@ class LessonCreator extends React.Component {
       });
     });
   }
+
+  // looks like exact same function as above, just with toggling 'creatingSlide' as well
   seeOldSlideFromLesson (slide) {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
@@ -97,6 +105,8 @@ class LessonCreator extends React.Component {
       });
     });
   }
+
+  // amends the keywords associated with the current lesson in the db and sets it in state
   keyWordSubmit (event) {
     event.preventDefault();
     console.log('keyWordSubmit triggered keyWords look like ', this.state.clientShownKeyWords);
@@ -123,12 +133,14 @@ class LessonCreator extends React.Component {
       console.log('line 70 err', err);
     })
   }
+
   changeClientKeyWords (event) {
     var keyWords = event.target.value;
     this.setState({
       clientShownKeyWords: keyWords
     })
   }
+
   changeName (event) {
     this.setState({
       name: event.target.value
@@ -147,6 +159,7 @@ class LessonCreator extends React.Component {
       creatingSlide: !this.state.creatingSlide
     })
   }
+
   changeEditingOldSlide (event) {
     console.log('changeEditingOldSlide')
     this.setState({
@@ -154,6 +167,7 @@ class LessonCreator extends React.Component {
       editingOldSlide: !this.state.editingOldSlide
     });
   }
+
   reset () {
     this.setState({
       name: '',
@@ -169,6 +183,7 @@ class LessonCreator extends React.Component {
       oldSlide: ''
     });
   }
+
   // goHome (event) {
   //   fetch('/',{
   //     method: "GET",
@@ -178,6 +193,7 @@ class LessonCreator extends React.Component {
   //     credentials: "include"
   //   })
   // }
+
   fetchSlideFromSlideCreator (result) {
     console.log(result);
     var slideName = result.name; 
@@ -188,6 +204,7 @@ class LessonCreator extends React.Component {
       slidesId: this.state.slidesId.concat(slideId)
     })
   }
+
   render () {
     if (!this.state.creatingSlide) {
       return (
@@ -198,12 +215,13 @@ class LessonCreator extends React.Component {
             </div>
           </FormGroup>
 
-          { this.state.lessonid === 'No ID Yet' ? null : 
-            (<ListGroup>
-              <ListGroupItem>Lesson Name: {this.state.name}</ListGroupItem>
-              <ListGroupItem>Lesson Description: {this.state.description}</ListGroupItem>
-              <ListGroupItem>Lesson Tags: {this.state.keyWords.join(', ')}</ListGroupItem>
-            </ListGroup>) 
+          { 
+            this.state.lessonid === 'No ID Yet' ? null : 
+              <LessonInfo
+                name={this.state.name}
+                description={this.state.description}
+                keyWords={this.state.keyWords}
+              />
           }
 
           { this.state.lessonid === 'No ID Yet' ? (<FormGroup>
@@ -294,11 +312,11 @@ class LessonCreator extends React.Component {
     } else if (this.state.creatingSlide && !this.state.editingOldSlide) {
       return (
         <div>
-          <ListGroup>
-            <ListGroupItem>Lesson Name: {this.state.name}</ListGroupItem>
-            <ListGroupItem>Lesson Description: {this.state.description}</ListGroupItem>
-            <ListGroupItem>Lesson Tags: {this.state.keyWords.join(', ')}</ListGroupItem>
-          </ListGroup>
+          <LessonInfo
+            name={this.state.name}
+            description={this.state.description}
+            keyWords={this.state.keyWords}
+          />
           <SlideCreator 
             slide={{}} 
             lessonRef={this.state.lessonid} 
