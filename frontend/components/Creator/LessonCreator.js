@@ -19,9 +19,12 @@ class LessonCreator extends React.Component {
       clientShownKeyWords: '',
       editingOldSlide: false,
       oldSlide: '',
-      allLessons: [],
-      preReqLessons: []
+      allLessons: ['none'],
+      preReqLessons: [],
+      value: ''
     };
+
+    this.getNames = this.getNames.bind(this);
   }
   componentDidMount() {
     this.props.getLessons().then(lessons => {
@@ -29,9 +32,9 @@ class LessonCreator extends React.Component {
         allLessons: lessons
       })
     })
+    .then(res => this.state.allLessons.unshift({name: 'none'}))
 
   }
-
 
   onSubmit (event) {
     event.preventDefault();
@@ -60,6 +63,7 @@ class LessonCreator extends React.Component {
       console.log('state now is ', this.state);
     })
   }
+
   seeOldSlide (slide) {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
@@ -117,7 +121,7 @@ class LessonCreator extends React.Component {
     this.setState({
       clientShownKeyWords: ''
     })
-    var body = { keyWords: this.state.keyWords, lessonid: this.state.lessonid };
+    var body = {keyWords: this.state.keyWords, lessonid: this.state.lessonid};
     fetch('/lessons', {
       method: "PUT",
       body: JSON.stringify(body),
@@ -136,6 +140,29 @@ class LessonCreator extends React.Component {
       console.log('line 70 err', err);
     })
     event.preventDefault();
+  }
+  preReqSubmit (event) {
+    console.log('preReqsubmit triggered preReq looks like ', this.state.preReqLessons);
+    var preReqLessons = this.state.preReqLessons;
+    console.log('preReqLessons is currently..', preReqLessons)
+    var body = {preReqLessons: this.state.preReqLessons, lessonid: this.state.lessonid};
+    fetch('/lessons', {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    .then(function(result) {
+      return result.json();
+    })
+    .then(function(result) {
+      console.log('from lessoncreator result after preReq update is', result);
+    })
+    .catch(function(err) {
+      console.log('line 164 err', err);
+    })
   }
   changeClientKeyWords (event) {
     var keyWords = event.target.value;
@@ -185,14 +212,24 @@ class LessonCreator extends React.Component {
   }
 
   handlePreReq (lesson) {
-    console.log(lesson)
-    // let a = (e.target.value)
-    // console.log(a)
-    // this.state.preReqLessons.push(JSON.parse(e.target.value));
+    this.state.preReqLessons.push(lesson.target.value);
     this.setState({
-      preReqLessons: this.state.preReqLessons
+      value: ''
     })
-    // console.log(this.state.preReqLessons)
+    this.preReqSubmit();
+  }
+
+  getNames () {
+    let all = this.state.allLessons
+
+    let map = this.state.preReqLessons.map(item => {
+      for (let i = 0; i < all.length; i++) {
+        if (all[i]._id === item) {
+          return all[i].name;
+        }
+      }
+    })
+    return map
   }
   // goHome (event) {
   //   fetch('/',{
@@ -228,7 +265,7 @@ class LessonCreator extends React.Component {
               <ListGroupItem>Lesson Name: {this.state.name}</ListGroupItem>
               <ListGroupItem>Lesson Description: {this.state.description}</ListGroupItem>
               <ListGroupItem>Lesson Tags: {this.state.keyWords.join(', ')}</ListGroupItem>
-              <ListGroupItem>PreReq Lessons: {this.state.preReqLessons.map(item => item.name).join(', ')}</ListGroupItem>
+              <ListGroupItem>PreReq Lessons: {this.getNames().join(', ')}</ListGroupItem>
             </ListGroup>)
           }
 
@@ -271,11 +308,17 @@ class LessonCreator extends React.Component {
           { this.state.lessonid === 'No ID Yet' ? null : (
             <div>
               Recommend Pre Requsites
-              <select onChange={this.handlePreReq.bind(this)}>
-                {this.state.allLessons.map((lesson, i) => (
-                  <option value={lesson} key={i}>{lesson.name}</option>
-                ))}
-              </select>
+              <form>
+                <label>
+                  {/* Pick your favorite La Croix flavor: */}
+                  <select value={this.state.value} onChange={this.handlePreReq.bind(this)}>
+                    {this.state.allLessons.map((lesson, i) => (
+                      <option value={lesson._id} key={i}>{lesson.name}</option>
+                    ))}
+                  </select>
+                </label>
+                {/* <input type="submit" value="Submit" /> */}
+              </form>
               <br></br>
             </div>
           )}
@@ -320,10 +363,10 @@ class LessonCreator extends React.Component {
               {
                 this.state.slides.map((slide,i) => {
                   return <Button key={i}
-                  onClick={this.seeOldSlideFromLesson.bind(this,slide)}
-                  bsStyle="info"
-                  bsSize="small">
-                  {slide}
+                    onClick={this.seeOldSlideFromLesson.bind(this,slide)}
+                    bsStyle="info"
+                    bsSize="small">
+                    {slide}
                   </Button>
                 })
               }

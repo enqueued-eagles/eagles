@@ -31,7 +31,7 @@ const sendCongad = (userRef, lessonName, numLikes) => {
               pass: "test123test"
             }
           });
-    
+
         let mailOptions ={
             from: "Learning with Lessons", // sender address
             to: user.email, // list of receivers
@@ -39,7 +39,7 @@ const sendCongad = (userRef, lessonName, numLikes) => {
             text: `Your lesson named ${lessonName} just reached ${numLikes} likes!`, // plaintext body
             html: `<p>Your lesson named ${lessonName} just reached ${numLikes} likes!<p>` // html body
         }
-    
+
         smtpTransport.sendMail(mailOptions, function(error, response){
           if(error){
               console.log(error);
@@ -57,7 +57,7 @@ const sendCongad = (userRef, lessonName, numLikes) => {
 //find specific lesson
 router.get('/lesson/:lessonId', function(req, res) {
   Lesson.find({_id: req.params.lessonId})
-  .then(function(lesson) {    
+  .then(function(lesson) {
     return lesson[0];
   })
   .then((specificLesson) => {
@@ -96,14 +96,15 @@ router.post('/lessons', function(req, res) {
   var description = req.body.description;
   var keywords = req.body.keywords;
   var slides = req.body.slides || [];
-  Lesson.create({ 
-    name: name, 
-    userRef: userRef, 
-    description: description, 
+  Lesson.create({
+    name: name,
+    userRef: userRef,
+    description: description,
     keywords: keywords,
     slides: slides ,
     likes: 0,
-    userLikes: []
+    userLikes: [],
+    preReqLessons: []
   })
   .then(function(result) {
     User.findById(userRef, function(err, user) {
@@ -138,6 +139,7 @@ router.put('/lessons', function(req, res) {
     if (req.body.description) lesson.description = req.body.description;
     if (req.body.slides) lesson.slides = req.body.slides;
     if (req.body.keyWords) lesson.keyWords = req.body.keyWords;
+    if (req.body.preReqLessons) lesson.preReqLessons = req.body.preReqLessons;
     if (req.body.fromLike) { // Therefore likes will not be added on put requests not from lesson.js
       if (lesson.userLikes.length !== 0) {
         if (lesson.userLikes.indexOf(req.session.username) === -1) {
