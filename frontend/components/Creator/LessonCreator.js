@@ -3,6 +3,7 @@ import axios from 'axios';//use in functions
 import {Link} from 'react-router-dom';
 import SlideCreator from './SlideCreator.js';
 import LessonInfo from './LessonInfo.js';
+import ExistingSlides from './ExistingSlides.js';
 import { Form, FormGroup, Col, FormControl, ControlLabel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class LessonCreator extends React.Component {
@@ -218,9 +219,7 @@ class LessonCreator extends React.Component {
           { 
             this.state.lessonid === 'No ID Yet' ? null : 
               <LessonInfo
-                name={this.state.name}
-                description={this.state.description}
-                keyWords={this.state.keyWords}
+                name={this.state.name} description={this.state.description} keyWords={this.state.keyWords}
               />
           }
 
@@ -290,22 +289,16 @@ class LessonCreator extends React.Component {
               </Col>
             }
           </FormGroup>
+
           {
-            this.state.slides.length === 0 ? 
-            (<div>No Slides Yet</div>) 
-            : 
-            (<div>Lesson Slides: 
-              {
-                this.state.slides.map((slide,i) => {
-                  return <Button key={i} 
-                  onClick={this.seeOldSlideFromLesson.bind(this,slide)}
-                  bsStyle="info" 
-                  bsSize="small">
-                  {slide}
-                  </Button>
-                })
-              }
-            </div>)
+            this.state.slides.length === 0 ?
+            <div>No Slides Yet</div> : 
+            <ExistingSlides
+              slides={this.state.slides}
+              creatingSlide={this.state.creatingSlide}
+              seeOldSlide={this.seeOldSlide.bind(this)}
+              seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
+            />
           }
         </Form>
       )
@@ -313,45 +306,36 @@ class LessonCreator extends React.Component {
       return (
         <div>
           <LessonInfo
-            name={this.state.name}
-            description={this.state.description}
-            keyWords={this.state.keyWords}
+            name={this.state.name} description={this.state.description} keyWords={this.state.keyWords}
           />
           <SlideCreator 
             slide={{}} 
             lessonRef={this.state.lessonid} 
             fetch={this.fetchSlideFromSlideCreator.bind(this)} 
             changeCreateState={this.changeCreateState.bind(this)} 
-            changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}>
-          </SlideCreator>
-          <div>Lesson Slides: 
-            {
-              this.state.slides.map((slide,i) => {
-                return <Button key={i} 
-                onClick={this.seeOldSlide.bind(this,slide)}
-                bsStyle="info" 
-                bsSize="small">{slide}</Button>
-              })
-            }
-          </div>
+            changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
+          />
+          <ExistingSlides
+            slides={this.state.slides}
+            creatingSlide={this.state.creatingSlide}
+            seeOldSlide={this.seeOldSlide.bind(this)}
+            seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
+          />
         </div>
       )
     } else if (this.state.creatingSlide && this.state.editingOldSlide) {
       return (
         <div>
-          <ListGroup>
-            <ListGroupItem>Editing An Old Slide</ListGroupItem>
-            <ListGroupItem>Lesson Name: {this.state.name}</ListGroupItem>
-            <ListGroupItem>Lesson Description: {this.state.description}</ListGroupItem>
-            <ListGroupItem>Lesson Tags: {this.state.keyWords.join(', ')}</ListGroupItem>
-          </ListGroup>
+          <LessonInfo
+            name={this.state.name} description={this.state.description} keyWords={this.state.keyWords}
+          />
           <SlideCreator 
             slide={this.state.oldSlide} 
             lessonRef={this.state.lessonid} 
             fetch={this.fetchSlideFromSlideCreator.bind(this)} 
             changeCreateState={this.changeCreateState.bind(this)} 
-            changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}>
-          </SlideCreator>
+            changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
+          />
         </div>
       )
     }

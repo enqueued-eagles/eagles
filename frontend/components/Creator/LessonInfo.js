@@ -3,11 +3,13 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class LessonInfo extends React.Component {
   render() {
-    <ListGroup>
-      <ListGroupItem>Lesson Name: {this.props.name}</ListGroupItem>
-      <ListGroupItem>Lesson Description: {this.props.description}</ListGroupItem>
-      <ListGroupItem>Lesson Tags: {this.props.keyWords.join(', ')}</ListGroupItem>
-    </ListGroup>)
+    return (
+      <ListGroup>
+        <ListGroupItem>Lesson Name: {this.props.name}</ListGroupItem>
+        <ListGroupItem>Lesson Description: {this.props.description}</ListGroupItem>
+        <ListGroupItem>Lesson Tags: {this.props.keyWords.join(', ')}</ListGroupItem>
+      </ListGroup>
+    )
   }
 }
 
