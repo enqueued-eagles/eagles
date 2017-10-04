@@ -195,6 +195,7 @@ class RouterWrapper extends Component {
                 />
               )}
             />
+<<<<<<< 9d499107a871934f37dba6aed47e5292b8242c3e
 <<<<<<< 4e69973547568a11e1b2856d6916a2b6110d70b4
             <Route path='/user' render={ () =>
                 <User
@@ -202,6 +203,10 @@ class RouterWrapper extends Component {
             <Route path='/user/:id' render={ () => 
                 <User 
 >>>>>>> (feat) remove dead database entry, add more to user schema, split user
+=======
+            <Route path='/user/:id' render={ () => 
+                <User 
+>>>>>>> Fixed Merge Conflicts
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />
