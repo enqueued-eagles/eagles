@@ -16,6 +16,17 @@ module.exports.addCourseWork = function(req, res) {
   })
 }
 
+module.exports.getCourseWork = function(req, res) {
+  let profile = req.user;
+  gclass.getCourseWork(profile)
+  .then((results) => {
+    res.status(201).send(results.data);
+  })
+  .catch((err) => {
+    res.status(400).send(err);
+  })
+}
+
 // TESTING 
 
 // var example = {

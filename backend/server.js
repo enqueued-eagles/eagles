@@ -62,6 +62,7 @@ app.get('/testing', function(req, res) {
 
 // -------------------GCLASS------------------------- //
 app.post('/gclass/coursework', gclassRoutes.addCourseWork);
+app.post('/gclass/coursework', gclassRoutes.getCourseWork);
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
