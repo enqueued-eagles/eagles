@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const gclass = require('./gclass');
+const gclass = require('./../gclass/gclass');
 
 const host = process.env.HOST || '127.0.0.1';
 

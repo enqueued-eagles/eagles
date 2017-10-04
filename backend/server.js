@@ -21,9 +21,11 @@ const utilRoutes = require('./routes/utilRoutes');
 const checkAuth = require('./checkAuth');
 
 // Google Authentication 
-
 const passport = require('./oauth/passport');
 const oauthRoutes = require('./oauth/routes');
+
+// Google Classroom
+const gclassRoutes = require('./gclass/routes.js');
 
 // morgan for logging and body parser to parse requests
 app.use(morgan('tiny'));
@@ -56,15 +58,16 @@ app.get('/login/google/return', oauthRoutes.return, oauthRoutes.resolve);
 app.get('/testing', function(req, res) {
   console.log('req.user', req.user);
   res.send(JSON.stringify(req.user))
-})
+});
+
+// -------------------GCLASS------------------------- //
+app.post('/gclass/coursework', gclassRoutes.addCourseWork);
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
 app.post('/users', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
 app.use(checkAuth.checkUser);
-
-// -------------------GOOGLE AUTH------------------------- //
 
 // ------------------------------------------------ //
 

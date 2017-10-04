@@ -19,6 +19,7 @@ module.exports.getCourseWork = function(profile) {
 }
 
 module.exports.postCourseWork = function(profile, title, description, link) {
+  console.log('postCourseWork running')
   let courseWork = {  
   'title': title,  
   'description': description,  
@@ -28,10 +29,13 @@ module.exports.postCourseWork = function(profile, title, description, link) {
   'workType': 'ASSIGNMENT',  
   'state': 'PUBLISHED',  
   }
+  console.log('courseWork', JSON.stringify(courseWork))
+  console.log('profile.courses[0]', profile.courses[0])
+  console.log('profile.access', profile.access)
 
   return gclass.post(`/courses/${profile.courses[0]}/courseWork`, courseWork, {
     headers: {
-      'authorization': 'Bearer ' + profile.access,
+      'authorization': 'Bearer ' + profile.access
     }
   });
 }
@@ -45,7 +49,7 @@ module.exports.postCourseWork = function(profile, title, description, link) {
 // }
 
 // var courseWorks = {  
-//   'title': 'Ant colonies pt 3',  
+//   'title': 'Ant colonies pt 4',  
 //   'description': 'Read the article about ant colonies and complete the quiz.',  
 //   'materials': [  
 //      {'link': { 'url': 'http://example.com/ant-colonies' }},  
@@ -55,9 +59,9 @@ module.exports.postCourseWork = function(profile, title, description, link) {
 //   'state': 'PUBLISHED',  
 // }
 
-// postAssignment(exampleProfile, courseWorks.title, courseWorks.description, courseWorks.materials[0].link.url)
+// module.exports.postCourseWork(exampleProfile, courseWorks.title, courseWorks.description, courseWorks.materials[0].link.url)
 // .then(results => {
-//   console.log('results', results.data)
+//   console.log('success! results', results.data)
 // })
 // .catch(err => {
 //   console.log('there was an error', err)
