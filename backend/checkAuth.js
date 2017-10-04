@@ -45,7 +45,7 @@ exports.createAccount = (req, res) => {
   var email = req.body.email;
   var lessons = req.body.lessons || [];
   var favorites = req.body.favorites || [];
-  var createdLessons = req.body.createdLessons || [];
+  var avatarURL = req.body.avatarURL;
 
   bcrypt.genSalt(saltRounds, function(err, salt) {
     bcrypt.hash(password, salt, function(err, hash) {
@@ -54,8 +54,8 @@ exports.createAccount = (req, res) => {
         password: hash,
         lessons: lessons, 
         favorites: favorites, 
-        createdLessons: createdLessons,
-        email: email
+        email: email,
+        avatarURL: avatarURL
       })
       .then(function(result) {
         req.session.username = result.username;
