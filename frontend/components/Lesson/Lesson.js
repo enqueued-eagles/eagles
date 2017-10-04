@@ -17,7 +17,9 @@ class Lesson extends React.Component {
       videoIdOfClickedOnVideo: '',
       liked: false,
       keyWords: [],
-      relatedLessons: []
+      relatedLessons: [],
+      preReq: [],
+      preReqLessons: []
     }
   }
 
@@ -27,10 +29,12 @@ class Lesson extends React.Component {
     fetch('/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" })
       .then((response) => response.json())
       .then((lessonDataJSON) => {
+        console.log('lessonDATAJSON', lessonDataJSON)
         this.setState({
           specificLesson: lessonDataJSON,
           slides: lessonDataJSON.slides,
-          keyWords: lessonDataJSON.keyWords
+          keyWords: lessonDataJSON.keyWords,
+          preReq: lessonDataJSON.preReqLessons
         });
         console.log(this.state.specificLesson);
       })
@@ -49,6 +53,15 @@ class Lesson extends React.Component {
                if (lessons[i].keyWords.includes(keyword) && lessons[i]._id !== this.state.specificLesson._id && !this.state.relatedLessons.includes(lessons[i])) {
                  this.setState({
                    relatedLessons: [...this.state.relatedLessons, lessons[i]]
+                 })
+               }
+             }
+           })
+           this.state.preReq.forEach(preReq => {
+             for (let i = 0; i < lessons.length; i++) {
+               if (lessons[i]._id === preReq) {
+                 this.setState({
+                   preReqLessons: [...this.state.preReqLessons, lessons[i]]
                  })
                }
              }
@@ -172,6 +185,16 @@ class Lesson extends React.Component {
             <Button type="button" onClick={this.likeALesson.bind(this)}>Like</Button>
           </div>
         )}
+        <div className="relatedLessons">
+          Recommended Pre-Requsite Lessons:
+          {this.state.preReqLessons.map((lesson, i) => (
+            <LessonPreview
+              lesson={lesson}
+              index={i}
+              key={i}
+            />
+          ))}
+        </div>
         <div className="relatedLessons">
           Related Lessons:
           {this.state.relatedLessons.map((lesson, i) => (
