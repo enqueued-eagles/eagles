@@ -23,6 +23,21 @@ class Lesson extends React.Component {
     }
   }
 
+  getUsers() {
+    return fetch('/users/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then((users) => {
+      return users
+    })
+    .catch((err) => console.log('Error getting lessons', err));
+  }
+
   componentDidMount() {
     // console.log(this.props)
     console.log('fetchingggg.g.......')
@@ -186,12 +201,13 @@ class Lesson extends React.Component {
           </div>
         )}
         <div className="relatedLessons">
-          Recommended Pre-Requsite Lessons:
+          Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (
             <LessonPreview
               lesson={lesson}
               index={i}
               key={i}
+              getUsers={this.getUsers.bind(this)}
             />
           ))}
         </div>
@@ -202,6 +218,7 @@ class Lesson extends React.Component {
               lesson={lesson}
               index={i}
               key={i}
+              getUsers={this.getUsers.bind(this)}
             />
           ))}
         </div>

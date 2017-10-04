@@ -9,6 +9,7 @@ class LessonPreviewContainer extends Component {
 
   componentDidMount() {
     if (!this.props.lessons) this.props.getLessons();
+
   }
 
   render() {
@@ -24,6 +25,8 @@ class LessonPreviewContainer extends Component {
             lesson={lesson}
             index={i}
             key={i}
+            userRef={lesson.userRef}
+            getUsers={this.props.getUsers}
           />
         )}
         </ListGroup>

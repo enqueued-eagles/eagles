@@ -33,7 +33,6 @@ class LessonCreator extends React.Component {
       })
     })
     .then(res => this.state.allLessons.unshift({name: 'none'}))
-
   }
 
   onSubmit (event) {
