@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require('express');
 const nodemailer = require('nodemailer');
 const schema = require('../db/schema.js');
@@ -130,6 +129,7 @@ router.post('/lessons', function(req, res) {
 })
 
 router.put('/lessons', function(req, res) {
+  console.log('req.body:', req.body);
   Lesson.findById(req.body.lessonId, function(err, lesson) {
     //console.log('lesson is ', lesson, 'err is ', err)
     // console.log('Lesson is ', Lesson, lesson.keywords)
