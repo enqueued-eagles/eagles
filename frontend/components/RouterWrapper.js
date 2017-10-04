@@ -26,7 +26,6 @@ class RouterWrapper extends Component {
   }
 
   componentDidMount() {
-    this.getLessons();
   }
 
   getLessons() {
@@ -39,6 +38,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((lessons) => {
+      console.log(lessons)
       this.setState({lessons});
       return lessons
     })
@@ -152,6 +152,7 @@ class RouterWrapper extends Component {
         queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput } 
         logout={ this.logout } 
         getLessons={ this.getLessons }
+        user = {this.state.user.username}
         >
           { this.state.loggedIn ? // If you are logged in allow all routes
          (<Switch>
@@ -175,7 +176,7 @@ class RouterWrapper extends Component {
                 /> 
               )}
             />
-            <Route path='/user' render={ () => 
+            <Route path='/user/:id' render={ () => 
                 <User 
                   user={ this.state.user }
                   getLessons={ this.getLessons }

@@ -45,13 +45,20 @@ class NavBar extends Component {
           <span>
           <Link to='/create'>
             <Button>Create</Button>
-          </Link>{' '}
+          </Link>{' '}     
           <Link to='/'>
             <Button onClick={ this.props.getLessons }>Home</Button>
           </Link>{' '}
-          <Link to='/user'>
-            <Button>Your Account</Button>
+
+          <Link to={'/user/' + this.props.user}>
+            <Button>Profile</Button>
           </Link>{' '}
+
+          <Link to='/user/kennytest'>
+            <Button>kennytest</Button>
+          </Link>{' '}
+
+
           <Button onClick={this.props.logout}>Logout</Button>{' '}
         </span>
         </Form>
