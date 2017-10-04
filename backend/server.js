@@ -2,6 +2,7 @@
 Run server to persist data
 routers in separate files
 */
+const dotenv = require('dotenv').config();
 const express = require('express');
 const database = require('./db/database.js');
 const path = require('path');
@@ -19,6 +20,10 @@ const slideRoutes = require('./routes/slideRoutes');
 const utilRoutes = require('./routes/utilRoutes');
 const checkAuth = require('./checkAuth');
 
+// Google Authentication 
+
+const passport = require('./oauth/passport');
+const oauthRoutes = require('./oauth/routes');
 
 // morgan for logging and body parser to parse requests
 app.use(morgan('tiny'));
@@ -34,16 +39,33 @@ app.use(session({
   }
 }))
 
+// Add passport middleware to initialize req.user object
+app.use(passport.initialize());
+app.use(passport.session());
+
 // public file with static routes
 const staticRoute = path.join(__dirname, '../frontend/public')
 
 app.use(express.static(staticRoute));
+
+// -------------------OAUTH------------------------- //
+app.get('/login/google', oauthRoutes.login);
+
+app.get('/login/google/return', oauthRoutes.return, oauthRoutes.resolve);
+
+app.get('/testing', function(req, res) {
+  console.log('req.user', req.user);
+  res.send(JSON.stringify(req.user))
+})
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
 app.post('/users', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
 app.use(checkAuth.checkUser);
+
+// -------------------GOOGLE AUTH------------------------- //
+
 // ------------------------------------------------ //
 
 // handle protected routes
