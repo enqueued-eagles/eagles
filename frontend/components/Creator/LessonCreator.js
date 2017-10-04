@@ -27,7 +27,6 @@ class LessonCreator extends React.Component {
       preReqLessons: [],
       value: ''
     };
-    this.getNames = this.getNames.bind(this);
   }
 
   componentDidMount() {
@@ -273,7 +272,7 @@ class LessonCreator extends React.Component {
                   name={this.state.name}
                   description={this.state.description}
                   keywords={this.state.keywords}
-                  getNames={this.getNames}
+                  getNames={this.getNames.bind(this)}
                 />
                 <TagsEntry
                   keywords={this.state.displayedKeywords}
@@ -281,7 +280,7 @@ class LessonCreator extends React.Component {
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
                 <div>
-                  Recommend Pre Requsites
+                  Recommend Pre Requisites
                   <form>
                     <label>
                       {/* Pick your favorite La Croix flavor: */}
@@ -371,6 +370,7 @@ class LessonCreator extends React.Component {
               name={this.state.name}
               description={this.state.description}
               keywords={this.state.keywords}
+              getNames={this.getNames.bind(this)}
             />
             <SlideCreator 
               slide={{}} 
@@ -394,6 +394,7 @@ class LessonCreator extends React.Component {
               name={this.state.name}
               description={this.state.description}
               keywords={this.state.keywords}
+              getNames={this.getNames.bind(this)}
             />
             <SlideCreator 
               slide={this.state.oldSlide} 
