@@ -9,7 +9,7 @@ var Slide = schema.Slide;
 //find specific user
 router.get('/users/:userId', function(req, res) {
   User.find({_id: req.params.userId})
-  .then(function(users) { 
+  .then(function(users) {
     res.send(users);
   })
   .catch(function(err) {
@@ -20,7 +20,7 @@ router.get('/users/:userId', function(req, res) {
 //find all users
 router.get('/users', function(req, res) {
   User.find({})
-  .then(function(users) { 
+  .then(function(users) {
     res.send(users);
   })
   .catch(function(err) {
