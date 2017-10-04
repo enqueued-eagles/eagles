@@ -2,6 +2,10 @@ import React from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class LessonInfo extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <ListGroup>
