@@ -27,6 +27,7 @@ class RouterWrapper extends Component {
   }
 
   componentDidMount() {
+    this.getLessons();
   }
 
   getUsers() {
