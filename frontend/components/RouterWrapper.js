@@ -23,10 +23,26 @@ class RouterWrapper extends Component {
     this.createAccount = this.createAccount.bind(this);
     this.queryDataBaseWithSearchInput = this.queryDataBaseWithSearchInput.bind(this);
     this.organizeSearchResultsBasedOnMostLikes = this.organizeSearchResultsBasedOnMostLikes.bind(this);
+    this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount() {
     this.getLessons();
+  }
+
+  getUsers() {
+    return fetch('/users/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then((users) => {
+      return users
+    })
+    .catch((err) => console.log('Error getting lessons', err));
   }
 
   getLessons() {
@@ -161,6 +177,7 @@ class RouterWrapper extends Component {
                   lessons= { this.state.lessons }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }
+                  getUsers={this.getUsers}
                 />
               )}
             />
