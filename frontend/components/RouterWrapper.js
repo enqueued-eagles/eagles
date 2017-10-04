@@ -48,7 +48,7 @@ class RouterWrapper extends Component {
   queryDataBaseWithSearchInput(searchInput) {
     this.getLessons()
     .then((results) => {
-      var filteredLessons = this.state.lessons.filter((lesson) => { 
+      var filteredLessons = this.state.lessons.filter((lesson) => {
         var lowerSearchInput = searchInput.toLowerCase();
         if (lesson.keyWords.includes(lowerSearchInput) || lowerSearchInput === '') {
           return lesson;
@@ -89,7 +89,7 @@ class RouterWrapper extends Component {
     .then((data) => {
       console.log('got data', data);
       if(data.loggedIn === true) {
-        this.setState({ 
+        this.setState({
           user: data.userData,
           loggedIn: true,
           displayLogginError: false
@@ -120,7 +120,7 @@ class RouterWrapper extends Component {
       console.log('login got data', data);
       if(data.loggedIn === true) {
         this.getLessons();
-        this.setState({ 
+        this.setState({
           user: data.userData,
           loggedIn: true,
           displayLogginError: false
@@ -138,7 +138,7 @@ class RouterWrapper extends Component {
       method: "GET",
       credentials: "include"
     });
-    this.setState({ 
+    this.setState({
       loggedIn: false,
       displayLogginError: false,
       user: {}
@@ -148,35 +148,37 @@ class RouterWrapper extends Component {
   render() {
     return (
       <BrowserRouter>
-        <App 
-        queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput } 
-        logout={ this.logout } 
+        <App
+        queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput }
+        logout={ this.logout }
         getLessons={ this.getLessons }
         >
           { this.state.loggedIn ? // If you are logged in allow all routes
          (<Switch>
             <Route exact path='/'
               render={() => (
-                <LessonPreviewContainer 
+                <LessonPreviewContainer
                   lessons= { this.state.lessons }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }
-                /> 
+                />
               )}
             />
             <Route path='/lesson/:id'
+              getLessons={ this.getLessons }
               component={ Lesson }
             />
             <Route path='/create'
               render={ () => (
-                <LessonCreator 
-                  username={this.state.user.username} 
-                  userRef={this.state.user._id} 
-                /> 
+                <LessonCreator
+                  username={this.state.user.username}
+                  userRef={this.state.user._id}
+                  getLessons={this.getLessons}
+                />
               )}
             />
-            <Route path='/user' render={ () => 
-                <User 
+            <Route path='/user' render={ () =>
+                <User
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />
@@ -184,13 +186,13 @@ class RouterWrapper extends Component {
             />
             <Route path='/logout' render={ () => (
               <Logout logout={ this.logout }/>
-            )} 
+            )}
             />
           </Switch>) : // if not, everything goes to the login component
           (<Switch>
-              <Route path='*' render={ () => 
-                <Login 
-                  login={ this.login } 
+              <Route path='*' render={ () =>
+                <Login
+                  login={ this.login }
                   displayLogginError={ this.state.displayLogginError }
                   createAccount={ this.createAccount }
                 />
