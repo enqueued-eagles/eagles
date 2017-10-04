@@ -16,7 +16,7 @@ class Lesson extends React.Component {
       index: 0,
       videoIdOfClickedOnVideo: '',
       liked: false,
-      keyWords: [],
+      keywords: [],
       relatedLessons: [],
       preReq: [],
       preReqLessons: []
@@ -48,7 +48,7 @@ class Lesson extends React.Component {
         this.setState({
           specificLesson: lessonDataJSON,
           slides: lessonDataJSON.slides,
-          keyWords: lessonDataJSON.keyWords,
+          keywords: lessonDataJSON.keywords,
           preReq: lessonDataJSON.preReqLessons
         });
         console.log(this.state.specificLesson);
@@ -63,9 +63,9 @@ class Lesson extends React.Component {
          })
          .then((res) => res.json())
          .then((lessons) => {
-           this.state.keyWords.forEach(keyword => {
+           this.state.keywords.forEach(keyword => {
              for (let i = 0; i < lessons.length; i++) {
-               if (lessons[i].keyWords.includes(keyword) && lessons[i]._id !== this.state.specificLesson._id && !this.state.relatedLessons.includes(lessons[i])) {
+               if (lessons[i].keywords.includes(keyword) && lessons[i]._id !== this.state.specificLesson._id && !this.state.relatedLessons.includes(lessons[i])) {
                  this.setState({
                    relatedLessons: [...this.state.relatedLessons, lessons[i]]
                  })
@@ -139,7 +139,7 @@ class Lesson extends React.Component {
 
   likeALesson() {
     this.state.specificLesson.likes++;
-    var body = { likes: this.state.specificLesson.likes, lessonid: this.state.specificLesson._id, fromLike: true };
+    var body = { likes: this.state.specificLesson.likes, lessonId: this.state.specificLesson._id, fromLike: true };
     fetch('/lessons', {
       method: "PUT",
       body: JSON.stringify(body),
@@ -183,7 +183,7 @@ class Lesson extends React.Component {
             <div className="lesson">
               <h1 className="lessonTitle">{this.state.specificLesson.name}</h1>
               <p className="lessonDescription">{this.state.specificLesson.description}</p>
-              <p className="lessonKeyWords"> Keywords: {this.state.keyWords.join(', ')}</p>
+              <p className="lessonKeyWords"> Keywords: {this.state.keywords.join(', ')}</p>
               <Grid>
                 <Row>
                 {this.state.slides.map((slide, i) => (
