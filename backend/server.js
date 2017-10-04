@@ -45,7 +45,7 @@ app.use(express.static(staticRoute));
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
-app.post('/users', checkAuth.createAccount);
+app.post('/user', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
 app.use(checkAuth.checkUser);
 // ------------------------------------------------ //
@@ -53,8 +53,8 @@ app.use(checkAuth.checkUser);
 // handle protected routes
 app.all('/slides', slideRoutes);
 app.all('/slides/*', slideRoutes);
-app.all('/users', userRoutes);
-app.all('/users/*', userRoutes);
+app.all('/user', userRoutes);
+app.all('/user/*', userRoutes);
 app.all('/lessons', lessonRoutes);
 app.all('/lessons/*', lessonRoutes);
 app.all('/lesson', lessonRoutes);
@@ -63,6 +63,7 @@ app.all('/query', utilRoutes);
 
 // redirect any uncaught routes 
 app.use((req, res) => {
+  console.log('yo the stupid app.use is triggering EVERYWHERE')
   res.redirect('/');
 });
 
