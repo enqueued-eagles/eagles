@@ -35,13 +35,7 @@ app.use(session({
 }))
 
 // public file with static routes
-<<<<<<< 9d499107a871934f37dba6aed47e5292b8242c3e
 app.use(express.static(path.join(__dirname,'../frontend/public')));
-=======
-const staticRoute = path.join(__dirname, '../frontend/public')
-
-app.use(express.static(staticRoute));
->>>>>>> Fixed Merge Conflicts
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
