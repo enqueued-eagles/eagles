@@ -178,13 +178,8 @@ class RouterWrapper extends Component {
                 />
               )}
             />
-<<<<<<< HEAD
-            <Route path='/user' render={ () =>
-                <User
-=======
             <Route path='/user/:id' render={ () => 
                 <User 
->>>>>>> kenny
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />
