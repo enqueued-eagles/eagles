@@ -35,9 +35,13 @@ app.use(session({
 }))
 
 // public file with static routes
+<<<<<<< HEAD
 const staticRoute = path.join(__dirname, '../frontend/public')
 
 app.use(express.static(staticRoute));
+=======
+app.use(express.static(path.join(__dirname,'../frontend/public')));
+>>>>>>> kenny
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
@@ -63,4 +67,8 @@ app.use((req, res) => {
 });
 
 // server listens for requests
-app.listen(process.env.PORT || 3000);
+let port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`<('.'<) Server's up on port ${port}`)
+});

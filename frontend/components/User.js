@@ -32,6 +32,7 @@ class User extends Component {
   }
 
   componentDidMount() {
+ 
     this.props.getLessons()
     .then((unfilteredLessons) => {
       console.log('not filtered: ', unfilteredLessons);
@@ -44,53 +45,62 @@ class User extends Component {
     .catch((err) => console.log('Error! ', err));
   }
 
+
   render() {
-    return (
-      <ListGroup>
-        <ListGroupItem>Username: { this.props.user.username || 'no username!' }</ListGroupItem>
-        <ListGroupItem>
-          <ButtonGroup vertical block>
-            <DropdownButton title="Your Favorite Lessons:" id="Your Favorite Lesson">
-              <MenuItem key={ this.props.user._id + 1 }>
-                { this.state.favoriteLessons.length === 0 ? 'You Have No Favorite Lessons!' :
-                  (this.state.favoriteLessons.map((lesson, i) => 
-                    <div key={ lesson._id }>
-                    Lesson Name: {lesson.name || 'Unnamed Lesson'} 
-                    <br/>
-                    Lesson Description: {lesson.description || 'no description'} 
-                    <Link to={'/lesson/' + lesson._id}>
-                      <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
-                    </Link>
-                    </div>
-                  )
-                )}
-              </MenuItem> 
-            </DropdownButton>
-          </ButtonGroup>
-        </ListGroupItem>
-        <ListGroupItem>
-          <ButtonGroup vertical block>
-            <DropdownButton title="Your Lessons:" id="Your Lessons">
-              <MenuItem key={ this.props.user._id }>
-                { this.state.lessons.length === 0 ? 'You Have No Lessons!' :
-                  (this.state.lessons.map((lesson, i) => 
-                    <div key={ lesson._id }>
-                    Lesson Name: {lesson.name || 'Unnamed Lesson'}
-                    <br/>
-                    Lesson Description: {lesson.description || 'no description'} 
-                    <Link to={'/lesson/' + lesson._id}>
-                      <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
-                    </Link>
-                    <Button bsStyle="primary" bsSize="small" onClick={ () => this.deleteLesson(lesson._id) } block>Delete Lesson</Button>
-                    </div>
-                  )
-                )}
-              </MenuItem> 
-            </DropdownButton>
-          </ButtonGroup>
-        </ListGroupItem>
-      </ListGroup>
-    );
+    console.log(this.props.user.username === window.location.pathname.slice(6))
+    if(this.props.user.username === window.location.pathname.slice(6)){
+      return (
+        <div>HELLO DUDE</div>
+      )
+    }
+    else {
+      return (
+        <ListGroup>
+          <ListGroupItem>Username: { this.props.user.username || 'no username!' }</ListGroupItem>
+          <ListGroupItem>
+            <ButtonGroup vertical block>
+              <DropdownButton title="Your Favorite Lessons:" id="Your Favorite Lesson">
+                <MenuItem key={ this.props.user._id + 1 }>
+                  { this.state.favoriteLessons.length === 0 ? 'You Have No Favorite Lessons!' :
+                    (this.state.favoriteLessons.map((lesson, i) => 
+                      <div key={ lesson._id }>
+                      Lesson Name: {lesson.name || 'Unnamed Lesson'} 
+                      <br/>
+                      Lesson Description: {lesson.description || 'no description'} 
+                      <Link to={'/lesson/' + lesson._id}>
+                        <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
+                      </Link>
+                      </div>
+                    )
+                  )}
+                </MenuItem> 
+              </DropdownButton>
+            </ButtonGroup>
+          </ListGroupItem>
+          <ListGroupItem>
+            <ButtonGroup vertical block>
+              <DropdownButton title="Your Lessons:" id="Your Lessons">
+                <MenuItem key={ this.props.user._id }>
+                  { this.state.lessons.length === 0 ? 'You Have No Lessons!' :
+                    (this.state.lessons.map((lesson, i) => 
+                      <div key={ lesson._id }>
+                      Lesson Name: {lesson.name || 'Unnamed Lesson'}
+                      <br/>
+                      Lesson Description: {lesson.description || 'no description'} 
+                      <Link to={'/lesson/' + lesson._id}>
+                        <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
+                      </Link>
+                      <Button bsStyle="primary" bsSize="small" onClick={ () => this.deleteLesson(lesson._id) } block>Delete Lesson</Button>
+                      </div>
+                    )
+                  )}
+                </MenuItem> 
+              </DropdownButton>
+            </ButtonGroup>
+          </ListGroupItem>
+        </ListGroup>
+      );
+    }
   } 
 }
 
