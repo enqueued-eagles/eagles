@@ -20,7 +20,10 @@ var userSchema = new Schema({
   githubURL: String,
   emailPublic: String,
   emailLikeGoal: Number,
-  avatarURL: String
+  avatarURL: String,
+  fullName: String,
+  location: String,
+  website: String
 });
 var User = mongoose.model('User', userSchema);
 

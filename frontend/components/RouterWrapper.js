@@ -72,12 +72,15 @@ class RouterWrapper extends Component {
   }
 
   createAccount(username, password, email) {
+    let num = Math.floor((Math.random() * 150) + 1)
+
     let data = {
       username,
       password,
-      email
+      email,
+      avatarURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`
     };
-    fetch('/users', {
+    fetch('/user', {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
