@@ -31,7 +31,7 @@ class RouterWrapper extends Component {
   }
 
   getUsers() {
-    return fetch('/user/', {
+    return fetch('/user', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,6 +40,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((users) => {
+      console.log('users inside getUsers:', users);
       return users
     })
     .catch((err) => console.log('Error getting lessons', err));
@@ -187,8 +188,12 @@ class RouterWrapper extends Component {
               )}
             />
             <Route path='/lesson/:id'
-              getLessons={ this.getLessons }
-              component={ Lesson }
+              render={({match}) => (
+                <Lesson
+                  match={match}
+                  getLessons={this.getLessons}
+                />
+              )}
             />
             <Route path='/create'
               render={ () => (
