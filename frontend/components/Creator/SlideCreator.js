@@ -27,6 +27,7 @@ class SlideCreator extends React.Component {
     });
   }
   onSubmit (event) {
+    console.log('is this working?');
     event.preventDefault();
     if (this.state.name !== '') {
       if (this.state.youTubeUrl !== '') {
@@ -72,10 +73,12 @@ class SlideCreator extends React.Component {
         })
         .then((something) => something.json())
         .then(result => {
+          console.log('NOTICE ME AAAAAAAAAAAAAAAAAA');
           console.log(result, ' that was result this.state is', this.state);
           this.props.fetch(result);
           this.reset();
         })
+        .catch(err => console.log('onSubmit ERROR:', err));
       }
     } else {
         alert('Slide name required. Please enter a slide name.');
@@ -172,7 +175,7 @@ class SlideCreator extends React.Component {
             this.state.old === '' ?
             <div>
               <Col smOffset={2} sm={2}>
-                <Button type="submit" bsStyle="primary" bsSize="small" smOffset={1} sm={1}>
+                <Button type="submit" bsStyle="primary" bsSize="small">
                   Create Slide
                 </Button>
               </Col>

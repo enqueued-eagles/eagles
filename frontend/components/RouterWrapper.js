@@ -40,7 +40,6 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((users) => {
-      console.log('users inside getUsers:', users);
       return users
     })
     .catch((err) => console.log('Error getting lessons', err));
@@ -56,7 +55,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((lessons) => {
-      console.log(lessons)
+      console.log('all lessons:', lessons)
       this.setState({lessons});
       return lessons
     })

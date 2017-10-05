@@ -8,6 +8,7 @@ class LessonPreview extends Component {
     this.state = {
       creator: ''
     }
+    console.log('PROPS.LESSON:', props.lesson);
   }
 
   componentDidMount() {

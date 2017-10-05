@@ -16,8 +16,8 @@ class LessonCreator extends React.Component {
       name: lessonInfo ? lessonInfo.name : '',
       userRef: lessonInfo ? lessonInfo.userRef : this.props.userRef,
       description: lessonInfo ? lessonInfo.description : '',
-      slides: lessonInfo ? lessonInfo.slides.map(slide => slide.name) : [],
-      slidesId: lessonInfo ? lessonInfo.slides.map(slide => slide._id) : [],
+      slides: [],
+      slidesId: [],
       creatingSlide: false,
       lessonId: lessonInfo ? lessonInfo._id : '',
       keywords: lessonInfo ? lessonInfo.keywords : [],
@@ -31,6 +31,21 @@ class LessonCreator extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.location.lesson) {
+      fetch('/slides', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+      })
+        .then(result => result.json())
+        .then(slides => {
+          console.log('SLIDES AFTER LessonCreator DB RETRIEVAL:', slides);
+          this.setState({slides: slides.map(slide => slide.name), slidesId: slides.map(slide => slide._id)});
+        })
+        .catch(err => console.log('SLIDES DATABASE RETRIEVAL ERROR:', err));
+    }
     this.props.getLessons()
       .then(lessons => {
         this.setState({

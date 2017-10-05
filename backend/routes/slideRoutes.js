@@ -10,6 +10,7 @@ var Slide = schema.Slide;
 router.get('/slides/:slideId', function(req, res) {
   Slide.find({_id: req.params.slideId})
   .then(function(slides) {
+    console.log('slides:', slides);
     res.send(slides);
   })
   .catch(function(err) {
