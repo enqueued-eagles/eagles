@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname,'../frontend/public')));
 app.get('/logout', checkAuth.logout);
 app.post('/user', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
-app.use(checkAuth.checkUser);
+// app.use(checkAuth.checkUser);
 // ------------------------------------------------ //
 
 // handle protected routes
