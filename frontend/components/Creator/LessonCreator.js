@@ -41,8 +41,8 @@ class LessonCreator extends React.Component {
       })
         .then(result => result.json())
         .then(slides => {
-          console.log('SLIDES AFTER LessonCreator DB RETRIEVAL:', slides);
-          this.setState({slides: slides.map(slide => slide.name), slidesId: slides.map(slide => slide._id)});
+          slides = slides.filter(slide => slide.lessonRef === this.state.lessonId).map(slide => slide.name);
+          this.setState({slides, slidesId: slides.map(slide => slide._id)});
         })
         .catch(err => console.log('SLIDES DATABASE RETRIEVAL ERROR:', err));
     }
@@ -290,11 +290,6 @@ class LessonCreator extends React.Component {
                   keywords={this.state.keywords}
                   getNames={this.getNames.bind(this)}
                 />
-                <TagsEntry
-                  keywords={this.state.displayedKeywords}
-                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
-                  keywordSubmit={this.keywordSubmit.bind(this)}
-                />
                 <div>
                   Recommend Prerequisites:<br/>
                   <Form>
@@ -306,7 +301,12 @@ class LessonCreator extends React.Component {
                       </select>
                     </label>
                   </Form>
-                </div>
+                </div><br/>
+                <TagsEntry
+                  keywords={this.state.displayedKeywords}
+                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
+                  keywordSubmit={this.keywordSubmit.bind(this)}
+                />
               </div>
             :
               <div>
@@ -361,7 +361,7 @@ class LessonCreator extends React.Component {
                     bsStyle="warning"
                     bsSize="small"
                   >Go Home</Button>
-                </Link>
+                </Link><br/><br/><br/>
               </Col>}
           </FormGroup>
 

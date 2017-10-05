@@ -26,3 +26,7 @@ body {
   color:blue;
   text-decoration:underline;
 }
+
+.existingSlides {
+  font-weight: 700;
+}

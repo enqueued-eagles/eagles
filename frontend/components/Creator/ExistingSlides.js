@@ -4,8 +4,8 @@ import { Button } from 'react-bootstrap';
 class ExistingSlides extends React.Component {
   render() {
     return (
-      <div>
-        Existing Slides<br/> 
+      <div className='existingSlides'>
+        Existing Slides<br/>
         {this.props.slides.map((slide, i) => {
           return (
             <Button
