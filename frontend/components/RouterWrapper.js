@@ -31,7 +31,7 @@ class RouterWrapper extends Component {
   }
 
   getUsers() {
-    return fetch('/users/', {
+    return fetch('/user/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

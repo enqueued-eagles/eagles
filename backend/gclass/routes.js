@@ -1,11 +1,13 @@
 const gclass = require('./gclass');
 
 module.exports.addCourseWork = function(req, res) {
-  console.log('req.body', req.body)
-  let profile = req.user || req.body.user;
+  console.log('addcoursework running')
+  let profile = req.user || req.session.user || req.body.user;
   let title = req.body.title;
   let description = req.body.description;
   let link = req.body.link;
+
+  console.log('profile', profile)
 
   gclass.postCourseWork(profile, title, description, link)
   .then((results) => {
@@ -23,6 +25,7 @@ module.exports.getCourseWork = function(req, res) {
     res.status(201).send(results.data);
   })
   .catch((err) => {
+    console.log('err caught', err);
     res.status(400).send(err);
   })
 }
