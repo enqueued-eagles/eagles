@@ -313,19 +313,24 @@ class LessonCreator extends React.Component {
           <FormGroup>
             { 
               this.state.lessonId === '' ? 
-              (<Col smOffset={1} sm={1}>
-                <Button type="submit" bsStyle="primary" bsSize="small">
-                  Make Lesson
-                </Button>
-              </Col>) :
-              (<Col smOffset={1} sm={1}>
-                <Button 
-                  onClick={this.changeCreateState.bind(this)}
-                  bsStyle="primary"
-                  bsSize="small"
-                >Go To Slide Creator</Button>
-              </Col>)
+                (<Col smOffset={1} sm={1}>
+                  <Button
+                    type="submit"
+                    bsStyle="primary"
+                    bsSize="small"
+                  >Create Lesson</Button>
+                </Col>)
+              :
+                (<Col smOffset={1} sm={1}>
+                  <Button 
+                    type="submit"
+                    onClick={this.changeCreateState.bind(this)}
+                    bsStyle="primary"
+                    bsSize="small"
+                  >Slide Creator</Button>
+                </Col>)
             }
+
             {this.state.lessonId === '' ? null :
               (<Col smOffset={1} sm={1}>
                 <Button 
@@ -334,10 +339,9 @@ class LessonCreator extends React.Component {
                   bsStyle="warning" 
                   bsSize="small"
                 >Make New Lesson</Button>
-              </Col>)
-            }
-            { 
-              <Col smOffset={1} sm={1}>
+              </Col>)}
+
+            {<Col smOffset={1} sm={1}>
                 <Link to='/'>
                   <Button
                     type="button"
@@ -345,8 +349,7 @@ class LessonCreator extends React.Component {
                     bsSize="small"
                   >Go Home</Button>
                 </Link>
-              </Col>
-            }
+              </Col>}
           </FormGroup>
 
           {

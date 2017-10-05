@@ -168,27 +168,30 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
-              (<Button type="submit" bsStyle="primary" bsSize="small">Create The Slide</Button>) : 
-              (<Button onClick={this.updateOldSlide.bind(this)} bsStyle="primary" bsSize="small">
-                Update Slide
-              </Button>) 
-            }
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
-              (<Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
-                Go Back
-              </Button>)
-              :
-              (<Button onClick={this.props.changeEditingOldSlide} bsStyle="warning" bsSize="small">
-                Finish Update
-              </Button>)
-            }
-          </Col>
+          {
+            this.state.old === '' ?
+            <div>
+              <Col smOffset={2} sm={2}>
+                <Button type="submit" bsStyle="primary" bsSize="small" smOffset={1} sm={1}>
+                  Create Slide
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
+                  Go Back
+                </Button>
+              </Col>
+            </div>
+          :
+            <Col smOffset={2} sm={2}>
+              <Button onClick={() => {
+                this.updateOldSlide();
+                this.props.changeEditingOldSlide();
+              }} bsStyle="primary" bsSize="small">
+                Finish Updates
+              </Button>
+            </Col>
+          }
         </FormGroup>
       </Form>
     );

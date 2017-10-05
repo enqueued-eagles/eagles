@@ -35,7 +35,7 @@ class LessonPreview extends Component {
             <br />
             <Link to={'/lesson/' + this.props.lesson._id}>
               <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
-            </Link>
+            </Link>{` `}
             {
               this.props.sessionUserId === this.props.lesson.userRef ?
               <Link to={{
@@ -43,7 +43,7 @@ class LessonPreview extends Component {
                 lesson: this.props.lesson,
                 editingOldSlide: true
               }}>
-                <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
+                <Button type="button" bsStyle="primary" bsSize="small">Edit Lesson</Button>
               </Link>
               : null
             }
