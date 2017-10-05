@@ -12,7 +12,7 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: this.props.user, 
+      currentUser: this.props.user,
       lessons: [],
       favoriteLessons: []
     }
@@ -119,18 +119,18 @@ class User extends Component {
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
                   <ControlLabel> Avatar URL:</ControlLabel>
-                  <FormControl 
-                  id="avatarURL" 
-                  type="text" 
+                  <FormControl
+                  id="avatarURL"
+                  type="text"
                   placeholder={this.state.currentUser.avatarURL}/>
                 </FormGroup>
                 <Button type="submit">Change</Button>
               </Form>
             </Col>
-            
+
             <Tab.Container id="userEditTabs" defaultActiveKey="overview">
               <Col md={9}>
-                <Nav bsStyle ="tabs" justified  
+                <Nav bsStyle ="tabs" justified
                 onSelect = {this.handleTabSelect}>
                   <NavItem eventKey="overview" title="Overview">Overview</NavItem>
                   <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
@@ -141,44 +141,44 @@ class User extends Component {
                       <Form onSubmit={this.submitOverview}>
                         <FormGroup >
                           <ControlLabel> Full Name:</ControlLabel>
-                          <FormControl 
-                          id="fullName" 
-                          type="text" 
+                          <FormControl
+                          id="fullName"
+                          type="text"
                           placeholder={this.state.currentUser.fullName || "What's your name?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Location:</ControlLabel>
-                          <FormControl 
-                          id="location" 
-                          type="text" 
+                          <FormControl
+                          id="location"
+                          type="text"
                           placeholder={this.state.currentUser.location || "Where are you located?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Website:</ControlLabel>
-                          <FormControl 
-                          id="website" 
-                          type="text" 
+                          <FormControl
+                          id="website"
+                          type="text"
                           placeholder={this.state.currentUser.website || "Do you have a website?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Public E-mail Address:</ControlLabel>
-                          <FormControl 
-                          id="emailPublic" 
-                          type="text" 
+                          <FormControl
+                          id="emailPublic"
+                          type="text"
                           placeholder={this.state.currentUser.emailPublic || "Where do you want the public to email you?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Github:</ControlLabel>
-                          <FormControl 
-                          id="githubURL" 
-                          type="text" 
+                          <FormControl
+                          id="githubURL"
+                          type="text"
                           placeholder={this.state.currentUser.githubURL || "What's your GitHub Account?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Email me every x likes:</ControlLabel>
-                          <FormControl 
-                          id="emailLikeGoal" 
-                          type="text" 
+                          <FormControl
+                          id="emailLikeGoal"
+                          type="text"
                           placeholder={this.state.currentUser.emailLikeGoal || "x"}/>
                         </FormGroup>
                         <Button type="submit">
@@ -213,7 +213,7 @@ class User extends Component {
             </Tab.Container>
           </Row>
         </Grid>
-          
+
       )
     }
     else {
@@ -225,18 +225,18 @@ class User extends Component {
               <DropdownButton title="Your Favorite Lessons:" id="Your Favorite Lesson">
                 <MenuItem key={ this.props.user._id + 1 }>
                   { this.state.favoriteLessons.length === 0 ? 'You Have No Favorite Lessons!' :
-                    (this.state.favoriteLessons.map((lesson, i) => 
+                    (this.state.favoriteLessons.map((lesson, i) =>
                       <div key={ lesson._id }>
-                      Lesson Name: {lesson.name || 'Unnamed Lesson'} 
+                      Lesson Name: {lesson.name || 'Unnamed Lesson'}
                       <br/>
-                      Lesson Description: {lesson.description || 'no description'} 
+                      Lesson Description: {lesson.description || 'no description'}
                       <Link to={'/lesson/' + lesson._id}>
                         <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
                       </Link>
                       </div>
                     )
                   )}
-                </MenuItem> 
+                </MenuItem>
               </DropdownButton>
             </ButtonGroup>
           </ListGroupItem>
@@ -245,11 +245,11 @@ class User extends Component {
               <DropdownButton title="Your Lessons:" id="Your Lessons">
                 <MenuItem key={ this.props.user._id }>
                   { this.state.lessons.length === 0 ? 'You Have No Lessons!' :
-                    (this.state.lessons.map((lesson, i) => 
+                    (this.state.lessons.map((lesson, i) =>
                       <div key={ lesson._id }>
                       Lesson Name: {lesson.name || 'Unnamed Lesson'}
                       <br/>
-                      Lesson Description: {lesson.description || 'no description'} 
+                      Lesson Description: {lesson.description || 'no description'}
                       <Link to={'/lesson/' + lesson._id}>
                         <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
                       </Link>
@@ -257,14 +257,14 @@ class User extends Component {
                       </div>
                     )
                   )}
-                </MenuItem> 
+                </MenuItem>
               </DropdownButton>
             </ButtonGroup>
           </ListGroupItem>
         </ListGroup>
       );
     }
-  } 
+  }
 }
 
 export default User;

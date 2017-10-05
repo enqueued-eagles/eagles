@@ -1,5 +1,5 @@
 /*
-Schemas for each part. 
+Schemas for each part.
 user,tutorial,lesson,slide
 //don't mind the {type:String, required: true} it could just be String
 

@@ -192,7 +192,7 @@ class LessonCreator extends React.Component {
       description: event.target.value
     });
   }
-  
+
   changeCreateState (event) {
     console.log('changingcreatestate')
     this.setState({
@@ -246,7 +246,7 @@ class LessonCreator extends React.Component {
 
   fetchSlideFromSlideCreator (result) {
     console.log(result);
-    var slideName = result.name; 
+    var slideName = result.name;
     var slideId = result._id;
     console.log('this is the result line119 lessoncreator', result);
     this.setState({
@@ -309,17 +309,17 @@ class LessonCreator extends React.Component {
                 />
               </div>
           }
-          
+
           <FormGroup>
-            { 
-              this.state.lessonId === '' ? 
+            {
+              this.state.lessonId === '' ?
               (<Col smOffset={1} sm={1}>
                 <Button type="submit" bsStyle="primary" bsSize="small">
                   Make Lesson
                 </Button>
               </Col>) :
               (<Col smOffset={1} sm={1}>
-                <Button 
+                <Button
                   onClick={this.changeCreateState.bind(this)}
                   bsStyle="primary"
                   bsSize="small"
@@ -328,15 +328,15 @@ class LessonCreator extends React.Component {
             }
             {this.state.lessonId === '' ? null :
               (<Col smOffset={1} sm={1}>
-                <Button 
-                  type="button" 
-                  onClick={this.reset.bind(this)} 
-                  bsStyle="warning" 
+                <Button
+                  type="button"
+                  onClick={this.reset.bind(this)}
+                  bsStyle="warning"
                   bsSize="small"
                 >Make New Lesson</Button>
               </Col>)
             }
-            { 
+            {
               <Col smOffset={1} sm={1}>
                 <Link to='/'>
                   <Button
@@ -350,7 +350,7 @@ class LessonCreator extends React.Component {
           </FormGroup>
 
           {
-            this.state.slides.length ? 
+            this.state.slides.length ?
               <ExistingSlides
                 slides={this.state.slides}
                 creatingSlide={this.state.creatingSlide}
@@ -373,11 +373,11 @@ class LessonCreator extends React.Component {
               keywords={this.state.keywords}
               getNames={this.getNames.bind(this)}
             />
-            <SlideCreator 
-              slide={{}} 
-              lessonRef={this.state.lessonId} 
-              fetch={this.fetchSlideFromSlideCreator.bind(this)} 
-              changeCreateState={this.changeCreateState.bind(this)} 
+            <SlideCreator
+              slide={{}}
+              lessonRef={this.state.lessonId}
+              fetch={this.fetchSlideFromSlideCreator.bind(this)}
+              changeCreateState={this.changeCreateState.bind(this)}
               changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
             />
             <ExistingSlides
@@ -397,11 +397,11 @@ class LessonCreator extends React.Component {
               keywords={this.state.keywords}
               getNames={this.getNames.bind(this)}
             />
-            <SlideCreator 
-              slide={this.state.oldSlide} 
-              lessonRef={this.state.lessonId} 
-              fetch={this.fetchSlideFromSlideCreator.bind(this)} 
-              changeCreateState={this.changeCreateState.bind(this)} 
+            <SlideCreator
+              slide={this.state.oldSlide}
+              lessonRef={this.state.lessonId}
+              fetch={this.fetchSlideFromSlideCreator.bind(this)}
+              changeCreateState={this.changeCreateState.bind(this)}
               changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
             />
           </div>

@@ -13,7 +13,9 @@ class SlideCreator extends React.Component {
       text: props.slide.text || '',
       quizUrl: props.slide.quizUrl || '',
       old: props.slide.old || '',
-      lessonRef: props.lessonRef
+      lessonRef: props.lessonRef,
+      urlShow: 'white',
+      nameShow: 'white'
     }
   }
   reset () {
@@ -23,7 +25,7 @@ class SlideCreator extends React.Component {
       youTubeThumbnailUrl: '',
       youTubeTags: '',
       text: '',
-      quizUrl: '',  
+      quizUrl: '',
     });
   }
   onSubmit (event) {
@@ -52,14 +54,15 @@ class SlideCreator extends React.Component {
             .then(result => {
               console.log(result, ' that was result this.state is', this.state);
               this.props.fetch(result);
-              this.reset();  
+              this.reset();
             })
           });
         } else {
-          alert('Incorrect YouTube URL input! Please revise Youtube URL input');
           this.setState({
-            youTubeUrl: ''
+            youTubeUrl: '',
+            urlShow: 'red'
           });
+          return;
         }
       } else {
         fetch('/slides', {
@@ -78,7 +81,10 @@ class SlideCreator extends React.Component {
         })
       }
     } else {
-        alert('Slide name required. Please enter a slide name.');
+        this.setState({
+          nameShow: 'red'
+        })
+        return;
     }
   }
 
@@ -93,7 +99,7 @@ class SlideCreator extends React.Component {
         "Content-Type": "application/json",
       },
       credentials: "include"
-    })    
+    })
     .then(function(result) {
       return result.json();
     })
@@ -137,6 +143,7 @@ class SlideCreator extends React.Component {
             <FormControl type='text' placeholder='Slide Name'
               value={this.state.name}
               onChange={(event) => this.setState({name: event.target.value})}
+              style={{borderColor: this.state.nameShow, borderWidth: 3}}
             />
           </Col>
         </FormGroup>
@@ -146,6 +153,7 @@ class SlideCreator extends React.Component {
             <FormControl type='text' placeholder='Slide youTube Url'
               value={this.state.youTubeUrl}
               onChange={(event) => this.setState({youTubeUrl: event.target.value})}
+              style={{borderColor: this.state.urlShow, borderWidth: 3}}
             />
           </Col>
         </FormGroup>
@@ -169,17 +177,17 @@ class SlideCreator extends React.Component {
         </FormGroup>
         <FormGroup>
           <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
-              (<Button type="submit" bsStyle="primary" bsSize="small">Create The Slide</Button>) : 
+            { this.state.old === '' ?
+              (<Button type="submit" bsStyle="primary" bsSize="small">Create The Slide</Button>) :
               (<Button onClick={this.updateOldSlide.bind(this)} bsStyle="primary" bsSize="small">
                 Update Slide
-              </Button>) 
+              </Button>)
             }
           </Col>
         </FormGroup>
         <FormGroup>
           <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
+            { this.state.old === '' ?
               (<Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
                 Go Back
               </Button>)
