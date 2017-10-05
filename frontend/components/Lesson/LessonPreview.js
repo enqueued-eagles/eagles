@@ -34,8 +34,19 @@ class LessonPreview extends Component {
             Creator: {this.state.creator}
             <br />
             <Link to={'/lesson/' + this.props.lesson._id}>
-            <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
-          </Link>
+              <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
+            </Link>
+            {
+              this.props.sessionUserId === this.props.lesson.userRef ?
+              <Link to={{
+                pathname: '/create',
+                lesson: this.props.lesson,
+                editingOldSlide: true
+              }}>
+                <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
+              </Link>
+              : null
+            }
         </ListGroupItem>
       </div>
     )

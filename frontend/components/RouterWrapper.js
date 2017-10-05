@@ -180,6 +180,7 @@ class RouterWrapper extends Component {
             <Route exact path='/'
               render={() => (
                 <LessonPreviewContainer
+                  sessionUserId={this.state.user._id}
                   lessons= { this.state.lessons }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }

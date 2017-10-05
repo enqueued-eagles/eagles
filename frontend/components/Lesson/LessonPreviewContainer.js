@@ -21,6 +21,7 @@ class LessonPreviewContainer extends Component {
         <ListGroup>
         {this.props.lessons.map((lesson, i) =>
           <LessonPreview
+            sessionUserId={this.props.sessionUserId}
             lesson={lesson}
             index={i}
             key={i}
