@@ -40,10 +40,19 @@ class Lesson extends React.Component {
     .catch((err) => console.log('Error getting lessons', err));
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
+    return nextProps.match.params.id !== this.props.match.params.id ? this.componentDidMount(nextProps.match.params.id) : null
+
+    // return nextProps.match.params.id !== this.props.match.params.id ? true : false;
+  }
+
+
+
+  componentDidMount(id) {
     // console.log(this.props)
+    id = id || this.props.match.params.id
     console.log('fetchingggg.g.......')
-    fetch('/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" })
+    fetch('/lesson/' + id, { method: 'GET', credentials: "include" })
       .then((response) => response.json())
       .then((lessonDataJSON) => {
         console.log('lessonDATAJSON', lessonDataJSON)
@@ -51,7 +60,9 @@ class Lesson extends React.Component {
           specificLesson: lessonDataJSON,
           slides: lessonDataJSON.slides,
           keywords: lessonDataJSON.keywords,
-          preReq: lessonDataJSON.preReqLessons
+          preReq: lessonDataJSON.preReqLessons,
+          preReqLessons: [],
+          relatedLessons: []
         });
         console.log(this.state.specificLesson);
       })
