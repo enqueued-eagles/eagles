@@ -30,14 +30,23 @@ module.exports.postCourseWork = function(profile, title, description, link) {
   'state': 'PUBLISHED',  
   }
   console.log('courseWork', JSON.stringify(courseWork))
-  console.log('profile.courses[0]', profile.courses[0])
-  console.log('profile.access', profile.access)
+  console.log('profile.access', 'Bearer ' + profile.access)
 
-  return gclass.post(`/courses/${profile.courses[0]}/courseWork`, courseWork, {
+  console.log('profile.courses[0]', profile.courses[0].id)
+  console.log('url', `/courses/${profile.courses[0].id}/courseWork`)
+
+  return gclass.post(`/courses/${profile.courses[0].id}/courseWork`, courseWork, {
     headers: {
       'authorization': 'Bearer ' + profile.access
     }
-  });
+  })
+  .then(results => {
+    return results;
+  })
+  .catch(err => {
+    console.log('hey at least we caught this err', err.Error)
+    return err;
+  })
 }
 
 //TESTING
