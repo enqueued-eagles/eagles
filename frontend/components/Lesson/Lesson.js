@@ -1,7 +1,7 @@
 import React from 'react';
 import LessonSlideListEntry from './LessonSlideListEntry.js';
 import Slide from './Slide.js';
-import { Button, Grid, Row } from 'react-bootstrap';
+import { Button, Grid, Row, Image } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Test from './test.js';
 import LessonPreview from './LessonPreview'
@@ -16,6 +16,7 @@ class Lesson extends React.Component {
       index: 0,
       videoIdOfClickedOnVideo: '',
       liked: false,
+      firstLike: false,
       keyWords: [],
       relatedLessons: [],
       preReq: [],
@@ -154,9 +155,13 @@ class Lesson extends React.Component {
     .then((likeCheck) => {
       if (this.state.specificLesson.likes - 1 === likeCheck.likes) {
         this.state.specificLesson.likes = likeCheck.likes;
-        alert("You've already liked this lesson.");
+        this.setState({
+          liked: true
+        })
       } else {
-        alert("You've liked this video and it has been added to your favorites!")
+        this.setState({
+          firstLike: true
+        })
         console.log(this.state.specificLesson);
       }
     })
@@ -197,7 +202,12 @@ class Lesson extends React.Component {
                 </Row>
               </Grid>
             </div>
-            <Button type="button" onClick={this.likeALesson.bind(this)}>Like</Button>
+            <Button type="button" onClick={this.likeALesson.bind(this)}>
+              <Image src="http://www.freeiconspng.com/uploads/like-button-png-2.png" width="25" height="25"/>
+            </Button>
+            {this.state.liked ? (
+              <a> You liked this already! </a>
+            ) : this.state.firstLike ? <a> You liked this! </a> : null}
           </div>
         )}
         <div className="relatedLessons">
