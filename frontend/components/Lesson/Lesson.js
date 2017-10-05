@@ -19,7 +19,8 @@ class Lesson extends React.Component {
       keywords: [],
       relatedLessons: [],
       preReq: [],
-      preReqLessons: []
+      preReqLessons: [],
+      postedToClass: false
     }
   }
 
@@ -165,6 +166,32 @@ class Lesson extends React.Component {
     })
   }
 
+  postLessonToClassroom() {
+    var lessonID = this.state.specificLesson._id
+
+    var body = {
+      title: this.state.specificLesson.name,
+      description: this.state.specificLesson.description,
+      link: `http://127.0.0.1:3000/lesson/${lessonID}`
+    };
+
+    fetch('/gclass/coursework', {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    .then(results => {
+      console.log('results', results)
+      this.setState({
+        postedToClass: true
+      })
+    })
+    .catch(err => {console.log('error posting', err)})
+  }
+
   render() {
     return (
       <div>
@@ -198,6 +225,14 @@ class Lesson extends React.Component {
               </Grid>
             </div>
             <Button type="button" onClick={this.likeALesson.bind(this)}>Like</Button>
+            <a href='/login/google' target="_blank">LOG IN</a>
+            {
+              !this.state.postedToClass ? (
+                <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>Post to gclass</Button>
+              ) : (
+                <span className="posted-message">Posted to classroom!</span>
+              )
+            }
           </div>
         )}
         <div className="relatedLessons">
