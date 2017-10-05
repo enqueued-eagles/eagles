@@ -7,8 +7,6 @@ module.exports.addCourseWork = function(req, res) {
   let description = req.body.description;
   let link = req.body.link;
 
-  console.log('profile', profile)
-
   gclass.postCourseWork(profile, title, description, link)
   .then((results) => {
     res.status(201).send(results.data);
