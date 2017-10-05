@@ -14,6 +14,9 @@ class Login extends Component {
 
   render() {
     return (
+      <div>
+        <a href="/login/google">LOG IN WITH GOOGLE</a>
+
         <Form horizontal onSubmit={(e) => e.preventDefault()}>
           <FormGroup>
             {
@@ -76,7 +79,8 @@ class Login extends Component {
             </FormGroup>
           )}
         </Form>
-        )
+      </div>
+      )
     }
 }
 

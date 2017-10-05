@@ -50,12 +50,9 @@ module.exports.resolve = function(req, res) {
       .then((userInDB) => {
         if (userInDB) {
           req.session.username = userInDB.username;
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({
-            loggedIn: true,
-            userData: userInDB
-          }))
+          res.redirect('/');
         } else {
+          // fix this by making it so create account can redirect to /
           req.body.username = req.user.id,
           req.body.password = req.user.id,
           req.body.email = req.user.email,

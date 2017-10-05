@@ -75,7 +75,6 @@ exports.createAccount = (req, res) => {
   });
 }
 
-
 exports.checkUser = (req, res, next) => {
   // make sure the person making requests is logged in
   if (!req.session.username) {
@@ -84,5 +83,30 @@ exports.checkUser = (req, res, next) => {
   } else {
     console.log('sent along: ', req.session.username);
     next();
+  }
+}
+
+exports.checkLogin = (req, res) => {
+  let username = req.session.username
+
+  res.setHeader('Content-Type', 'application/json');
+
+  if (username) {
+    User.findOne({ username: username })
+    .then(user => {
+      if (user) {
+        res.send(JSON.stringify({
+          loggedIn: true,
+          userData: user
+        }));
+      } else {
+        throw new Error('username is not found in db! this should never occur. highly fatal error')
+      }
+    })
+    .catch(err => res.status(404).send(err))
+  } else {
+    res.send(JSON.stringify({
+      loggedIn: false
+    }));
   }
 }
