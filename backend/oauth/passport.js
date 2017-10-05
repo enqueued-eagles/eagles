@@ -15,6 +15,7 @@ const scope = [
 
 const callbackURL = `http://${host}:${port}/login/google/return`
 
+console.log('hey',process.env.CLIENT_ID)
 
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
