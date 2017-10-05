@@ -24,6 +24,11 @@ class RouterWrapper extends Component {
     this.queryDataBaseWithSearchInput = this.queryDataBaseWithSearchInput.bind(this);
     this.organizeSearchResultsBasedOnMostLikes = this.organizeSearchResultsBasedOnMostLikes.bind(this);
     this.getUsers = this.getUsers.bind(this);
+    this.checkIfLoggedIn = this.checkIfLoggedIn.bind(this);
+  }
+
+  componentWillMount() {
+    this.checkIfLoggedIn();
   }
 
   componentDidMount() {
@@ -153,6 +158,26 @@ class RouterWrapper extends Component {
     .catch((err) => console.log('Error Logging In!', err));
   }
 
+  checkIfLoggedIn() {
+    fetch('/checklogin', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.loggedIn === true) {
+        this.setState({
+          user: data.userData,
+          loggedIn: true,
+          displayLogginError: false
+        });
+      }
+    });
+  }
+
   logout() {
     console.log('logging out');
     fetch('/logout', {
@@ -165,6 +190,7 @@ class RouterWrapper extends Component {
       user: {}
      });
   }
+
 
   render() {
     return (

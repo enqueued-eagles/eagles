@@ -63,6 +63,7 @@ app.post('/gclass/coursework', gclassRoutes.addCourseWork);
 app.get('/gclass/coursework', gclassRoutes.getCourseWork);
 
 // -------------------AUTH------------------------- //
+app.get('/checklogin', checkAuth.checkLogin);
 app.get('/logout', checkAuth.logout);
 app.post('/user', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
@@ -85,7 +86,8 @@ app.all('/query', utilRoutes);
 app.use((req, res) => {
   console.log('yo the stupid app.use is triggering EVERYWHERE')
   console.log('session is NOT destroyed')
-  res.sendFile('/');
+
+  res.sendFile('./../frontend/public/index.html');
 });
 
 // server listens for requests
