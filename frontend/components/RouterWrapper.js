@@ -191,6 +191,7 @@ class RouterWrapper extends Component {
               render={({match}) => (
                 <Lesson
                   match={match}
+                  sessionUserId={this.state.user._id}
                   getLessons={this.getLessons}
                 />
               )}

@@ -246,6 +246,7 @@ class Lesson extends React.Component {
             />
           ))}
         </div>
+
         <div className="relatedLessons">
           Related Lessons:
           {this.state.relatedLessons.map((lesson, i) => (
@@ -257,15 +258,20 @@ class Lesson extends React.Component {
             />
           ))}
         </div><br/>
-        <div>
-          <Link to={{
-            pathname: '/create',
-            lesson: this.state.specificLesson,
-            editingOldSlide: true
-          }}>
-            <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
-          </Link>
-        </div>
+
+        {
+          this.props.sessionUserId === this.state.specificLesson.userRef ?
+          <div>
+            <Link to={{
+              pathname: '/create',
+              lesson: this.state.specificLesson,
+              editingOldSlide: true
+            }}>
+              <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
+            </Link>
+          </div>
+          : null
+        }
       </div>
     );
   }
