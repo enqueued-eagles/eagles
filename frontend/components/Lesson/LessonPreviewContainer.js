@@ -9,7 +9,6 @@ class LessonPreviewContainer extends Component {
 
   componentDidMount() {
     if (!this.props.lessons) this.props.getLessons();
-
   }
 
   render() {
