@@ -66,12 +66,8 @@ app.post('/gclass/coursework', gclassRoutes.getCourseWork);
 app.get('/logout', checkAuth.logout);
 app.post('/user', checkAuth.createAccount);
 app.post('/login', checkAuth.attemptLoggin);
-<<<<<<< HEAD
 app.use(checkAuth.checkUser);
 
-=======
-// app.use(checkAuth.checkUser);
->>>>>>> kenny
 // ------------------------------------------------ //
 
 // handle protected routes
