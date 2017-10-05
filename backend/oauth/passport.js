@@ -12,6 +12,7 @@ const scope = [
   'https://www.googleapis.com/auth/classroom.courses',
   'https://www.googleapis.com/auth/classroom.courses.readonly',
   'https://www.googleapis.com/auth/classroom.coursework.students',
+  'https://www.googleapis.com/auth/userinfo.email',
   'profile'
 ];
 

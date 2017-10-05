@@ -39,7 +39,7 @@ exports.logout = (req, res) => {
   res.redirect('/');
 }
 
-exports.createAccount = (req, res) => {
+exports.createAccount = (req, res, redirect) => {
   console.log('req.user during create account', req.user);
   const saltRounds = 2;
   var username = req.body.username;
@@ -62,6 +62,9 @@ exports.createAccount = (req, res) => {
       .then(function(result) {
         req.session.username = result.username;
         result.password = '';
+        if (redirect) {
+          res.redirect('/');
+        }
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
           loggedIn: true,
@@ -87,7 +90,7 @@ exports.checkUser = (req, res, next) => {
 }
 
 exports.checkLogin = (req, res) => {
-  let username = req.session.username
+  let username = req.session.username;
 
   res.setHeader('Content-Type', 'application/json');
 

@@ -13,9 +13,12 @@ module.exports.login = passport.authenticate('google', {
 );
 
 module.exports.return = passport.authenticate('google', {
-  failureRedirect: '/login'
-  }
-);
+  failureRedirect: '/login',
+  scope: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+  ]
+});
 
 module.exports.resolve = function(req, res) {
     console.log('req.user in resolve', req.user);
@@ -55,8 +58,8 @@ module.exports.resolve = function(req, res) {
           // fix this by making it so create account can redirect to /
           req.body.username = req.user.id,
           req.body.password = req.user.id,
-          req.body.email = req.user.email,
-          checkAuth.createAccount(req, res)
+          req.body.email = req.user.emails[0].value,
+          checkAuth.createAccount(req, res, true)
           .then(results => console.log('success creating acct!', results))
           .catch(err => console.log('err creating acct!', err))
         }
