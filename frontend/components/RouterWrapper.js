@@ -47,6 +47,7 @@ class RouterWrapper extends Component {
   }
 
   getLessons() {
+    console.log('get lessons...')
     return fetch('/lessons', {
       method: "GET",
       headers: {
@@ -207,8 +208,8 @@ class RouterWrapper extends Component {
               )}
             />
 
-            <Route path='/user/:id' render={ () => 
-                <User 
+            <Route path='/user/:id' render={ () =>
+                <User
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />

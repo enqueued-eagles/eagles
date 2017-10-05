@@ -34,8 +34,8 @@ class LessonPreview extends Component {
             Creator: {this.state.creator}
             <br />
             <Link to={'/lesson/' + this.props.lesson._id}>
-            <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
-          </Link>
+              <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
+            </Link>
         </ListGroupItem>
       </div>
     )
