@@ -256,6 +256,15 @@ class Lesson extends React.Component {
               getUsers={this.getUsers.bind(this)}
             />
           ))}
+        </div><br/>
+        <div>
+          <Link to={{
+            pathname: '/create',
+            lesson: this.state.specificLesson,
+            editingOldSlide: true
+          }}>
+            <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
+          </Link>
         </div>
       </div>
     );

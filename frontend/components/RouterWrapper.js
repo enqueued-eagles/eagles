@@ -196,8 +196,9 @@ class RouterWrapper extends Component {
               )}
             />
             <Route path='/create'
-              render={ () => (
+              render={({location}) => (
                 <LessonCreator
+                  location={location}
                   username={this.state.user.username}
                   userRef={this.state.user._id}
                   getLessons={this.getLessons}

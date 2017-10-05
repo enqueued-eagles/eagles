@@ -11,20 +11,21 @@ import { Form, FormGroup, Col, FormControl, ControlLabel, Button, ListGroup, Lis
 class LessonCreator extends React.Component {
   constructor (props) {
     super(props);
+    let lessonInfo = this.props.location.lesson;
     this.state = {
-      name: '',
-      userRef: this.props.userRef,
-      description: '',
-      slides: [],
-      slidesId: [],
+      name: lessonInfo ? lessonInfo.name : '',
+      userRef: lessonInfo ? lessonInfo.userRef : this.props.userRef,
+      description: lessonInfo ? lessonInfo.description : '',
+      slides: lessonInfo ? lessonInfo.slides.map(slide => slide.name) : [],
+      slidesId: lessonInfo ? lessonInfo.slides.map(slide => slide._id) : [],
       creatingSlide: false,
-      lessonId: '',
-      keywords: [],
+      lessonId: lessonInfo ? lessonInfo._id : '',
+      keywords: lessonInfo ? lessonInfo.keywords : [],
       displayedKeywords: '',
-      editingOldSlide: false,
+      editingOldSlide: lessonInfo ? lessonInfo.editingOldSlide : false,
       oldSlide: '',
       allLessons: ['none'],
-      preReqLessons: [],
+      preReqLessons: lessonInfo ? lessonInfo.preReqLessons : [],
       value: ''
     };
   }
@@ -261,7 +262,7 @@ class LessonCreator extends React.Component {
 
           <FormGroup>
             <div className='lessonCreator'>
-              <ControlLabel>Lesson Creator</ControlLabel>
+              <ControlLabel>Lesson Editor</ControlLabel>
             </div>
           </FormGroup>
 
