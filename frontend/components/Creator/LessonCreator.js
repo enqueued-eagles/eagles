@@ -281,18 +281,16 @@ class LessonCreator extends React.Component {
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
                 <div>
-                  Recommend Pre Requisites
-                  <form>
+                  Recommend Prerequisites:<br/>
+                  <Form>
                     <label>
-                      {/* Pick your favorite La Croix flavor: */}
                       <select value={this.state.value} onChange={this.handlePreReq.bind(this)}>
                         {this.state.allLessons.map((lesson, i) => (
                           <option value={lesson._id} key={i}>{lesson.name}</option>
                         ))}
                       </select>
                     </label>
-                    {/* <input type="submit" value="Submit" /> */}
-                  </form>
+                  </Form>
                 </div>
               </div>
             :
@@ -308,7 +306,7 @@ class LessonCreator extends React.Component {
                   changeValue={this.changeDescription.bind(this)}
                 />
               </div>
-          }
+          }<br/>
           
           <FormGroup>
             { 
@@ -338,7 +336,7 @@ class LessonCreator extends React.Component {
                   onClick={this.reset.bind(this)} 
                   bsStyle="warning" 
                   bsSize="small"
-                >Make New Lesson</Button>
+                >Create New Lesson</Button>
               </Col>)}
 
             {<Col smOffset={1} sm={1}>
