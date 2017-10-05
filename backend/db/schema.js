@@ -23,7 +23,8 @@ var userSchema = new Schema({
   avatarURL: String,
   fullName: String,
   location: String,
-  website: String
+  website: String,
+  googleID: String
 });
 var User = mongoose.model('User', userSchema);
 
@@ -37,7 +38,7 @@ var lessonSchema = new Schema({
   slides: [],
   likes: Number,
   userLikes: [String],
-  preReqLessons: [String]
+  preReqLessons: [String],
 });
 var Lesson = mongoose.model('Lesson', lessonSchema);
 

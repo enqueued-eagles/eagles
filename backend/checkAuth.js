@@ -3,6 +3,7 @@ const schema = require('./db/schema.js');
 let User = schema.User;
 
 exports.attemptLoggin = (req, res) => {
+  console.log('req.user during login', req.user);
   let username = req.body.username || '';
   let password = req.body.password || '';
   // query db for user with password
@@ -34,11 +35,14 @@ exports.attemptLoggin = (req, res) => {
 
 exports.logout = (req, res) => {
   console.log('destroying your session');
+  console.log('req.session before destroy', req.session)
   req.session.destroy();
+  console.log('req.session after destroy', req.session)
   res.redirect('/');
 }
 
-exports.createAccount = (req, res) => {
+exports.createAccount = (req, res, redirect) => {
+  console.log('req.user during create account', req.user);
   const saltRounds = 2;
   var username = req.body.username;
   var password = req.body.password;
@@ -60,6 +64,9 @@ exports.createAccount = (req, res) => {
       .then(function(result) {
         req.session.username = result.username;
         result.password = '';
+        if (redirect) {
+          res.redirect('/');
+        }
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
           loggedIn: true,
@@ -73,7 +80,6 @@ exports.createAccount = (req, res) => {
   });
 }
 
-
 exports.checkUser = (req, res, next) => {
   // make sure the person making requests is logged in
   if (!req.session.username) {
@@ -82,5 +88,30 @@ exports.checkUser = (req, res, next) => {
   } else {
     console.log('sent along: ', req.session.username);
     next();
+  }
+}
+
+exports.checkLogin = (req, res) => {
+  let username = req.session.username;
+
+  res.setHeader('Content-Type', 'application/json');
+
+  if (username) {
+    User.findOne({ username: username })
+    .then(user => {
+      if (user) {
+        res.send(JSON.stringify({
+          loggedIn: true,
+          userData: user
+        }));
+      } else {
+        throw new Error('username is not found in db! this should never occur. highly fatal error')
+      }
+    })
+    .catch(err => res.status(404).send(err))
+  } else {
+    res.send(JSON.stringify({
+      loggedIn: false
+    }));
   }
 }
