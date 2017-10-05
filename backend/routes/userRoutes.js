@@ -28,9 +28,17 @@ router.get('/user', function(req, res) {
   })
 })
 
+router.patch('/user/:username', function(req, res) {
+  User.find({username: req.params.username})
+  .then(function(users) {
+    res.send(users);
+  })
+  .catch(function(err) {
+    res.send(err);
+  })
+})
+
 router.put('/user', function(req, res) {
-  // console.log('kenny look here', req)
-  
 
   let update = {}
   if (req.body.data.avatarURL) update.avatarURL = `${req.body.data.avatarURL}`
@@ -42,24 +50,11 @@ router.put('/user', function(req, res) {
   if (req.body.data.emailLikeGoal) update.emailLikeGoal = `${req.body.data.emailLikeGoal}` 
 
   let options = {new:true}
-  console.log('hey',req.body.data.userId)
   User.findOneAndUpdate({_id:req.body.data.userId}, update, options, function(err, user) {
     if (err) res.send(err);
     else {
       res.send(user);
     }
-
-    // if (req.body.username) user.username = req.body.username;
-    // if (req.body.lessons) user.lessons = req.body.lessons;
-    // if (req.body.favorites) user.favorites = req.body.favorites;
-
-    // User.save(function (err) {
-    //   if (err) {
-    //     throw err;
-    //     return;
-    //   };
-    //   res.send('user updated')
-    // });
   })
 });
 

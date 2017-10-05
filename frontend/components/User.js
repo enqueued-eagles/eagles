@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem, Header, Button } from 'react-bootstrap';
 import { ListGroup, DropdownButton, ButtonGroup, MenuItem } from 'react-bootstrap';
-import { Grid, Row, Col, Nav, NavItem, Form, FormControl, FormGroup, ControlLabel, Tab, FieldGroup, OverlayTrigger  } from 'react-bootstrap';
+import { Grid, Row, Col, Nav, NavItem, Form, FormControl, FormGroup, ControlLabel, Tab, FieldGroup, OverlayTrigger, Panel  } from 'react-bootstrap';
 import LessonPreviewContainer from './Lesson/LessonPreviewContainer';
 import LessonPreview from './Lesson/LessonPreview';
 import axios from 'axios';
@@ -12,32 +12,87 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentURL:'',
       currentUser: this.props.user, 
-      lessons: [],
-      favoriteLessons: []
+      currentUserLessons: [],
+      currentUserFavorites: [],
+      browsingUser: this.props.user,
+      browsingUserLessons: [],
+      browsingUserFavorites: []
     }
     this.deleteLesson = this.deleteLesson.bind(this);
     this.changeAvatarURL = this.changeAvatarURL.bind(this)
     this.render = this.render.bind(this)
     this.submitOverview = this.submitOverview.bind(this)
+    this.updatecurrentUser = this.updatecurrentUser.bind(this)
+    this.updatebrowsingUser = this.updatebrowsingUser.bind(this)
   }
 
   componentDidMount() {
-    axios.get(`/user/${this.props.user._id}`)
+    console.log(`mount ${window.location.pathname.slice(6)}`)
+    this.setState({
+      currentURL:window.location.pathname.slice(6)
+    })
+    this.updatecurrentUser()
+    this.updatebrowsingUser()
+  }
+
+  updatecurrentUser (){
+    console.log(`updatecurrentUser ${window.location.pathname.slice(6)}`)
+    this.setState({
+      currentURL:window.location.pathname.slice(6)
+    })
+    axios.patch(`/user/${window.location.pathname.slice(6)}`)
     .then((user) => {
-      console.log('newuser',user)
       this.setState({currentUser:user.data[0]})
-      this.render()
+      console.log(`updatecurrentUserresponse`, this.state.currentUser)
+      // ... i'm too lazy to do this properly.
+      this.props.getLessons()
+      .then((unfilteredLessons) => {
+        return {
+          lessons: unfilteredLessons.filter(lsn => this.state.currentUser._id === lsn.userRef),
+          favoriteLessons: unfilteredLessons.filter(lsn => lsn.userLikes.indexOf(this.state.currentUser.username) >= 0)
+        }
+      })
+      .then((booger) => {
+        this.setState({
+          currentUserLessons: booger.lessons, 
+          currentUserFavorites: booger.favoriteLessons
+        })
+        console.log('booger currentUserLessons', this.state.currentUserLessons)
+        console.log('booger currentUserFavorites', this.state.currentUserFavorites)
+
+      })
+      .catch((err) => console.log('inner updatecurrentUser Error, lessons! ', err));
     })
-    this.props.getLessons()
-    .then((unfilteredLessons) => {
-      console.log('not filtered: ', unfilteredLessons);
-      return {
-        lessons: unfilteredLessons.filter(lsn => this.props.user._id === lsn.userRef),
-        favoriteLessons: unfilteredLessons.filter(lsn => lsn.userLikes.indexOf(this.props.user.username) >= 0)
-      }
+    .catch((err) => console.log('outer updatecurrentUser Error! ', err));
+  }
+
+  updatebrowsingUser(){
+    console.log(`updatebrowsingUser ${this.props.user.username}`)
+    axios.patch(`/user/${this.props.user.username}`)
+    .then((user) => {
+      this.setState({browsingUser:user.data[0]})
+      console.log(`updatebrowsingUser response`, this.state.browsingUser)
+      // ... i'm too lazy to do this properly.
+      this.props.getLessons()
+      .then((unfilteredLessons) => {
+        return {
+          lessons: unfilteredLessons.filter(lsn => this.state.browsingUser._id === lsn.userRef),
+          favoriteLessons: unfilteredLessons.filter(lsn => lsn.userLikes.indexOf(this.state.browsingUser.username) >= 0)
+        }
+      })
+      .then((booger) => {
+        this.setState({
+          browsingUserLessons: booger.lessons, 
+          browsingUserFavorites: booger.favoriteLessons
+        })
+        console.log('booger browsingUserLessons', this.state.browsingUserLessons)
+        console.log('booger browsingUserFavorites', this.state.browsingUserFavorites)
+
+      })
+      .catch((err) => console.log('inner browsingUserUser Error, lessons! ', err));
     })
-    .then((lesson) => this.setState({lessons: lesson.lessons, favoriteLessons: lesson.favoriteLessons}))
     .catch((err) => console.log('Error! ', err));
   }
 
@@ -59,20 +114,12 @@ class User extends Component {
 
   changeAvatarURL(e) {
     e.preventDefault();
-    console.log('doc.val', document.getElementById("avatarURL").value)
     let data = {};
-    data.userId = this.props.user._id
-    console.log(data.userId)
-    data.avatarURL = document.getElementById("avatarURL").value
+    data.userId = this.state.browsingUser._id
+    data.avatarURL = this.avatarURL.value
     axios.put('/user', {'data':data})
     .then( (res) => {
-      console.log('axios.put win', res)
-      axios.get(`/user/${this.props.user._id}`)
-      .then((user) => {
-        console.log('newuser',user)
-        this.setState({currentUser:user.data[0]})
-        this.render()
-      })
+      this.updatebrowsingUser()
     })
     .catch( (err) => console.log('changeAvatarURL axios err', err) )
   }
@@ -80,21 +127,19 @@ class User extends Component {
   submitOverview(e){
     e.preventDefault();
     let data={};
-    data.userId = this.props.user._id
-    data.fullName = document.getElementById("fullName").value
-    data.location = document.getElementById("location").value
-    data.website = document.getElementById("website").value
-    data.githubURL = document.getElementById("githubURL").value
-    data.emailPublic = document.getElementById("emailPublic").value
-    data.emailLikeGoal = document.getElementById("emailLikeGoal").value
+    data.userId = this.state.browsingUser._id
+    data.fullName = this.fullName.value
+    data.location = this.location.value
+    data.website = this.website.value
+    data.githubURL = this.githubURL.value
+    data.emailPublic = this.emailPublic.value
+    data.emailLikeGoal = this.emailLikeGoal.value
     axios.put('/user',{'data':data})
     .then( (res) => {
-      console.log('axios.put2 win', res)
-      axios.get(`/user/${this.props.user._id}`)
+      axios.get(`/user/${this.state.browsingUser._id}`)
       .then((user) => {
         console.log('newuser',user)
-        this.setState({currentUser:user.data[0]})
-        alert('Saved! Refresh to view')
+        this.updatebrowsingUser()
       })
     })
     .catch( (err) => console.log('submitOverview axios err', err) )
@@ -102,9 +147,11 @@ class User extends Component {
 
 
   render() {
-    console.log('user prop', this.props.user)
-    console.log('this.state.currentUser', this.state)
+    console.log('render this.props.user', this.props.user)
+    console.log('render this.state.currentUser', this.state.currentUser)
+    console.log('render this.state.browsingUser', this.state.browsingUser)
     if(this.props.user.username === window.location.pathname.slice(6)){
+      console.log('rendering user edit page')
       return (
         <Grid>
           <Row className = "userEdit">
@@ -113,21 +160,20 @@ class User extends Component {
                 height = "200px"
                 width = "200px"
                 alt="Avatar"
-                src={this.state.currentUser.avatarURL}>
+                src={this.state.browsingUser.avatarURL}>
               </img>
               <br></br>
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
                   <ControlLabel> Avatar URL:</ControlLabel>
                   <FormControl 
-                  id="avatarURL" 
+                  inputRef={ (input) => this.avatarURL = input }
                   type="text" 
-                  placeholder={this.state.currentUser.avatarURL}/>
+                  placeholder={this.state.browsingUser.avatarURL}/>
                 </FormGroup>
                 <Button type="submit">Change</Button>
               </Form>
             </Col>
-            
             <Tab.Container id="userEditTabs" defaultActiveKey="overview">
               <Col md={9}>
                 <Nav bsStyle ="tabs" justified  
@@ -142,44 +188,44 @@ class User extends Component {
                         <FormGroup >
                           <ControlLabel> Full Name:</ControlLabel>
                           <FormControl 
-                          id="fullName" 
+                          inputRef={ (input) => this.fullName = input }
                           type="text" 
-                          placeholder={this.state.currentUser.fullName || "What's your name?"}/>
+                          placeholder={this.state.browsingUser.fullName || "What's your name?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Location:</ControlLabel>
                           <FormControl 
-                          id="location" 
+                          inputRef={ (input) => this.location = input }
                           type="text" 
-                          placeholder={this.state.currentUser.location || "Where are you located?"}/>
+                          placeholder={this.state.browsingUser.location || "Where are you located?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Website:</ControlLabel>
                           <FormControl 
-                          id="website" 
+                          inputRef={ (input) => this.website = input }
                           type="text" 
-                          placeholder={this.state.currentUser.website || "Do you have a website?"}/>
+                          placeholder={this.state.browsingUser.website || "Do you have a website?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Public E-mail Address:</ControlLabel>
                           <FormControl 
-                          id="emailPublic" 
+                          inputRef={ (input) => this.emailPublic = input }
                           type="text" 
-                          placeholder={this.state.currentUser.emailPublic || "Where do you want the public to email you?"}/>
+                          placeholder={this.state.browsingUser.emailPublic || "Where do you want the public to email you?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Github:</ControlLabel>
                           <FormControl 
-                          id="githubURL" 
+                          inputRef={ (input) => this.githubURL = input }
                           type="text" 
-                          placeholder={this.state.currentUser.githubURL || "What's your GitHub Account?"}/>
+                          placeholder={this.state.browsingUser.githubURL || "What's your GitHub Account?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Email me every x likes:</ControlLabel>
                           <FormControl 
-                          id="emailLikeGoal" 
+                          inputRef={ (input) => this.emailLikeGoal = input }
                           type="text" 
-                          placeholder={this.state.currentUser.emailLikeGoal || "x"}/>
+                          placeholder={this.state.browsingUser.emailLikeGoal || "x"}/>
                         </FormGroup>
                         <Button type="submit">
                           Save
@@ -188,7 +234,7 @@ class User extends Component {
                     </Tab.Pane>
                     <Tab.Pane eventKey="lessons">
                       <ListGroup>
-                        {this.state.lessons.map((lesson, i) =>
+                        {this.state.browsingUserLessons.map((lesson, i) =>
                           <LessonPreview
                             lesson={lesson}
                             index={i}
@@ -198,8 +244,8 @@ class User extends Component {
                       </ListGroup>
                     </Tab.Pane>
                     <Tab.Pane eventKey="favorites">
-                    <ListGroup>
-                        {this.state.favoriteLessons.map((lesson, i) =>
+                    <ListGroup bsStyle="danger">
+                        {this.state.browsingUserFavorites.map((lesson, i) =>
                           <LessonPreview
                             lesson={lesson}
                             index={i}
@@ -213,56 +259,72 @@ class User extends Component {
             </Tab.Container>
           </Row>
         </Grid>
-          
       )
     }
     else {
+      if(window.location.pathname.slice(6) !== this.state.currentURL) this.updatecurrentUser();
+      console.log('rendering user view page')
       return (
-        <ListGroup>
-          <ListGroupItem>Username: { this.props.user.username || 'no username!' }</ListGroupItem>
-          <ListGroupItem>
-            <ButtonGroup vertical block>
-              <DropdownButton title="Your Favorite Lessons:" id="Your Favorite Lesson">
-                <MenuItem key={ this.props.user._id + 1 }>
-                  { this.state.favoriteLessons.length === 0 ? 'You Have No Favorite Lessons!' :
-                    (this.state.favoriteLessons.map((lesson, i) => 
-                      <div key={ lesson._id }>
-                      Lesson Name: {lesson.name || 'Unnamed Lesson'} 
-                      <br/>
-                      Lesson Description: {lesson.description || 'no description'} 
-                      <Link to={'/lesson/' + lesson._id}>
-                        <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
-                      </Link>
-                      </div>
-                    )
-                  )}
-                </MenuItem> 
-              </DropdownButton>
-            </ButtonGroup>
-          </ListGroupItem>
-          <ListGroupItem>
-            <ButtonGroup vertical block>
-              <DropdownButton title="Your Lessons:" id="Your Lessons">
-                <MenuItem key={ this.props.user._id }>
-                  { this.state.lessons.length === 0 ? 'You Have No Lessons!' :
-                    (this.state.lessons.map((lesson, i) => 
-                      <div key={ lesson._id }>
-                      Lesson Name: {lesson.name || 'Unnamed Lesson'}
-                      <br/>
-                      Lesson Description: {lesson.description || 'no description'} 
-                      <Link to={'/lesson/' + lesson._id}>
-                        <Button bsStyle="primary" bsSize="small" block>View Lesson</Button>
-                      </Link>
-                      <Button bsStyle="primary" bsSize="small" onClick={ () => this.deleteLesson(lesson._id) } block>Delete Lesson</Button>
-                      </div>
-                    )
-                  )}
-                </MenuItem> 
-              </DropdownButton>
-            </ButtonGroup>
-          </ListGroupItem>
-        </ListGroup>
-      );
+        <Grid>
+          <Row className = "userView">
+            <Col md={3}>
+              <img
+                height = "200px"
+                width = "200px"
+                alt="Avatar"
+                src={this.state.currentUser.avatarURL}>
+              </img>
+              <br></br>
+              <Panel header={<b>{this.state.currentUser.fullName}</b>} bsStyle="primary">
+                {this.state.currentUser.username}
+              </Panel>
+              <Panel header="Website">
+              {this.state.currentUser.website}
+              </Panel>
+              <Panel header="GitHub">
+              {this.state.currentUser.githubURL}
+              </Panel>
+              <Panel header="Email Address">
+              {this.state.currentUser.emailPublic}
+              </Panel>
+              <img src='http://s3.amazonaws.com/assets.brickworksoftware.com/lord_and_taylor/images/location.svg'/>{this.state.currentUser.location}
+            </Col>
+            <Tab.Container id="userViewTabs" defaultActiveKey="Lessons">
+              <Col md={9}>
+                <Nav bsStyle ="tabs" justified  
+                onSelect = {this.handleTabSelect}>
+                  <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
+                  <NavItem eventKey="favorites" title="Favorites">Favorties</NavItem>
+                </Nav>
+                <Tab.Content animation>
+                    <Tab.Pane eventKey="lessons">
+                      <ListGroup>
+                        {this.state.currentUserLessons.map((lesson, i) =>
+                          <LessonPreview
+                            lesson={lesson}
+                            index={i}
+                            key={i}
+                          />
+                        )}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="favorites">
+                    <ListGroup bsStyle="danger">
+                        {this.state.currentUserFavorites.map((lesson, i) =>
+                          <LessonPreview
+                            lesson={lesson}
+                            index={i}
+                            key={i}
+                          />
+                        )}
+                      </ListGroup>
+                    </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Tab.Container>
+          </Row>
+        </Grid>
+      )
     }
   } 
 }

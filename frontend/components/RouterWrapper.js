@@ -31,7 +31,11 @@ class RouterWrapper extends Component {
   }
 
   getUsers() {
+<<<<<<< HEAD
     return fetch('/user', {
+=======
+    return fetch('/user/', {
+>>>>>>> kenny
       method: "GET",
       headers: {
         "Content-Type": "application/json",
