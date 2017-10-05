@@ -60,7 +60,7 @@ app.get('/testing', function(req, res) {
 
 // -------------------GCLASS------------------------- //
 app.post('/gclass/coursework', gclassRoutes.addCourseWork);
-app.post('/gclass/coursework', gclassRoutes.getCourseWork);
+app.get('/gclass/coursework', gclassRoutes.getCourseWork);
 
 // -------------------AUTH------------------------- //
 app.get('/logout', checkAuth.logout);
@@ -84,7 +84,8 @@ app.all('/query', utilRoutes);
 // redirect any uncaught routes 
 app.use((req, res) => {
   console.log('yo the stupid app.use is triggering EVERYWHERE')
-  res.redirect('/');
+  console.log('session is NOT destroyed')
+  res.sendFile('/');
 });
 
 // server listens for requests
