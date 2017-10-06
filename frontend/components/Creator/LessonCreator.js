@@ -301,7 +301,11 @@ class LessonCreator extends React.Component {
 
           <FormGroup>
             <div className='lessonCreator'>
-              <ControlLabel>Lesson Editor</ControlLabel>
+              <ControlLabel>
+                <a style={{color: 'white'}}>
+                  Lesson Editor
+                </a>
+              </ControlLabel>
             </div>
           </FormGroup>
 
@@ -318,7 +322,7 @@ class LessonCreator extends React.Component {
                   onSubmit={this.onSubmit.bind(this)}
                 />
                 <div>
-                  Recommend Prerequisites:<br/>
+                  <a style={{color:'white'}}>Recommend Prerequisites:</a><br/>
                   <Form>
                     <label>
                       <select value={this.state.value} onChange={this.handlePreReq.bind(this)}>
@@ -341,18 +345,20 @@ class LessonCreator extends React.Component {
                   field={'Lesson Name'}
                   fieldValue={this.state.name}
                   changeValue={this.changeName.bind(this)}
+                  style={{color: 'white'}}
                 />
                 <LessonFieldEntry
                   field={'Lesson Description'}
                   fieldValue={this.state.description}
                   changeValue={this.changeDescription.bind(this)}
+                  style={{color: 'white'}}
                 />
               </div>
           }<br/>
-          
+
           <FormGroup>
-            { 
-              this.state.lessonId === '' ? 
+            {
+              this.state.lessonId === '' ?
                 (<Col smOffset={1} sm={2}>
                   <Button
                     type="submit"
@@ -362,7 +368,7 @@ class LessonCreator extends React.Component {
                 </Col>)
               :
                 (<Col smOffset={2} sm={1}>
-                  <Button 
+                  <Button
                     type="submit"
                     onClick={this.changeCreateState.bind(this)}
                     bsStyle="primary"
@@ -401,7 +407,11 @@ class LessonCreator extends React.Component {
                 seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
               />
             :
+<<<<<<< HEAD
               <div className='existingSlides'>No Slides Yet :(</div>
+=======
+              <div style={{color: 'white'}}>No Slides Yet</div>
+>>>>>>> related
           }
 
         </Form>

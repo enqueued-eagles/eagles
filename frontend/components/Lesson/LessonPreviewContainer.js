@@ -14,7 +14,9 @@ class LessonPreviewContainer extends Component {
   render() {
     return (
       <div className="LessonPreviewContainer">
-        Order by:
+        <a style={{color: 'white'}}>
+          Order by:
+        </a>
 
         <Button bsStyle="primary" bsSize="small" onClick={this.props.organizeSearchResultsBasedOnMostLikes} >by Likes</Button>
         <Button bsStyle="primary" bsSize="small" >by Date</Button>
