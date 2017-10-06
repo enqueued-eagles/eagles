@@ -45,7 +45,6 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((users) => {
-      console.log('users inside getUsers:', users);
       return users
     })
     .catch((err) => console.log('Error getting lessons', err));
@@ -62,7 +61,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((lessons) => {
-      console.log(lessons)
+      console.log('all lessons:', lessons)
       this.setState({lessons});
       return lessons
     })
@@ -207,6 +206,7 @@ class RouterWrapper extends Component {
             <Route exact path='/'
               render={() => (
                 <LessonPreviewContainer
+                  sessionUserId={this.state.user._id}
                   lessons= { this.state.lessons }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }
