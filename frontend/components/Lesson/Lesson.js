@@ -1,7 +1,7 @@
 import React from 'react';
 import LessonSlideListEntry from './LessonSlideListEntry.js';
 import Slide from './Slide.js';
-import { Button, Grid, Row, Image } from 'react-bootstrap';
+import { Button, Grid, Row, Image, Modal } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Test from './test.js';
 import LessonPreview from './LessonPreview'
@@ -21,8 +21,10 @@ class Lesson extends React.Component {
       relatedLessons: [],
       preReq: [],
       preReqLessons: [],
-      postedToClass: false
+      postedToClass: false,
+      lame: false
     }
+    this.closeLame = this.closeLame.bind(this)
   }
 
   getUsers() {
@@ -118,6 +120,12 @@ class Lesson extends React.Component {
     });
   }
 
+  closeLame() {
+    this.setState({
+      lame: false
+    })
+  }
+
   previousSlideClick(index) {
     index--;
     if (index < 0) {
@@ -180,6 +188,12 @@ class Lesson extends React.Component {
     .catch(function(err) {
       console.log(err);
     })
+    if (this.props.sessionUserId == this.state.specificLesson.userRef){
+      console.log(`ugh you're so lame`)
+      this.setState({
+        lame: true
+      })
+    }
   }
 
   postLessonToClassroom() {
@@ -211,6 +225,24 @@ class Lesson extends React.Component {
   render() {
     return (
       <div>
+
+        <Modal
+          bsSize="small"
+          show={this.state.lame}
+          onHide={this.closeLame}
+          aria-labelledby="contained-modal-title"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title">What?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Can you like... not be such a loser? Who actually likes their own stuff? Ugh.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closeLame}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
         { this.state.currentSlide ? (
           <Slide
           slideData={this.state.currentSlide}

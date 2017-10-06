@@ -48,7 +48,7 @@ router.put('/user', function(req, res) {
   if (req.body.data.githubURL) update.githubURL = `${req.body.data.githubURL}` 
   if (req.body.data.emailPublic) update.emailPublic = `${req.body.data.emailPublic}` 
   if (req.body.data.emailLikeGoal) update.emailLikeGoal = `${req.body.data.emailLikeGoal}` 
-
+  if (req.body.data.email) update.email = `${req.body.data.email}`
   let options = {new:true}
   User.findOneAndUpdate({_id:req.body.data.userId}, update, options, function(err, user) {
     if (err) res.send(err);
