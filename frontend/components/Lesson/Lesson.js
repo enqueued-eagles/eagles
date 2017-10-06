@@ -52,12 +52,11 @@ class Lesson extends React.Component {
     // return nextProps.match.params.id !== this.props.match.params.id ? true : false;
   }
 
-
-
   componentDidMount(id) {
     // console.log(this.props)
+    id = id || this.props.match.params.id;
     console.log('fetchingggg.g.......');
-    fetch('/api/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" })
+    fetch('/api/lesson/' + id, { method: 'GET', credentials: "include" })
       .then((response) => response.json())
       .then((lessonDataJSON) => {
         console.log('lessonDATAJSON', lessonDataJSON)
@@ -334,14 +333,18 @@ class Lesson extends React.Component {
             {this.state.liked ? (
               <a> You liked this already! </a>
             ) : this.state.firstLike ? <a> You liked this! </a> : null}
-            <a href='/login/google' target="_blank">LOG IN</a>
-            {
+            {!this.props.gUser ? (
+              <a href='/login/google' target="_blank">LOG IN TO GOOGLE TO POST TO CLASSROOM</a>
+              ) : (
               !this.state.postedToClass ? (
-                <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>Post to gclass</Button>
+                <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>
+                  <Image src="/assets/gclass.png" width="25" height="25"/>
+                </Button>
               ) : (
                 <span className="posted-message">Posted to classroom!</span>
-              )
-            }
+            
+              ) 
+            )}
           </div>
         )}
         <div className="relatedLessons">

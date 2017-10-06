@@ -27,6 +27,15 @@ body {
   text-decoration:underline;
 }
 
+.gclass {
+  background-image: url("./assets/gclass.png");
+  background-size: cover;
+  width: 45px;
+  height: 45px;
+  background-position: center center
+}
+
 .existingSlides, .tagsEntry {
   font-weight: 700;
 }
+

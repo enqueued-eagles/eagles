@@ -19,7 +19,8 @@ exports.attemptLoggin = (req, res) => {
           res.setHeader('Content-Type', 'application/json');
           res.send(JSON.stringify({
             loggedIn: true,
-            userData: user
+            userData: user,
+            gUser: req.user || {}
           }));
         } else {
           console.log('failed logging in: ', err);
@@ -42,7 +43,7 @@ exports.logout = (req, res) => {
 }
 
 exports.createAccount = (req, res, redirect) => {
-  console.log('req.user during create account', req.user);
+  console.log('arguments', arguments);
   console.log('req.body', req.body)
   const saltRounds = 2;
   var username = req.body.username;
@@ -65,23 +66,29 @@ exports.createAccount = (req, res, redirect) => {
         googleID: googleID
       })
       .then(function(result) {
-        console.log('created the user')
+        console.log('created the user', result)
         req.session.username = result.username;
         result.password = '';
         if (redirect) {
+          console.log('about to redirect')
           res.redirect('/');
         } else {
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({
+          var obj = {
             loggedIn: true,
-            userData: result
-          }));
+            userData: result,
+            gUser: req.user || {}
+          }
+          console.log('sendobj', obj)
+          obj2 = JSON.stringify(obj)
+          console.log('obj2', obj2)
+          res.setHeader('Content-Type', 'application/json');
+          res.send(obj2);
         }
       })
-      .catch(function(err) {
-        console.log('failed to create user', err);
-        res.send(err);
-      })   
+      // .catch(function(err) {
+      //   console.log('failed to create user', err);
+      //   res.send(err);
+      // })   
     });
   });
 }
@@ -108,7 +115,8 @@ exports.checkLogin = (req, res) => {
       if (user) {
         res.send(JSON.stringify({
           loggedIn: true,
-          userData: user
+          userData: user,
+          gUser: req.user || {}
         }));
       } else {
         throw new Error('username is not found in db! this should never occur. highly fatal error')

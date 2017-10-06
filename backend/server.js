@@ -65,7 +65,7 @@ app.get('/gclass/coursework', gclassRoutes.getCourseWork);
 // -------------------AUTH------------------------- //
 app.get('/api/checklogin', checkAuth.checkLogin);
 app.get('/api/logout', checkAuth.logout);
-app.post('/api/user', checkAuth.createAccount);
+app.post('/api/user', function(req, res) {checkAuth.createAccount(req, res, false)});
 app.post('/api/login', checkAuth.attemptLoggin);
 app.use(checkAuth.checkUser);
 
