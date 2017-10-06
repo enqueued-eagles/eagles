@@ -13,7 +13,7 @@ class User extends Component {
     super(props);
     this.state = {
       currentURL:'',
-      currentUser: this.props.user, 
+      currentUser: this.props.user,
       currentUserLessons: [],
       currentUserFavorites: [],
       browsingUser: this.props.user,
@@ -56,7 +56,7 @@ class User extends Component {
       })
       .then((booger) => {
         this.setState({
-          currentUserLessons: booger.lessons, 
+          currentUserLessons: booger.lessons,
           currentUserFavorites: booger.favoriteLessons
         })
         console.log('booger currentUserLessons', this.state.currentUserLessons)
@@ -84,7 +84,7 @@ class User extends Component {
       })
       .then((booger) => {
         this.setState({
-          browsingUserLessons: booger.lessons, 
+          browsingUserLessons: booger.lessons,
           browsingUserFavorites: booger.favoriteLessons
         })
         console.log('booger browsingUserLessons', this.state.browsingUserLessons)
@@ -166,9 +166,9 @@ class User extends Component {
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
                   <ControlLabel> Avatar URL:</ControlLabel>
-                  <FormControl 
+                  <FormControl
                   inputRef={ (input) => this.avatarURL = input }
-                  type="text" 
+                  type="text"
                   placeholder={this.state.browsingUser.avatarURL}/>
                 </FormGroup>
                 <Button type="submit">Change</Button>
@@ -176,7 +176,7 @@ class User extends Component {
             </Col>
             <Tab.Container id="userEditTabs" defaultActiveKey="overview">
               <Col md={9}>
-                <Nav bsStyle ="tabs" justified  
+                <Nav bsStyle ="tabs" justified
                 onSelect = {this.handleTabSelect}>
                   <NavItem eventKey="overview" title="Overview">Overview</NavItem>
                   <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
@@ -187,44 +187,44 @@ class User extends Component {
                       <Form onSubmit={this.submitOverview}>
                         <FormGroup >
                           <ControlLabel> Full Name:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.fullName = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.fullName || "What's your name?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Location:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.location = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.location || "Where are you located?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Website:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.website = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.website || "Do you have a website?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Public E-mail Address:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.emailPublic = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.emailPublic || "Where do you want the public to email you?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Github:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.githubURL = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.githubURL || "What's your GitHub Account?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Email me every x likes:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.emailLikeGoal = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.emailLikeGoal || "x"}/>
                         </FormGroup>
                         <Button type="submit">
@@ -291,7 +291,7 @@ class User extends Component {
             </Col>
             <Tab.Container id="userViewTabs" defaultActiveKey="Lessons">
               <Col md={9}>
-                <Nav bsStyle ="tabs" justified  
+                <Nav bsStyle ="tabs" justified
                 onSelect = {this.handleTabSelect}>
                   <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
                   <NavItem eventKey="favorites" title="Favorites">Favorties</NavItem>
@@ -326,7 +326,7 @@ class User extends Component {
         </Grid>
       )
     }
-  } 
+  }
 }
 
 export default User;
