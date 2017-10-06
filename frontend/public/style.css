@@ -27,6 +27,6 @@ body {
   text-decoration:underline;
 }
 
-.existingSlides {
+.existingSlides, .tagsEntry {
   font-weight: 700;
 }
