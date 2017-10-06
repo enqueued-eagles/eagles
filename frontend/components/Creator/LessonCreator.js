@@ -115,13 +115,8 @@ class LessonCreator extends React.Component {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
     var slideId = this.state.slidesId[indexOfSlideId];
-<<<<<<< HEAD
-    console.log('line 118:', slideId,indexOfSlideId);
-    var url = '/slides/' + slideId;
-=======
     console.log(slideId,indexOfSlideId);
     var url = '/api/slides/' + slideId;
->>>>>>> routing
     fetch(url, {
       method: 'GET',
       headers: {
