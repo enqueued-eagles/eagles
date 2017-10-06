@@ -39,6 +39,8 @@ class User extends Component {
     this.setState({
       currentURL:window.location.pathname.slice(6)
     })
+    this.updatebrowsingUser()
+    this.updatecurrentUser()
   }
 
   updateProgressBar() {
@@ -66,7 +68,7 @@ class User extends Component {
     this.setState({
       currentURL:window.location.pathname.slice(6)
     })
-    axios.patch(`/user/${window.location.pathname.slice(6)}`)
+    axios.patch(`/api/user/${window.location.pathname.slice(6)}`)
     .then((user) => {
       this.setState({currentUser:user.data[0]})
       console.log(`updatecurrentUserresponse`, this.state.currentUser)
@@ -94,7 +96,7 @@ class User extends Component {
 
   updatebrowsingUser(){
     console.log(`updatebrowsingUser ${this.props.user.username}`)
-    axios.patch(`/user/${this.props.user.username}`)
+    axios.patch(`/api/user/${this.props.user.username}`)
     .then((user) => {
       this.setState({browsingUser:user.data[0]})
       console.log(`updatebrowsingUser response`, this.state.browsingUser)
@@ -142,7 +144,7 @@ class User extends Component {
     let data = {};
     data.userId = this.state.browsingUser._id
     data.avatarURL = this.avatarURL.value
-    axios.put('/user', {'data':data})
+    axios.put('/api/user', {'data':data})
     .then( (res) => {
       this.updatebrowsingUser()
     })
@@ -163,9 +165,9 @@ class User extends Component {
     data.emailPublic = this.emailPublic.value
     data.emailLikeGoal = this.emailLikeGoal.value
     data.email = this.email.value
-    axios.put('/user',{'data':data})
+    axios.put('/api/user',{'data':data})
     .then( (res) => {
-      axios.get(`/user/${this.state.browsingUser._id}`)
+      axios.get(`/api/user/${this.state.browsingUser._id}`)
       .then((user) => {
         console.log('newuser',user)
         this.updatebrowsingUser()
@@ -180,10 +182,11 @@ class User extends Component {
     console.log('render this.props.user', this.props.user)
     console.log('render this.state.currentUser', this.state.currentUser)
     console.log('render this.state.browsingUser', this.state.browsingUser)
+
+    console.log('render this.state.browsingUserLessons', this.state.browsingUserLessons)
     if(this.props.user.username === window.location.pathname.slice(6)){
       console.log('rendering user edit page')
       return (
-
         <Grid>
           <Modal
             bsSize="small"
