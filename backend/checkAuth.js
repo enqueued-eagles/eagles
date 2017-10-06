@@ -43,12 +43,14 @@ exports.logout = (req, res) => {
 
 exports.createAccount = (req, res, redirect) => {
   console.log('req.user during create account', req.user);
+  console.log('req.body', req.body)
   const saltRounds = 2;
   var username = req.body.username;
   var password = req.body.password;
   var email = req.body.email;
   var lessons = req.body.lessons || [];
   var favorites = req.body.favorites || [];
+  var googleID = req.body.googleID;
   var avatarURL = req.body.avatarURL;
 
   bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -59,21 +61,25 @@ exports.createAccount = (req, res, redirect) => {
         lessons: lessons, 
         favorites: favorites, 
         email: email,
-        avatarURL: avatarURL
+        avatarURL: avatarURL,
+        googleID: googleID
       })
       .then(function(result) {
+        console.log('created the user')
         req.session.username = result.username;
         result.password = '';
         if (redirect) {
           res.redirect('/');
+        } else {
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({
+            loggedIn: true,
+            userData: result
+          }));
         }
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({
-          loggedIn: true,
-          userData: result
-        }));
       })
       .catch(function(err) {
+        console.log('failed to create user', err);
         res.send(err);
       })   
     });
@@ -84,7 +90,7 @@ exports.checkUser = (req, res, next) => {
   // make sure the person making requests is logged in
   if (!req.session.username) {
     console.log('stopped: ', req.session.username);
-    res.redirect('/logout');
+    res.redirect('/api/logout');
   } else {
     console.log('sent along: ', req.session.username);
     next();
