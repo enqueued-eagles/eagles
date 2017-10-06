@@ -35,7 +35,7 @@ module.exports.resolve = function(req, res) {
               res.send('Signed in to Google! Please continue your browsing experience');
             } else {
               console.log('user does not match. fatal error')
-              res.redirect('/logout');
+              res.redirect('/api/logout');
             }
           } else {
             userInDB.googleID = req.user.id;

@@ -36,7 +36,7 @@ class RouterWrapper extends Component {
   }
 
   getUsers() {
-    return fetch('/user', {
+    return fetch('/api/user', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ class RouterWrapper extends Component {
   }
 
   getLessons() {
-    return fetch('/lessons', {
+    return fetch('/api/lessons', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ class RouterWrapper extends Component {
       email,
       avatarURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`
     };
-    fetch('/user', {
+    fetch('/api/user', {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -133,7 +133,7 @@ class RouterWrapper extends Component {
       password: password,
       email: email
     };
-    fetch('/login', {
+    fetch('/api/login', {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -159,7 +159,7 @@ class RouterWrapper extends Component {
   }
 
   checkIfLoggedIn() {
-    fetch('/checklogin', {
+    fetch('/api/checklogin', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -180,7 +180,7 @@ class RouterWrapper extends Component {
 
   logout() {
     console.log('logging out');
-    fetch('/logout', {
+    fetch('/api/logout', {
       method: "GET",
       credentials: "include"
     });
