@@ -214,7 +214,7 @@ class User extends Component {
               <br></br>
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
-                  <ControlLabel> Avatar URL:</ControlLabel>
+                  <ControlLabel style={{color: 'white'}} > Avatar URL:</ControlLabel>
                   <FormControl
                   inputRef={ (input) => this.avatarURL = input }
                   type="text"
@@ -234,57 +234,57 @@ class User extends Component {
               <Col md={9}>
                 <Nav bsStyle ="tabs" justified
                 onSelect = {this.handleTabSelect}>
-                  <NavItem eventKey="overview" title="Overview">Overview</NavItem>
-                  <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
-                  <NavItem eventKey="favorites" title="Favorites">Favorites</NavItem>
+                  <NavItem eventKey="overview" title="Overview" style={{color: 'white'}}>Overview</NavItem>
+                  <NavItem eventKey="lessons" title="Lessons" style={{color: 'white'}}>Lessons</NavItem>
+                  <NavItem eventKey="favorites" title="Favorites" style={{color: 'white'}}>Favorites</NavItem>
                 </Nav>
                 <Tab.Content animation>
                     <Tab.Pane eventKey="overview">
                       <Form onSubmit={this.submitOverview}>
                         <FormGroup >
-                          <ControlLabel> Full Name:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Full Name:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.fullName = input }
                           type="text"
                           placeholder={this.state.browsingUser.fullName || "What's your name?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Location:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Location:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.location = input }
                           type="text"
                           placeholder={this.state.browsingUser.location || "Where are you located?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Website:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Website:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.website = input }
                           type="text"
                           placeholder={this.state.browsingUser.website || "Do you have a website?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Notification E-mail Address:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Notification E-mail Address:</ControlLabel>
                           <FormControl 
                           inputRef={ (input) => this.email = input }
                           type="text" 
                           placeholder={this.state.browsingUser.email || "Where do you want your notifications sent?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Public E-mail Address:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Public E-mail Address:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.emailPublic = input }
                           type="text"
                           placeholder={this.state.browsingUser.emailPublic || "Where do you want the public to email you?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Github:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Github:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.githubURL = input }
                           type="text"
                           placeholder={this.state.browsingUser.githubURL || "What's your GitHub Account?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Email me every x likes:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Email me every x likes:</ControlLabel>
                           <FormControl
                           inputRef={ (input) => this.emailLikeGoal = input }
                           type="text"
