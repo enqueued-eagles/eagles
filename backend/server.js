@@ -63,31 +63,31 @@ app.post('/gclass/coursework', gclassRoutes.addCourseWork);
 app.get('/gclass/coursework', gclassRoutes.getCourseWork);
 
 // -------------------AUTH------------------------- //
-app.get('/checklogin', checkAuth.checkLogin);
-app.get('/logout', checkAuth.logout);
-app.post('/user', checkAuth.createAccount);
-app.post('/login', checkAuth.attemptLoggin);
+app.get('/api/checklogin', checkAuth.checkLogin);
+app.get('/api/logout', checkAuth.logout);
+app.post('/api/user', checkAuth.createAccount);
+app.post('/api/login', checkAuth.attemptLoggin);
 app.use(checkAuth.checkUser);
 
 // ------------------------------------------------ //
 
 // handle protected routes
-app.all('/slides', slideRoutes);
-app.all('/slides/*', slideRoutes);
-app.all('/user', userRoutes);
-app.all('/user/*', userRoutes);
-app.all('/lessons', lessonRoutes);
-app.all('/lessons/*', lessonRoutes);
-app.all('/lesson', lessonRoutes);
-app.all('/lesson/*', lessonRoutes);
-app.all('/query', utilRoutes);
+app.all('/api/slides', slideRoutes);
+app.all('/api/slides/*', slideRoutes);
+app.all('/api/user', userRoutes);
+app.all('/api/user/*', userRoutes);
+app.all('/api/lessons', lessonRoutes);
+app.all('/api/lessons/*', lessonRoutes);
+app.all('/api/lesson', lessonRoutes);
+app.all('/api/lesson/*', lessonRoutes);
+app.all('/api/query', utilRoutes);
 
 // redirect any uncaught routes 
 app.use((req, res) => {
   console.log('yo the stupid app.use is triggering EVERYWHERE')
   console.log('session is NOT destroyed')
 
-  res.sendFile('./../frontend/public/index.html');
+  res.sendFile(path.join(__dirname, './../frontend/public/index.html'));
 });
 
 // server listens for requests

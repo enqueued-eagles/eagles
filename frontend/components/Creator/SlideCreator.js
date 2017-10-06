@@ -41,7 +41,7 @@ class SlideCreator extends React.Component {
             })
             // youtubeDataObj.id;
             // youTubeDataObj.snippet.title
-            fetch('/slides', {
+            fetch('/api/slides', {
               method: "POST",
               body: JSON.stringify(this.state),
               headers: {
@@ -63,7 +63,7 @@ class SlideCreator extends React.Component {
           });
         }
       } else {
-        fetch('/slides', {
+        fetch('/api/slides', {
           method: "POST",
           body: JSON.stringify(this.state),
           headers: {
@@ -89,7 +89,7 @@ class SlideCreator extends React.Component {
     var id = this.props.slide._id;
     var body = this.state;
     body.id = id;
-    fetch('/slides',{
+    fetch('/api/slides',{
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
@@ -109,7 +109,7 @@ class SlideCreator extends React.Component {
   }
 
   youTubeQueryToServer(searchString, cb) {
-    fetch('/query?string=' + searchString, {
+    fetch('/api/query?string=' + searchString, {
       method: "GET",
        headers: {
           "Content-Type": "application/json",

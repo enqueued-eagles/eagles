@@ -105,7 +105,7 @@ class User extends Component {
   }
 
   deleteLesson(lessonId) {
-    return fetch('/lessons/' + lessonId, {
+    return fetch('/api/lessons/' + lessonId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

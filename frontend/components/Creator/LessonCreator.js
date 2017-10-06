@@ -65,7 +65,7 @@ class LessonCreator extends React.Component {
       slides: this.state.slides
     };
 
-    fetch('/lessons', {
+    fetch('/api/lessons', {
       method: "POST",
       body: JSON.stringify(lessonObj),
       headers: {
@@ -90,7 +90,7 @@ class LessonCreator extends React.Component {
     var indexOfSlideId = this.state.slides.indexOf(slide);
     var slideId = this.state.slidesId[indexOfSlideId];
     console.log('line 92:', slideId,indexOfSlideId);
-    var url = '/slides/' + slideId;
+    var url = '/api/slides/' + slideId;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -115,8 +115,13 @@ class LessonCreator extends React.Component {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
     var slideId = this.state.slidesId[indexOfSlideId];
+<<<<<<< HEAD
     console.log('line 118:', slideId,indexOfSlideId);
     var url = '/slides/' + slideId;
+=======
+    console.log(slideId,indexOfSlideId);
+    var url = '/api/slides/' + slideId;
+>>>>>>> routing
     fetch(url, {
       method: 'GET',
       headers: {
@@ -147,7 +152,7 @@ class LessonCreator extends React.Component {
       keywords: body.keywords
     });
     console.log('body:', body);
-    fetch('/lessons', {
+    fetch('/api/lessons', {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: {
@@ -171,7 +176,7 @@ class LessonCreator extends React.Component {
     var preReqLessons = this.state.preReqLessons;
     console.log('preReqLessons is currently..', preReqLessons)
     var body = {preReqLessons: this.state.preReqLessons, lessonId: this.state.lessonId};
-    fetch('/lessons', {
+    fetch('/api/lessons', {
       method: "PUT",
       body: JSON.stringify(body),
       headers: {

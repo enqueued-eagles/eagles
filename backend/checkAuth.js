@@ -90,7 +90,7 @@ exports.checkUser = (req, res, next) => {
   // make sure the person making requests is logged in
   if (!req.session.username) {
     console.log('stopped: ', req.session.username);
-    res.redirect('/logout');
+    res.redirect('/api/logout');
   } else {
     console.log('sent along: ', req.session.username);
     next();

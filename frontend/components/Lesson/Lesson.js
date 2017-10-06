@@ -28,7 +28,7 @@ class Lesson extends React.Component {
   }
 
   getUsers() {
-    return fetch('/users/', {
+    return fetch('/api/users/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -52,9 +52,8 @@ class Lesson extends React.Component {
 
   componentDidMount(id) {
     // console.log(this.props)
-    id = id || this.props.match.params.id
-    console.log('fetchingggg.g.......')
-    fetch('/lesson/' + id, { method: 'GET', credentials: "include" })
+    console.log('fetchingggg.g.......');
+    fetch('/api/lesson/' + this.props.match.params.id, { method: 'GET', credentials: "include" })
       .then((response) => response.json())
       .then((lessonDataJSON) => {
         console.log('lessonDATAJSON', lessonDataJSON)
@@ -69,7 +68,7 @@ class Lesson extends React.Component {
         console.log(this.state.specificLesson);
       })
       .then((res) => {
-         fetch('/lessons', {
+         fetch('/api/lessons', {
            method: "GET",
            headers: {
              "Content-Type": "application/json",
@@ -161,7 +160,7 @@ class Lesson extends React.Component {
   likeALesson() {
     this.state.specificLesson.likes++;
     var body = { likes: this.state.specificLesson.likes, lessonId: this.state.specificLesson._id, fromLike: true };
-    fetch('/lessons', {
+    fetch('/api/lessons', {
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
