@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem, Header, Button } from 'react-bootstrap';
 import { ListGroup, DropdownButton, ButtonGroup, MenuItem } from 'react-bootstrap';
-import { Grid, Row, Col, Nav, NavItem, Form, FormControl, FormGroup, ControlLabel, Tab, FieldGroup, OverlayTrigger, Panel, Modal  } from 'react-bootstrap';
+import { Grid, Row, Col, Nav, NavItem, Form, FormControl } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Tab, FieldGroup } from 'react-bootstrap' 
+import { Panel, Modal, ProgressBar, OverlayTrigger } from 'react-bootstrap';
 import LessonPreviewContainer from './Lesson/LessonPreviewContainer';
 import LessonPreview from './Lesson/LessonPreview';
 import axios from 'axios';
@@ -19,7 +21,8 @@ class User extends Component {
       browsingUser: this.props.user,
       browsingUserLessons: [],
       browsingUserFavorites: [],
-      update:false
+      update:false,
+      progress:0
     }
     this.deleteLesson = this.deleteLesson.bind(this);
     this.changeAvatarURL = this.changeAvatarURL.bind(this)
@@ -28,6 +31,7 @@ class User extends Component {
     this.updatecurrentUser = this.updatecurrentUser.bind(this)
     this.updatebrowsingUser = this.updatebrowsingUser.bind(this)
     this.closeUpdate = this.closeUpdate.bind(this)
+    this.updateProgressBar = this.updateProgressBar.bind(this)
   }
 
   componentDidMount() {
@@ -35,8 +39,20 @@ class User extends Component {
     this.setState({
       currentURL:window.location.pathname.slice(6)
     })
-    this.updatecurrentUser()
-    this.updatebrowsingUser()
+  }
+
+  updateProgressBar() {
+    let int = 0;
+    if (this.state.browsingUser.fullName) int++
+    if (this.state.browsingUser.location) int++
+    if (this.state.browsingUser.website) int++
+    if (this.state.browsingUser.githubURL) int++
+    if (this.state.browsingUser.emailPublic) int++
+    int = int*20
+    console.log('progress int', int)
+    this.setState({
+      progress: int
+    })
   }
 
   closeUpdate(){
@@ -95,6 +111,7 @@ class User extends Component {
           browsingUserLessons: booger.lessons,
           browsingUserFavorites: booger.favoriteLessons
         })
+        this.updateProgressBar()
         console.log('booger browsingUserLessons', this.state.browsingUserLessons)
         console.log('booger browsingUserFavorites', this.state.browsingUserFavorites)
 
@@ -152,14 +169,13 @@ class User extends Component {
       .then((user) => {
         console.log('newuser',user)
         this.updatebrowsingUser()
+        this.updateProgressBar()
       })
     })
     .catch( (err) => console.error('submitOverview axios err', err) )
   }
 
   render() {
-
-
     console.log(this.state.update)
     console.log('render this.props.user', this.props.user)
     console.log('render this.state.currentUser', this.state.currentUser)
@@ -203,6 +219,13 @@ class User extends Component {
                 </FormGroup>
                 <Button type="submit">Change</Button>
               </Form>
+              <br></br>
+              <b>Profile Completion:</b>
+              <ProgressBar 
+                active 
+                label={`${this.state.progress}%`} 
+                now={this.state.progress} 
+              />
             </Col>
             <Tab.Container id="userEditTabs" defaultActiveKey="overview">
               <Col md={9}>
@@ -297,8 +320,7 @@ class User extends Component {
           </Row>
         </Grid>
       )
-    }
-    else {
+    } else {
       if(window.location.pathname.slice(6) !== this.state.currentURL) this.updatecurrentUser();
       console.log('rendering user view page')
       return (
@@ -367,4 +389,3 @@ class User extends Component {
 }
 
 export default User;
-// {this.state.lessons.length > 0 ? (<LessonPreviewContainer lessons={ this.state.lessons }/>) : '' }
