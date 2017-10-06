@@ -32,7 +32,7 @@ class LessonCreator extends React.Component {
 
   componentDidMount() {
     if (this.props.location.lesson) {
-      fetch('/slides', {
+      fetch('/api/slides', {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
@@ -214,10 +214,23 @@ class LessonCreator extends React.Component {
     })
   }
 
+  changeKeywords(event, keywordIdx) {
+    console.log('this.state.keywords:', this.state.keywords);
+    console.log('keywordIdx', keywordIdx);
+    console.log(this.state.keywords.slice(keywordIdx + 1));
+    let keywords = [
+      ...this.state.keywords.slice(0, keywordIdx),
+      event.target.value,
+      ...this.state.keywords.slice(keywordIdx + 1)
+    ];
+    console.log('keywords after splice:', keywords);
+    this.setState({keywords});
+  }
+
   changeDisplayedKeywords (event) {
     this.setState({
       displayedKeywords: event.target.value
-    })
+    });
   }
 
   changeName (event) {
@@ -315,6 +328,7 @@ class LessonCreator extends React.Component {
                   getNames={this.getNames.bind(this)}
                   changeName={this.changeName.bind(this)}
                   changeDescription={this.changeDescription.bind(this)}
+                  changeKeywords={this.changeKeywords.bind(this)}
                   onSubmit={this.onSubmit.bind(this)}
                 />
                 <div>
@@ -331,7 +345,7 @@ class LessonCreator extends React.Component {
                 </div><br/>
                 <TagsEntry
                   keywords={this.state.displayedKeywords}
-                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
+                  changeDisplayedKeywords={this.changeDisplayedKeywords.bind(this)}
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
               </div>
@@ -417,6 +431,7 @@ class LessonCreator extends React.Component {
               getNames={this.getNames.bind(this)}
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
+              changeKeywords={this.changeKeywords.bind(this)}
               onSubmit={this.onSubmit.bind(this)}
             />
             <SlideCreator
@@ -444,6 +459,7 @@ class LessonCreator extends React.Component {
               getNames={this.getNames.bind(this)}
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
+              changeKeywords={this.changeKeywords.bind(this)}
               onSubmit={this.onSubmit.bind(this)}
             />
             <SlideCreator
