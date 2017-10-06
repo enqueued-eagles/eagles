@@ -9,16 +9,16 @@ class TagsEntry extends React.Component {
   render() {
     return (
       <div>
-        <div className='tagsEntry'>Add Tags To Lesson</div>
+        <div className='tagsEntry' style={{color: 'white'}>Add Tags To Lesson</div>
         <Col>
-          <FormControl 
-            type='text' 
+          <FormControl
+            type='text'
             value={this.props.keywords}
             onChange={this.props.changeKeywords}
           />
           <Button
-            onClick={this.props.keywordSubmit} 
-            bsStyle="info" 
+            onClick={this.props.keywordSubmit}
+            bsStyle="info"
             bsSize="small"
           >Set Tags</Button>
         </Col>

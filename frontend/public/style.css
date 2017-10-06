@@ -1,5 +1,6 @@
 body {
   padding: 5%;
+  background-color: #2A363F;
 }
 
 .lessonCreator, .slideCreator{
@@ -7,6 +8,12 @@ body {
   margin: 0 auto;
   text-align: center;
   font-size: 250%;
+}
+
+.navbar-default {
+  background-color: #6ED9A0;
+  border-color: #6ED9A0;
+  background-image: none
 }
 
 .index {
@@ -17,7 +24,7 @@ body {
   display: inline;
   margin-left: 5px;
   margin-right: 5px;
-  padding: 0px; 
+  padding: 0px;
   border: 0px;
 }
 
@@ -38,4 +45,3 @@ body {
 .existingSlides, .tagsEntry {
   font-weight: 700;
 }
-

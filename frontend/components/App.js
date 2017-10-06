@@ -10,9 +10,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar 
+        <NavBar
           history= { this.props.history }
-          queryDataBaseWithSearchInput={this.props.queryDataBaseWithSearchInput} 
+          queryDataBaseWithSearchInput={this.props.queryDataBaseWithSearchInput}
           logout={ this.props.logout }
           getLessons={ this.props.getLessons }
           user = {this.props.user}
