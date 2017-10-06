@@ -56,12 +56,12 @@ module.exports.resolve = function(req, res) {
           res.redirect('/');
         } else {
           // fix this by making it so create account can redirect to /
-          req.body.username = req.user.id,
-          req.body.password = req.user.id,
-          req.body.email = req.user.emails[0].value,
-          checkAuth.createAccount(req, res, true)
-          .then(results => console.log('success creating acct!', results))
-          .catch(err => console.log('err creating acct!', err))
+          req.body.username = req.user.emails[0].value;
+          req.body.password = req.user.id;
+          req.body.email = req.user.emails[0].value;
+          req.body.googleID = req.user.id;
+          console.log('about to create acct', req.body)
+          return checkAuth.createAccount(req, res, true)
         }
       })
       .catch((err) => res.status(404).send(err))
