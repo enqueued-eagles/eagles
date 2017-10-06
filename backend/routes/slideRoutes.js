@@ -7,7 +7,7 @@ var Lesson = schema.Lesson;
 var Slide = schema.Slide;
 
 //find specific slide using params
-router.get('/slides/:slideId', function(req, res) {
+router.get('/api/slides/:slideId', function(req, res) {
   Slide.find({_id: req.params.slideId})
   .then(function(slides) {
     res.send(slides);
@@ -20,7 +20,7 @@ router.get('/slides/:slideId', function(req, res) {
 
 
 //find all slides
-router.get('/slides', function(req, res) {
+router.get('/api/slides', function(req, res) {
   Slide.find({})
   .then(function(slides) {
     res.send(slides);
@@ -31,7 +31,7 @@ router.get('/slides', function(req, res) {
   })
 });
 
-router.post('/slides', function(req, res) {
+router.post('/api/slides', function(req, res) {
   var name = req.body.name;
   var lessonRef = req.body.lessonRef;
   var youTubeUrl = req.body.youTubeUrl;
@@ -68,7 +68,7 @@ router.post('/slides', function(req, res) {
   });
 });
 
-router.put('/slides', function(req, res) {
+router.put('/api/slides', function(req, res) {
   Slide.findById(req.body.id, function(err, slide) {
     if (err) res.send(err);
 
@@ -94,7 +94,7 @@ router.put('/slides', function(req, res) {
   });
 });
 
-router.delete('/slides/:slideId', function(req, res) {
+router.delete('/api/slides/:slideId', function(req, res) {
   Slide.findByIdAndRemove(req.params.slideId, function(err, slide) {
     if (err) {
       throw err;

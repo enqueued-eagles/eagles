@@ -55,7 +55,7 @@ const sendCongad = (userRef, lessonName, numLikes) => {
 }
 
 //find specific lesson
-router.get('/lesson/:lessonId', function(req, res) {
+router.get('/api/lesson/:lessonId', function(req, res) {
   Lesson.find({_id: req.params.lessonId})
   .then(function(lesson) {
     return lesson[0];
@@ -80,7 +80,7 @@ router.get('/lesson/:lessonId', function(req, res) {
 });
 
 //find all lessons
-router.get('/lessons', function(req, res) {
+router.get('/api/lessons', function(req, res) {
   Lesson.find({})
   .then(function(lessons) {
     res.send(lessons);
@@ -90,7 +90,7 @@ router.get('/lessons', function(req, res) {
   })
 });
 
-router.post('/lessons', function(req, res) {
+router.post('/api/lessons', function(req, res) {
   var name = req.body.name;
   var userRef = req.body.userRef
   var description = req.body.description;
@@ -128,7 +128,7 @@ router.post('/lessons', function(req, res) {
   })
 })
 
-router.put('/lessons', function(req, res) {
+router.put('/api/lessons', function(req, res) {
   console.log('req.body:', req.body);
   Lesson.findById(req.body.lessonId, function(err, lesson) {
     //console.log('lesson is ', lesson, 'err is ', err)
@@ -166,7 +166,7 @@ router.put('/lessons', function(req, res) {
   })
 })
 
-router.delete('/lessons/:lessonId', function(req, res) {
+router.delete('/api/lessons/:lessonId', function(req, res) {
   Lesson.findByIdAndRemove(req.params.lessonId, function(err, lesson) {
     if (err) {
       throw err;

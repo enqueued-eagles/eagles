@@ -7,7 +7,7 @@ var Lesson = schema.Lesson;
 var Slide = schema.Slide;
 
 //find specific user
-router.get('/user/:userId', function(req, res) {
+router.get('/api/user/:userId', function(req, res) {
   User.find({_id: req.params.userId})
   .then(function(users) {
     res.send(users);
@@ -18,7 +18,7 @@ router.get('/user/:userId', function(req, res) {
 })
 
 //find all users
-router.get('/user', function(req, res) {
+router.get('/api/user', function(req, res) {
   User.find({})
   .then(function(users) {
     res.send(users);
@@ -28,7 +28,7 @@ router.get('/user', function(req, res) {
   })
 })
 
-router.patch('/user/:username', function(req, res) {
+router.patch('/api/user/:username', function(req, res) {
   User.find({username: req.params.username})
   .then(function(users) {
     res.send(users);
@@ -38,7 +38,7 @@ router.patch('/user/:username', function(req, res) {
   })
 })
 
-router.put('/user', function(req, res) {
+router.put('/api/user', function(req, res) {
 
   let update = {}
   if (req.body.data.avatarURL) update.avatarURL = `${req.body.data.avatarURL}`
@@ -58,7 +58,7 @@ router.put('/user', function(req, res) {
   })
 });
 
-router.delete('/user/:lessonId', function(req, res) {
+router.delete('/api/user/:lessonId', function(req, res) {
   User.findByIdAndRemove(req.params.userId, function(err, user) {
     if (err) {
       throw err;
