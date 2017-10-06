@@ -442,12 +442,6 @@ class LessonCreator extends React.Component {
               changeCreateState={this.changeCreateState.bind(this)}
               changeEditingOldSlide={this.changeEditingOldSlide.bind(this)}
             />
-            <ExistingSlides
-              slides={this.state.slides}
-              creatingSlide={this.state.creatingSlide}
-              seeOldSlide={this.seeOldSlide.bind(this)}
-              seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
-            />
           </div>
         )
       } else {
