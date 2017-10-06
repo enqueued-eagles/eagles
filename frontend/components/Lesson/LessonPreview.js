@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem, Header, Button } from 'react-bootstrap';
+import axios from 'axios'
 
 class LessonPreview extends Component {
   constructor(props) {
@@ -9,22 +10,24 @@ class LessonPreview extends Component {
       creator: ''
     }
     console.log('PROPS.LESSON:', props.lesson);
+    this.getUsername = this.getUsername.bind(this)
   }
 
   componentDidMount() {
-    if(this.props.getUsers){
-      this.props.getUsers().then(users => {
-        console.log(users)
-        for (let i = 0; i < users.length; i++) {
-          if (users[i]._id === this.props.lesson.userRef) {
-            this.setState({
-              creator: users[i].username
-            })
-            break;
-          }
-        }
-      });
-    };
+    this.getUsername()
+  }
+
+  getUsername () {
+    axios.get(`/api/user/${this.props.lesson.userRef}`)
+    .then( (user) => {
+      console.log('newuser',user)
+      console.log(1,this.props.sessionUserId)
+      console.log(2,this.props.lesson.userRef)
+      console.log(user.data[0].username)
+      this.setState({
+        creator:user.data[0].username
+      })
+    })
   }
 
   render() {
@@ -35,11 +38,14 @@ class LessonPreview extends Component {
             {this.props.lesson.description || 'no description'}
             <br />
             <br />
-            Creator: {this.state.creator}
+            <b>Creator:</b> {this.state.creator}
             <br />
             <Link to={'/lesson/' + this.props.lesson._id}>
               <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
             </Link>{` `}
+            <Link to={'/user/' + this.state.creator}>
+              <Button bsSize="small">Creator's Profile</Button>
+            </Link>{' '}
             {
               this.props.sessionUserId === this.props.lesson.userRef ?
               <Link to={{

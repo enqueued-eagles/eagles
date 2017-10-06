@@ -54,13 +54,6 @@ class NavBar extends Component {
             <Button>Profile</Button>
           </Link>{' '}
 
-          <Link to='/user/jon'>
-            <Button>jon</Button>
-          </Link>{' '}
-          <Link to='/user/Kenny'>
-            <Button>Jahardo</Button>
-          </Link>{' '}
-
           <Button onClick={this.props.logout}>Logout</Button>{' '}
         </span>
         </Form>
