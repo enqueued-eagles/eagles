@@ -57,54 +57,55 @@ class LessonCreator extends React.Component {
 
   // submit new Lesson to the db and set the lesson to the lessonId state property
   onSubmit (event) {
-    if (event) {
-      event.preventDefault();
-      var lessonObj = {
-        name: this.state.name,
-        userRef: this.state.userRef,
-        description: this.state.description,
-        slides: this.state.slides
-      };
+    event.preventDefault();
+    var lessonObj = {
+      name: this.state.name,
+      userRef: this.state.userRef,
+      description: this.state.description,
+      slides: this.state.slides
+    };
 
-      fetch('/api/lessons', {
-        method: "POST",
-        body: JSON.stringify(lessonObj),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include"
-      })
-        .then((anything) => anything.json())
-        .then((result) => {
-          console.log('result is',result);
-          this.setState({
-            lessonId: result._id // setting lessonId to the lesson object's id
-          })
-          console.log('state now is ', this.state);
-        });
-    } else {
-      var lessonObj = {
-        name: this.state.name,
-        userRef: this.state.userRef,
-        description: this.state.description,
-        slides: this.state.slides,
-        lessonId: this.state.lessonId
-      };
-
-      fetch('/api/lessons', {
-        method: "PUT",
-        body: JSON.stringify(lessonObj),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include"
-      })
-        .then(anything => anything.json())
-        .then(result => {
-          console.log('Lesson update complete.');
+    fetch('/api/lessons', {
+      method: "POST",
+      body: JSON.stringify(lessonObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+      .then((anything) => anything.json())
+      .then((result) => {
+        console.log('result is',result);
+        this.setState({
+          lessonId: result._id // setting lessonId to the lesson object's id
         })
-        .catch(err => console.log('Lesson update error:', err));
-    }
+        console.log('state now is ', this.state);
+      });
+  }
+
+  submitEdit() {
+    var lessonObj = {
+      name: this.state.name,
+      userRef: this.state.userRef,
+      description: this.state.description,
+      slides: this.state.slides,
+      keywords: this.state.keywords,
+      lessonId: this.state.lessonId
+    };
+
+    fetch('/api/lessons', {
+      method: "PUT",
+      body: JSON.stringify(lessonObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+      .then(anything => anything.json())
+      .then(result => {
+        console.log('Lesson update complete.');
+      })
+      .catch(err => console.log('Lesson update error:', err));
   }
 
   // gets index of slide, fetches the slide from the db
@@ -329,7 +330,7 @@ class LessonCreator extends React.Component {
                   changeName={this.changeName.bind(this)}
                   changeDescription={this.changeDescription.bind(this)}
                   changeKeywords={this.changeKeywords.bind(this)}
-                  onSubmit={this.onSubmit.bind(this)}
+                  submitEdit={this.submitEdit.bind(this)}
                 />
                 <div>
                   Recommend Prerequisites:<br/>
@@ -432,7 +433,7 @@ class LessonCreator extends React.Component {
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
               changeKeywords={this.changeKeywords.bind(this)}
-              onSubmit={this.onSubmit.bind(this)}
+              submitEdit={this.submitEdit.bind(this)}
             />
             <SlideCreator
               slide={{}}
@@ -460,7 +461,7 @@ class LessonCreator extends React.Component {
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
               changeKeywords={this.changeKeywords.bind(this)}
-              onSubmit={this.onSubmit.bind(this)}
+              submitEdit={this.submitEdit.bind(this)}
             />
             <SlideCreator
               slide={this.state.oldSlide}

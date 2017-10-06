@@ -34,7 +34,7 @@ class LessonInfo extends React.Component {
             this.state.editingName ?
             <Form onSubmit={() => {
               this.toggleEditingName();
-              this.props.onSubmit();
+              this.props.submitEdit();
             }}>
               <ListGroupItem>Lesson Name:<FormControl
                 type='text'
@@ -49,7 +49,7 @@ class LessonInfo extends React.Component {
             this.state.editingDescription ?
             <Form onSubmit={() => {
                 this.toggleEditingDescription();
-                this.props.onSubmit();
+                this.props.submitEdit();
               }}>
               <ListGroupItem>Lesson Description:<FormControl
                 type='text'
@@ -67,7 +67,7 @@ class LessonInfo extends React.Component {
               return (
                 <Form key={i} onSubmit={() => {
                   this.toggleEditingKeyword(i);
-                  this.props.onSubmit();
+                  this.props.submitEdit();
                 }}>
                   <FormControl
                     type='text'
