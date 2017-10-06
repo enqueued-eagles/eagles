@@ -223,7 +223,7 @@ class User extends Component {
                 <Button type="submit">Change</Button>
               </Form>
               <br></br>
-              <b>Profile Completion:</b>
+              <b style={{color: 'white'}}>Profile Completion:</b>
               <ProgressBar 
                 active 
                 label={`${this.state.progress}%`} 
@@ -302,6 +302,7 @@ class User extends Component {
                             lesson={lesson}
                             index={i}
                             key={i}
+                            sessionUserId={this.state.currentUser._id}
                           />
                         )}
                       </ListGroup>
@@ -313,6 +314,7 @@ class User extends Component {
                             lesson={lesson}
                             index={i}
                             key={i}
+                            sessionUserId={this.state.currentUser._id}
                           />
                         )}
                       </ListGroup>
