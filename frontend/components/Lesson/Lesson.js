@@ -292,7 +292,7 @@ class Lesson extends React.Component {
             <Modal.Title id="contained-modal-title">End of Lesson</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            You\'ve made it to the end of the lesson.
+            You've made it to the end of the lesson.
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeendOfLessonAlert}>Close</Button>
