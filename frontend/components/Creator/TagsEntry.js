@@ -9,16 +9,16 @@ class TagsEntry extends React.Component {
   render() {
     return (
       <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>Add Tags To Lesson</Col>
+        <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Add Tags To Lesson</Col>
         <Col sm={10}>
-            <FormControl 
-              type='text' 
+            <FormControl
+              type='text'
               value={this.props.keywords}
               onChange={this.props.changeKeywords}
             />
             <Button
-              onClick={this.props.keywordSubmit} 
-              bsStyle="info" 
+              onClick={this.props.keywordSubmit}
+              bsStyle="info"
               bsSize="small"
             >Set Tags</Button>
         </Col>

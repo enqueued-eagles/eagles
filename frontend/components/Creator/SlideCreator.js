@@ -138,7 +138,7 @@ class SlideCreator extends React.Component {
           </div>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide Name</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide Name</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide Name'
               value={this.state.name}
@@ -148,7 +148,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide youTubeUrl</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide youTubeUrl</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide youTube Url'
               value={this.state.youTubeUrl}
@@ -158,7 +158,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide Text</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide Text</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide Text'
               value={this.state.text}
@@ -167,7 +167,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide QuizUrl</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide QuizUrl</Col>
           <Col sm={10}>
             <FormControl type='Quiz Url' placeholder='Quiz Url'
               value={this.state.quizUrl}

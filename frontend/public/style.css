@@ -1,5 +1,16 @@
 body {
   padding: 5%;
+  background-color: #2A363F;
+}
+/*
+.container {
+  background-color: #6ED9A0
+}*/
+
+.navbar-default {
+  background-color: #6ED9A0;
+  border-color: #6ED9A0;
+  background-image: none
 }
 
 .lessonCreator, .slideCreator{
@@ -17,7 +28,7 @@ body {
   display: inline;
   margin-left: 5px;
   margin-right: 5px;
-  padding: 0px; 
+  padding: 0px;
   border: 0px;
 }
 

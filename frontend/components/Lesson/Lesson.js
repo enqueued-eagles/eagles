@@ -121,7 +121,6 @@ class Lesson extends React.Component {
   previousSlideClick(index) {
     index--;
     if (index < 0) {
-      alert("There is no previous slide! You will be redirected to the Lesson Home Page.");
       this.exit();
     } else {
       this.setState({
@@ -224,9 +223,23 @@ class Lesson extends React.Component {
         ) : (
           <div className="lessonSlideList">
             <div className="lesson">
-              <h1 className="lessonTitle">{this.state.specificLesson.name}</h1>
-              <p className="lessonDescription">{this.state.specificLesson.description}</p>
-              <p className="lessonKeyWords"> Keywords: {this.state.keywords.join(', ')}</p>
+              <h1 className="lessonTitle" style={{color:'white'}}>{this.state.specificLesson.name}</h1>
+              <p className="lessonDescription" style={{color:'white'}}>{this.state.specificLesson.description}</p>
+              <p className="lessonKeyWords" style={{color:'white'}}> Keywords: {this.state.keywords.join(', ')}</p>
+              <br></br>
+              {
+                this.props.sessionUserId === this.state.specificLesson.userRef ?
+                <div>
+                  <Link to={{
+                    pathname: '/create',
+                    lesson: this.state.specificLesson,
+                    editingOldSlide: true
+                  }}>
+                    <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
+                  </Link>
+                </div>
+                : null
+              }
               <Grid>
                 <Row>
                 {this.state.slides.map((slide, i) => (
@@ -241,22 +254,26 @@ class Lesson extends React.Component {
               </Grid>
             </div>
             <Button type="button" onClick={this.likeALesson.bind(this)}>
-              <Image src="http://www.freeiconspng.com/uploads/like-button-png-2.png" width="25" height="25"/>
+              <Image src="http://www.freeiconspng.com/uploads/like-button-png-2.png" width="15" height="15"/>
             </Button>
             {this.state.liked ? (
               <a> You liked this already! </a>
             ) : this.state.firstLike ? <a> You liked this! </a> : null}
-            <a href='/login/google' target="_blank">LOG IN</a>
-            {
-              !this.state.postedToClass ? (
-                <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>Post to gclass</Button>
-              ) : (
-                <span className="posted-message">Posted to classroom!</span>
-              )
-            }
+            <div>
+              <br></br>
+              <a href='/login/google' target="_blank">LOG IN</a>
+              {
+                !this.state.postedToClass ? (
+                  <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>Post to gclass</Button>
+                ) : (
+                  <span className="posted-message">Posted to classroom!</span>
+                )
+              }
+
+            </div>
           </div>
         )}
-        <div className="relatedLessons">
+        <div className="relatedLessons" style={{color:'white'}}>
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (
             <LessonPreview
@@ -268,7 +285,7 @@ class Lesson extends React.Component {
           ))}
         </div>
 
-        <div className="relatedLessons">
+        <div className="relatedLessons" style={{color:'white'}}>
           Related Lessons:
           {this.state.relatedLessons.map((lesson, i) => (
             <LessonPreview
@@ -279,20 +296,6 @@ class Lesson extends React.Component {
             />
           ))}
         </div><br/>
-
-        {
-          this.props.sessionUserId === this.state.specificLesson.userRef ?
-          <div>
-            <Link to={{
-              pathname: '/create',
-              lesson: this.state.specificLesson,
-              editingOldSlide: true
-            }}>
-              <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
-            </Link>
-          </div>
-          : null
-        }
       </div>
     );
   }

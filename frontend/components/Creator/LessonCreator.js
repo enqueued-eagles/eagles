@@ -262,7 +262,11 @@ class LessonCreator extends React.Component {
 
           <FormGroup>
             <div className='lessonCreator'>
-              <ControlLabel>Lesson Editor</ControlLabel>
+              <ControlLabel>
+                <a style={{color: 'white'}}>
+                  Lesson Editor
+                </a>
+              </ControlLabel>
             </div>
           </FormGroup>
 
@@ -281,7 +285,9 @@ class LessonCreator extends React.Component {
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
                 <div>
-                  Recommend Pre Requisites
+                  <a style={{color: 'white'}}>
+                    Recommend Pre Requisites
+                  </a>
                   <form>
                     <label>
                       {/* Pick your favorite La Croix flavor: */}
@@ -301,11 +307,13 @@ class LessonCreator extends React.Component {
                   field={'Lesson Name'}
                   fieldValue={this.state.name}
                   changeValue={this.changeName.bind(this)}
+                  style={{color: 'white'}}
                 />
                 <LessonFieldEntry
                   field={'Lesson Description'}
                   fieldValue={this.state.description}
                   changeValue={this.changeDescription.bind(this)}
+                  style={{color: 'white'}}
                 />
               </div>
           }
@@ -358,7 +366,7 @@ class LessonCreator extends React.Component {
                 seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
               />
             :
-              <div>No Slides Yet</div>
+              <div style={{color: 'white'}}>No Slides Yet</div>
           }
 
         </Form>
