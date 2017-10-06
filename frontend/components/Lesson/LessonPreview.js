@@ -17,11 +17,11 @@ class LessonPreview extends Component {
         if (users[i]._id === this.props.lesson.userRef) {
           this.setState({
             creator: users[i].username
-          })
+          });
           break;
         }
-      })
-    }
+      }
+    })
   }
 
   render() {

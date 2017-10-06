@@ -57,30 +57,54 @@ class LessonCreator extends React.Component {
 
   // submit new Lesson to the db and set the lesson to the lessonId state property
   onSubmit (event) {
-    event.preventDefault();
-    var lessonObj = {
-      name: this.state.name,
-      userRef: this.state.userRef,
-      description: this.state.description,
-      slides: this.state.slides
-    };
+    if (event) {
+      event.preventDefault();
+      var lessonObj = {
+        name: this.state.name,
+        userRef: this.state.userRef,
+        description: this.state.description,
+        slides: this.state.slides
+      };
 
-    fetch('/lessons', {
-      method: "POST",
-      body: JSON.stringify(lessonObj),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include"
-    })
-      .then((anything) => anything.json())
-      .then((result) => {
-        console.log('result is',result);
-        this.setState({
-          lessonId: result._id // setting lessonId to the lesson object's id
+      fetch('/lessons', {
+        method: "POST",
+        body: JSON.stringify(lessonObj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+      })
+        .then((anything) => anything.json())
+        .then((result) => {
+          console.log('result is',result);
+          this.setState({
+            lessonId: result._id // setting lessonId to the lesson object's id
+          })
+          console.log('state now is ', this.state);
+        });
+    } else {
+      var lessonObj = {
+        name: this.state.name,
+        userRef: this.state.userRef,
+        description: this.state.description,
+        slides: this.state.slides,
+        lessonId: this.state.lessonId
+      };
+
+      fetch('/lessons', {
+        method: "PUT",
+        body: JSON.stringify(lessonObj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+      })
+        .then(anything => anything.json())
+        .then(result => {
+          console.log('Lesson update complete.');
         })
-        console.log('state now is ', this.state);
-      });
+        .catch(err => console.log('Lesson update error:', err));
+    }
   }
 
   // gets index of slide, fetches the slide from the db
@@ -289,6 +313,9 @@ class LessonCreator extends React.Component {
                   description={this.state.description}
                   keywords={this.state.keywords}
                   getNames={this.getNames.bind(this)}
+                  changeName={this.changeName.bind(this)}
+                  changeDescription={this.changeDescription.bind(this)}
+                  onSubmit={this.onSubmit.bind(this)}
                 />
                 <div>
                   Recommend Prerequisites:<br/>
@@ -388,6 +415,9 @@ class LessonCreator extends React.Component {
               description={this.state.description}
               keywords={this.state.keywords}
               getNames={this.getNames.bind(this)}
+              changeName={this.changeName.bind(this)}
+              changeDescription={this.changeDescription.bind(this)}
+              onSubmit={this.onSubmit.bind(this)}
             />
             <SlideCreator
               slide={{}}
@@ -412,6 +442,9 @@ class LessonCreator extends React.Component {
               description={this.state.description}
               keywords={this.state.keywords}
               getNames={this.getNames.bind(this)}
+              changeName={this.changeName.bind(this)}
+              changeDescription={this.changeDescription.bind(this)}
+              onSubmit={this.onSubmit.bind(this)}
             />
             <SlideCreator
               slide={this.state.oldSlide}
