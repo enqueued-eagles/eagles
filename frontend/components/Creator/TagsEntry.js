@@ -20,7 +20,7 @@ class TagsEntry extends React.Component {
             onClick={this.props.keywordSubmit} 
             bsStyle="info" 
             bsSize="small"
-          >Set Tags</Button>
+          >Add Tag</Button>
         </Col>
       </div>
     )

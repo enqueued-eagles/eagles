@@ -83,7 +83,7 @@ class LessonInfo extends React.Component {
             }
           })
         }</ListGroupItem>
-        <ListGroupItem>PreReq Lessons: {this.props.getNames().join(', ')}</ListGroupItem>
+        <ListGroupItem>Recommended Prerequisites: {this.props.getNames().join(', ')}</ListGroupItem>
       </ListGroup>
     )
   }
