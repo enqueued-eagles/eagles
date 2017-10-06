@@ -16,8 +16,8 @@ class LessonCreator extends React.Component {
       name: lessonInfo ? lessonInfo.name : '',
       userRef: lessonInfo ? lessonInfo.userRef : this.props.userRef,
       description: lessonInfo ? lessonInfo.description : '',
-      slides: lessonInfo ? lessonInfo.slides.map(slide => slide.name) : [],
-      slidesId: lessonInfo ? lessonInfo.slides.map(slide => slide._id) : [],
+      slides: [],
+      slidesId: [],
       creatingSlide: false,
       lessonId: lessonInfo ? lessonInfo._id : '',
       keywords: lessonInfo ? lessonInfo.keywords : [],
@@ -31,6 +31,21 @@ class LessonCreator extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.location.lesson) {
+      fetch('/slides', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+      })
+        .then(result => result.json())
+        .then(slides => {
+          slides = slides.filter(slide => slide.lessonRef === this.state.lessonId);
+          this.setState({slides: slides.map(slide => slide.name), slidesId: slides.map(slide => slide._id)});
+        })
+        .catch(err => console.log('SLIDES DATABASE RETRIEVAL ERROR:', err));
+    }
     this.props.getLessons()
       .then(lessons => {
         this.setState({
@@ -74,7 +89,7 @@ class LessonCreator extends React.Component {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
     var slideId = this.state.slidesId[indexOfSlideId];
-    console.log(slideId,indexOfSlideId);
+    console.log('line 92:', slideId,indexOfSlideId);
     var url = '/slides/' + slideId;
     fetch(url, {
       method: 'GET',
@@ -100,7 +115,7 @@ class LessonCreator extends React.Component {
     console.log('this is the event after clicking ', slide);
     var indexOfSlideId = this.state.slides.indexOf(slide);
     var slideId = this.state.slidesId[indexOfSlideId];
-    console.log(slideId,indexOfSlideId);
+    console.log('line 118:', slideId,indexOfSlideId);
     var url = '/slides/' + slideId;
     fetch(url, {
       method: 'GET',
@@ -275,25 +290,23 @@ class LessonCreator extends React.Component {
                   keywords={this.state.keywords}
                   getNames={this.getNames.bind(this)}
                 />
-                <TagsEntry
-                  keywords={this.state.displayedKeywords}
-                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
-                  keywordSubmit={this.keywordSubmit.bind(this)}
-                />
                 <div>
-                  Recommend Pre Requisites
-                  <form>
+                  Recommend Prerequisites:<br/>
+                  <Form>
                     <label>
-                      {/* Pick your favorite La Croix flavor: */}
                       <select value={this.state.value} onChange={this.handlePreReq.bind(this)}>
                         {this.state.allLessons.map((lesson, i) => (
                           <option value={lesson._id} key={i}>{lesson.name}</option>
                         ))}
                       </select>
                     </label>
-                    {/* <input type="submit" value="Submit" /> */}
-                  </form>
-                </div>
+                  </Form>
+                </div><br/>
+                <TagsEntry
+                  keywords={this.state.displayedKeywords}
+                  changeKeywords={this.changeDisplayedKeywords.bind(this)}
+                  keywordSubmit={this.keywordSubmit.bind(this)}
+                />
               </div>
             :
               <div>
@@ -308,24 +321,29 @@ class LessonCreator extends React.Component {
                   changeValue={this.changeDescription.bind(this)}
                 />
               </div>
-          }
-
+          }<br/>
+          
           <FormGroup>
-            {
-              this.state.lessonId === '' ?
-              (<Col smOffset={1} sm={1}>
-                <Button type="submit" bsStyle="primary" bsSize="small">
-                  Make Lesson
-                </Button>
-              </Col>) :
-              (<Col smOffset={1} sm={1}>
-                <Button
-                  onClick={this.changeCreateState.bind(this)}
-                  bsStyle="primary"
-                  bsSize="small"
-                >Go To Slide Creator</Button>
-              </Col>)
+            { 
+              this.state.lessonId === '' ? 
+                (<Col smOffset={1} sm={2}>
+                  <Button
+                    type="submit"
+                    bsStyle="primary"
+                    bsSize="small"
+                  >Create Lesson</Button>
+                </Col>)
+              :
+                (<Col smOffset={2} sm={1}>
+                  <Button 
+                    type="submit"
+                    onClick={this.changeCreateState.bind(this)}
+                    bsStyle="primary"
+                    bsSize="small"
+                  >Slide Creator</Button>
+                </Col>)
             }
+
             {this.state.lessonId === '' ? null :
               (<Col smOffset={1} sm={1}>
                 <Button
@@ -333,20 +351,18 @@ class LessonCreator extends React.Component {
                   onClick={this.reset.bind(this)}
                   bsStyle="warning"
                   bsSize="small"
-                >Make New Lesson</Button>
-              </Col>)
-            }
-            {
-              <Col smOffset={1} sm={1}>
+                >Create New Lesson</Button>
+              </Col>)}
+
+            {<Col smOffset={1} sm={1}>
                 <Link to='/'>
                   <Button
                     type="button"
                     bsStyle="warning"
                     bsSize="small"
                   >Go Home</Button>
-                </Link>
-              </Col>
-            }
+                </Link><br/><br/><br/>
+              </Col>}
           </FormGroup>
 
           {
@@ -358,7 +374,7 @@ class LessonCreator extends React.Component {
                 seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
               />
             :
-              <div>No Slides Yet</div>
+              <div className='existingSlides'>No Slides Yet :(</div>
           }
 
         </Form>

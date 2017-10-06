@@ -8,6 +8,7 @@ class LessonPreview extends Component {
     this.state = {
       creator: ''
     }
+    console.log('PROPS.LESSON:', props.lesson);
   }
 
   componentDidMount() {
@@ -35,7 +36,18 @@ class LessonPreview extends Component {
             <br />
             <Link to={'/lesson/' + this.props.lesson._id}>
               <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
-            </Link>
+            </Link>{` `}
+            {
+              this.props.sessionUserId === this.props.lesson.userRef ?
+              <Link to={{
+                pathname: '/create',
+                lesson: this.props.lesson,
+                editingOldSlide: true
+              }}>
+                <Button type="button" bsStyle="primary" bsSize="small">Edit Lesson</Button>
+              </Link>
+              : null
+            }
         </ListGroupItem>
       </div>
     )

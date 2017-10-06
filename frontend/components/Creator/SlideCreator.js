@@ -13,9 +13,7 @@ class SlideCreator extends React.Component {
       text: props.slide.text || '',
       quizUrl: props.slide.quizUrl || '',
       old: props.slide.old || '',
-      lessonRef: props.lessonRef,
-      urlShow: 'white',
-      nameShow: 'white'
+      lessonRef: props.lessonRef
     }
   }
   reset () {
@@ -25,10 +23,11 @@ class SlideCreator extends React.Component {
       youTubeThumbnailUrl: '',
       youTubeTags: '',
       text: '',
-      quizUrl: '',
+      quizUrl: '',  
     });
   }
   onSubmit (event) {
+    console.log('is this working?');
     event.preventDefault();
     if (this.state.name !== '') {
       if (this.state.youTubeUrl !== '') {
@@ -54,15 +53,14 @@ class SlideCreator extends React.Component {
             .then(result => {
               console.log(result, ' that was result this.state is', this.state);
               this.props.fetch(result);
-              this.reset();
+              this.reset();  
             })
           });
         } else {
+          alert('Incorrect YouTube URL input! Please revise Youtube URL input');
           this.setState({
-            youTubeUrl: '',
-            urlShow: 'red'
+            youTubeUrl: ''
           });
-          return;
         }
       } else {
         fetch('/slides', {
@@ -75,16 +73,15 @@ class SlideCreator extends React.Component {
         })
         .then((something) => something.json())
         .then(result => {
+          console.log('NOTICE ME AAAAAAAAAAAAAAAAAA');
           console.log(result, ' that was result this.state is', this.state);
           this.props.fetch(result);
           this.reset();
         })
+        .catch(err => console.log('onSubmit ERROR:', err));
       }
     } else {
-        this.setState({
-          nameShow: 'red'
-        })
-        return;
+        alert('Slide name required. Please enter a slide name.');
     }
   }
 
@@ -99,7 +96,7 @@ class SlideCreator extends React.Component {
         "Content-Type": "application/json",
       },
       credentials: "include"
-    })
+    })    
     .then(function(result) {
       return result.json();
     })
@@ -143,7 +140,6 @@ class SlideCreator extends React.Component {
             <FormControl type='text' placeholder='Slide Name'
               value={this.state.name}
               onChange={(event) => this.setState({name: event.target.value})}
-              style={{borderColor: this.state.nameShow, borderWidth: 3}}
             />
           </Col>
         </FormGroup>
@@ -153,7 +149,6 @@ class SlideCreator extends React.Component {
             <FormControl type='text' placeholder='Slide youTube Url'
               value={this.state.youTubeUrl}
               onChange={(event) => this.setState({youTubeUrl: event.target.value})}
-              style={{borderColor: this.state.urlShow, borderWidth: 3}}
             />
           </Col>
         </FormGroup>
@@ -176,27 +171,30 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ?
-              (<Button type="submit" bsStyle="primary" bsSize="small">Create The Slide</Button>) :
-              (<Button onClick={this.updateOldSlide.bind(this)} bsStyle="primary" bsSize="small">
-                Update Slide
-              </Button>)
-            }
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ?
-              (<Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
-                Go Back
-              </Button>)
-              :
-              (<Button onClick={this.props.changeEditingOldSlide} bsStyle="warning" bsSize="small">
-                Finish Update
-              </Button>)
-            }
-          </Col>
+          {
+            this.state.old === '' ?
+            <div>
+              <Col smOffset={2} sm={2}>
+                <Button type="submit" bsStyle="primary" bsSize="small">
+                  Create Slide
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
+                  Go Back
+                </Button>
+              </Col>
+            </div>
+          :
+            <Col smOffset={2} sm={2}>
+              <Button onClick={() => {
+                this.updateOldSlide();
+                this.props.changeEditingOldSlide();
+              }} bsStyle="primary" bsSize="small">
+                Finish Updates
+              </Button>
+            </Col>
+          }
         </FormGroup>
       </Form>
     );

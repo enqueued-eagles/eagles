@@ -8,21 +8,21 @@ class TagsEntry extends React.Component {
 
   render() {
     return (
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>Add Tags To Lesson</Col>
-        <Col sm={10}>
-            <FormControl 
-              type='text' 
-              value={this.props.keywords}
-              onChange={this.props.changeKeywords}
-            />
-            <Button
-              onClick={this.props.keywordSubmit} 
-              bsStyle="info" 
-              bsSize="small"
-            >Set Tags</Button>
+      <div>
+        <div className='tagsEntry'>Add Tags To Lesson</div>
+        <Col>
+          <FormControl 
+            type='text' 
+            value={this.props.keywords}
+            onChange={this.props.changeKeywords}
+          />
+          <Button
+            onClick={this.props.keywordSubmit} 
+            bsStyle="info" 
+            bsSize="small"
+          >Set Tags</Button>
         </Col>
-      </FormGroup>
+      </div>
     )
   }
 }

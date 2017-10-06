@@ -26,3 +26,7 @@ body {
   color:blue;
   text-decoration:underline;
 }
+
+.existingSlides, .tagsEntry {
+  font-weight: 700;
+}
