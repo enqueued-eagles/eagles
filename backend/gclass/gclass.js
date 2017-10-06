@@ -3,7 +3,7 @@ const axios = require('axios')
 
 const gclass = axios.create({
   baseURL: 'https://classroom.googleapis.com/v1',
-  timeout: 1000
+  timeout: 5000
 })
 
 module.exports.getCourses = function(profile) {

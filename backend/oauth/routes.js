@@ -32,7 +32,7 @@ module.exports.resolve = function(req, res) {
           console.log('userInDB', userInDB)
           if (userInDB.googleID) {
             if (userInDB.googleID === req.user.id) {
-              res.send('Signed in to Google! Please continue your browsing experience');
+              res.send('Signed in to Google! Please refresh your page and continue your browsing experience');
             } else {
               console.log('user does not match. fatal error')
               res.redirect('/api/logout');
@@ -40,7 +40,7 @@ module.exports.resolve = function(req, res) {
           } else {
             userInDB.googleID = req.user.id;
             userInDB.save((err) => console.log('err updating', err))
-            res.send('Success! Google Acct linked to your existing account.');
+            res.send('Success! Google Acct linked to your existing account. Please refresh your page and conmtinue your browsing experience');
           }
         } else {
           res.status(404).send('No user exists with your name! A truly fatal error.')
