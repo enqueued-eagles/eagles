@@ -15,7 +15,8 @@ class RouterWrapper extends Component {
       lessons: [],
       loggedIn: false,
       displayLogginError: false,
-      user: {}
+      user: {},
+      gUser: {}
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -117,7 +118,8 @@ class RouterWrapper extends Component {
         this.setState({
           user: data.userData,
           loggedIn: true,
-          displayLogginError: false
+          displayLogginError: false,
+          gUser: data.gUser
          });
       } else {
         this.setState({ displayLogginError: true });
@@ -148,7 +150,8 @@ class RouterWrapper extends Component {
         this.setState({
           user: data.userData,
           loggedIn: true,
-          displayLogginError: false
+          displayLogginError: false,
+          user: data.gUser
          });
       } else {
         this.setState({ displayLogginError: true });
@@ -171,7 +174,8 @@ class RouterWrapper extends Component {
         this.setState({
           user: data.userData,
           loggedIn: true,
-          displayLogginError: false
+          displayLogginError: false,
+          gUser: data.gUser
         });
       }
     });
@@ -186,7 +190,8 @@ class RouterWrapper extends Component {
     this.setState({
       loggedIn: false,
       displayLogginError: false,
-      user: {}
+      user: {},
+      gUser: {}
      });
   }
 
@@ -219,6 +224,7 @@ class RouterWrapper extends Component {
                   match={match}
                   sessionUserId={this.state.user._id}
                   getLessons={this.getLessons}
+                  gUser={this.state.gUser.id}
                 />
               )}
             />
