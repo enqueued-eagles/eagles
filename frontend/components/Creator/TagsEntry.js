@@ -14,13 +14,13 @@ class TagsEntry extends React.Component {
           <FormControl
             type='text'
             value={this.props.keywords}
-            onChange={this.props.changeKeywords}
+            onChange={this.props.changeDisplayedKeywords}
           />
           <Button
             onClick={this.props.keywordSubmit}
             bsStyle="info"
             bsSize="small"
-          >Set Tags</Button>
+          >Add Tag</Button>
         </Col>
       </div>
     )

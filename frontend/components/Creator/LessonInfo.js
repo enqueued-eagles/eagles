@@ -6,7 +6,8 @@ class LessonInfo extends React.Component {
     super(props);
     this.state = {
       editingName: false,
-      editingDescription: false
+      editingDescription: false,
+      editingKeywordBools: props.keywords.map(keyword => false)
     }
   }
 
@@ -18,6 +19,14 @@ class LessonInfo extends React.Component {
     this.setState({editingDescription: !this.state.editingDescription});
   }
 
+  toggleEditingKeyword(keywordIndex) {
+    let editingKeywordBools = this.state.editingKeywordBools.map((bool, i) => {
+      if (i === keywordIndex) return !bool;
+      else return bool;
+    });
+    this.setState({editingKeywordBools});
+  }
+
   render() {
     return (
       <ListGroup>
@@ -25,7 +34,7 @@ class LessonInfo extends React.Component {
             this.state.editingName ?
             <Form onSubmit={() => {
               this.toggleEditingName();
-              this.props.onSubmit();
+              this.props.submitEdit();
             }}>
               <ListGroupItem>Lesson Name:<FormControl
                 type='text'
@@ -40,19 +49,41 @@ class LessonInfo extends React.Component {
             this.state.editingDescription ?
             <Form onSubmit={() => {
                 this.toggleEditingDescription();
-                this.props.onSubmit();
+                this.props.submitEdit();
               }}>
               <ListGroupItem>Lesson Description:<FormControl
                 type='text'
                 value={this.props.description}
                 onChange={this.props.changeDescription}
-                /></ListGroupItem>
+              /></ListGroupItem>
             </Form>
           :
             <ListGroupItem onClick={this.toggleEditingDescription.bind(this)}>Lesson Description: {this.props.description}</ListGroupItem>
           }
-        <ListGroupItem>Lesson Tags: {this.props.keywords.join(', ')}</ListGroupItem>
-        <ListGroupItem>PreReq Lessons: {this.props.getNames().join(', ')}</ListGroupItem>
+        <ListGroupItem>Lesson Tags: {
+          this.props.keywords.map((keyword, i) => {
+            if (this.state.editingKeywordBools[i]) {
+              console.log('line 67 i:', i);
+              return (
+                <Form key={i} onSubmit={() => {
+                  this.toggleEditingKeyword(i);
+                  this.props.submitEdit();
+                }}>
+                  <FormControl
+                    type='text'
+                    value={keyword}
+                    onChange={(e) => {
+                      this.props.changeKeywords(e, i);
+                    }}
+                  />
+                </Form>
+              )
+            } else {
+              return <span key={i} onClick={this.toggleEditingKeyword.bind(this, i)}>{` ${keyword} `}</span>
+            }
+          })
+        }</ListGroupItem>
+        <ListGroupItem>Recommended Prerequisites: {this.props.getNames().join(', ')}</ListGroupItem>
       </ListGroup>
     )
   }
