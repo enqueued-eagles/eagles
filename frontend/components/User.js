@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem, Header, Button } from 'react-bootstrap';
 import { ListGroup, DropdownButton, ButtonGroup, MenuItem } from 'react-bootstrap';
-import { Grid, Row, Col, Nav, NavItem, Form, FormControl, FormGroup, ControlLabel, Tab, FieldGroup, OverlayTrigger, Panel  } from 'react-bootstrap';
+import { Grid, Row, Col, Nav, NavItem, Form, FormControl, FormGroup, ControlLabel, Tab, FieldGroup, OverlayTrigger, Panel, Modal  } from 'react-bootstrap';
 import LessonPreviewContainer from './Lesson/LessonPreviewContainer';
 import LessonPreview from './Lesson/LessonPreview';
 import axios from 'axios';
@@ -18,7 +18,8 @@ class User extends Component {
       currentUserFavorites: [],
       browsingUser: this.props.user,
       browsingUserLessons: [],
-      browsingUserFavorites: []
+      browsingUserFavorites: [],
+      update:false
     }
     this.deleteLesson = this.deleteLesson.bind(this);
     this.changeAvatarURL = this.changeAvatarURL.bind(this)
@@ -26,6 +27,7 @@ class User extends Component {
     this.submitOverview = this.submitOverview.bind(this)
     this.updatecurrentUser = this.updatecurrentUser.bind(this)
     this.updatebrowsingUser = this.updatebrowsingUser.bind(this)
+    this.closeUpdate = this.closeUpdate.bind(this)
   }
 
   componentDidMount() {
@@ -35,6 +37,12 @@ class User extends Component {
     })
     this.updatecurrentUser()
     this.updatebrowsingUser()
+  }
+
+  closeUpdate(){
+    this.setState({
+      update: false
+    })
   }
 
   updatecurrentUser (){
@@ -63,9 +71,9 @@ class User extends Component {
         console.log('booger currentUserFavorites', this.state.currentUserFavorites)
 
       })
-      .catch((err) => console.log('inner updatecurrentUser Error, lessons! ', err));
+      .catch((err) => console.error('inner updatecurrentUser Error, lessons! ', err));
     })
-    .catch((err) => console.log('outer updatecurrentUser Error! ', err));
+    .catch((err) => console.error('outer updatecurrentUser Error! ', err));
   }
 
   updatebrowsingUser(){
@@ -91,9 +99,9 @@ class User extends Component {
         console.log('booger browsingUserFavorites', this.state.browsingUserFavorites)
 
       })
-      .catch((err) => console.log('inner browsingUserUser Error, lessons! ', err));
+      .catch((err) => console.error('inner browsingUserUser Error, lessons! ', err));
     })
-    .catch((err) => console.log('Error! ', err));
+    .catch((err) => console.error('outer browsingUserUser Error! ', err));
   }
 
   deleteLesson(lessonId) {
@@ -109,7 +117,7 @@ class User extends Component {
       console.log('new state: ', newState);
       this.setState({lessons: newState});
     })
-    .catch((err) => console.log('Error deleting lessons', err));
+    .catch((err) => console.error('Error deleting lessons', err));
   }
 
   changeAvatarURL(e) {
@@ -121,11 +129,14 @@ class User extends Component {
     .then( (res) => {
       this.updatebrowsingUser()
     })
-    .catch( (err) => console.log('changeAvatarURL axios err', err) )
+    .catch( (err) => console.error('changeAvatarURL axios err', err) )
   }
 
   submitOverview(e){
     e.preventDefault();
+    this.setState({
+      update: true
+    })
     let data={};
     data.userId = this.state.browsingUser._id
     data.fullName = this.fullName.value
@@ -134,6 +145,7 @@ class User extends Component {
     data.githubURL = this.githubURL.value
     data.emailPublic = this.emailPublic.value
     data.emailLikeGoal = this.emailLikeGoal.value
+    data.email = this.email.value
     axios.put('/user',{'data':data})
     .then( (res) => {
       axios.get(`/user/${this.state.browsingUser._id}`)
@@ -142,18 +154,36 @@ class User extends Component {
         this.updatebrowsingUser()
       })
     })
-    .catch( (err) => console.log('submitOverview axios err', err) )
+    .catch( (err) => console.error('submitOverview axios err', err) )
   }
 
-
   render() {
+
+
+    console.log(this.state.update)
     console.log('render this.props.user', this.props.user)
     console.log('render this.state.currentUser', this.state.currentUser)
     console.log('render this.state.browsingUser', this.state.browsingUser)
     if(this.props.user.username === window.location.pathname.slice(6)){
       console.log('rendering user edit page')
       return (
+
         <Grid>
+          <Modal
+            bsSize="small"
+            show={this.state.update}
+            onHide={this.closeUpdate}
+          >
+            <Modal.Header>
+              <Modal.Title>Changes Received</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Your information has been updated.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.closeUpdate}>Close</Button>
+            </Modal.Footer>
+          </Modal>
           <Row className = "userEdit">
             <Col md={3}>
               <img
@@ -180,7 +210,7 @@ class User extends Component {
                 onSelect = {this.handleTabSelect}>
                   <NavItem eventKey="overview" title="Overview">Overview</NavItem>
                   <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
-                  <NavItem eventKey="favorites" title="Favorites">Favorties</NavItem>
+                  <NavItem eventKey="favorites" title="Favorites">Favorites</NavItem>
                 </Nav>
                 <Tab.Content animation>
                     <Tab.Pane eventKey="overview">
@@ -205,6 +235,13 @@ class User extends Component {
                           inputRef={ (input) => this.website = input }
                           type="text" 
                           placeholder={this.state.browsingUser.website || "Do you have a website?"}/>
+                        </FormGroup>
+                        <FormGroup >
+                          <ControlLabel> Notification E-mail Address:</ControlLabel>
+                          <FormControl 
+                          inputRef={ (input) => this.email = input }
+                          type="text" 
+                          placeholder={this.state.browsingUser.email || "Where do you want your notifications sent?"}/>
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel> Public E-mail Address:</ControlLabel>
@@ -294,7 +331,7 @@ class User extends Component {
                 <Nav bsStyle ="tabs" justified  
                 onSelect = {this.handleTabSelect}>
                   <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
-                  <NavItem eventKey="favorites" title="Favorites">Favorties</NavItem>
+                  <NavItem eventKey="favorites" title="Favorites">Favorites</NavItem>
                 </Nav>
                 <Tab.Content animation>
                     <Tab.Pane eventKey="lessons">

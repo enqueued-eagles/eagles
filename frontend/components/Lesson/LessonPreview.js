@@ -11,13 +11,16 @@ class LessonPreview extends Component {
   }
 
   componentDidMount() {
-    this.props.getUsers().then(users => {
-      for (let i = 0; i < users.length; i++) {
-        if (users[i]._id === this.props.lesson.userRef) {
-          this.setState({
-            creator: users[i].username
-          })
-          break;
+    if(this.props.getUsers){
+      this.props.getUsers().then(users => {
+        console.log(users)
+        for (let i = 0; i < users.length; i++) {
+          if (users[i]._id === this.props.lesson.userRef) {
+            this.setState({
+              creator: users[i].username
+            })
+            break;
+          }
         }
       })
     }

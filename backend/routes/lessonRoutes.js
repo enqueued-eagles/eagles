@@ -7,51 +7,40 @@ var User = schema.User;
 var Lesson = schema.Lesson;
 var Slide = schema.Slide;
 
-const shouldEmail = (likes) => {
-  return true;
-  // let goal = 10;
-  // while(goal <= likes) {
-  //   goal *= 2;
-  // }
-  // if(goal === likes) return true;
-  // return false;
+const shouldEmail = (currentLikes, goalLikes) => {
+  console.log('shouldEmail', currentLikes, 'goal:', goalLikes)
+  if (currentLikes % goalLikes == 0) return true
+  else return false
 }
 
-const sendCongad = (userRef, lessonName, numLikes) => {
+const sendCongratz = (userEmail, lessonName, numLikes, goal) => {
   // create reusable transporter object using the default SMTP transport
-  User.find({ _id : userRef })
-  .then((user) => {
-    user = user[0];
-    if (user.email) {
-        console.log('sending email to ', user.email);
-        var smtpTransport = nodemailer.createTransport({
-          service: "Gmail",
-          auth: {
-              user: "learningwithlessons@gmail.com",
-              pass: "test123test"
-            }
-          });
-
-        let mailOptions ={
-            from: "Learning with Lessons", // sender address
-            to: user.email, // list of receivers
-            subject: "Congratulations!", // Subject line
-            text: `Your lesson named ${lessonName} just reached ${numLikes} likes!`, // plaintext body
-            html: `<p>Your lesson named ${lessonName} just reached ${numLikes} likes!<p>` // html body
-        }
-
-        smtpTransport.sendMail(mailOptions, function(error, response){
-          if(error){
-              console.log(error);
-          }else{
-              res.redirect('/');
+  if (userEmail) {
+      console.log('sending email to ', userEmail);
+      var smtpTransport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "learningwithlessons@gmail.com",
+            pass: "test123test"
           }
-      });
-    }
-  })
-  .catch((err) => {
-    console.log('Error sending email: ', err);
-  })
+        });
+
+      let mailOptions ={
+          from: "Learning with Lessons", // sender address
+          to: userEmail, // list of receivers
+          subject: "Congratulations!", // Subject line
+          text: `Your lesson named ${lessonName} just reached ${numLikes} likes! We'll email you again after ${goal} likes. You can adjust this setting in your profile page.`, // plaintext body
+          html: `<p>Your lesson named ${lessonName} just reached ${numLikes} likes! We'll email you again after ${goal} likes. You can adjust this setting in your profile page.<p>` // html body
+      }
+
+      smtpTransport.sendMail(mailOptions, function(error, response){
+        if(error){
+            console.error(error);
+        }else{
+            res.redirect('/');
+        }
+    });
+  }
 }
 
 //find specific lesson
@@ -129,8 +118,8 @@ router.post('/lessons', function(req, res) {
 })
 
 router.put('/lessons', function(req, res) {
-  console.log('req.body:', req.body);
   Lesson.findById(req.body.lessonId, function(err, lesson) {
+    console.log(`pre change lesson`, lesson)
     //console.log('lesson is ', lesson, 'err is ', err)
     // console.log('Lesson is ', Lesson, lesson.keywords)
     if (err) res.send(err);
@@ -146,17 +135,24 @@ router.put('/lessons', function(req, res) {
         if (lesson.userLikes.indexOf(req.session.username) === -1) {
           lesson.userLikes.push(req.session.username);
           if (req.body.likes) lesson.likes = req.body.likes; // If they've liked it, good.
-          if(shouldEmail(lesson.userLikes.length)) sendCongad(lesson.userRef, lesson.name, lesson.userLikes.length);
         }
       } else {
         lesson.userLikes.push(req.session.username);
          if (req.body.likes) lesson.likes = req.body.likes
       }
     }
+    User.findById(lesson.userRef, (err, user) => {
+      if (err) res.send(err)
+      if(shouldEmail(lesson.userLikes.length, user.emailLikeGoal)){
+        sendCongratz(user.email, lesson.name, lesson.userLikes.length, user.emailLikeGoal)
+      } 
+    })
     // console.log('lesson.keywords',lesson.keywords, req.body.keywords)
+    console.log('post change lesson', lesson)
     lesson.save()
     .then(function (result) {
       res.send(result);
+      
     })
     .catch(function(err) {
       console.log('line 271', err);
