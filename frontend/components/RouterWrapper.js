@@ -146,13 +146,13 @@ class RouterWrapper extends Component {
     .then((data) => {
       console.log('login got data', data);
       if(data.loggedIn === true) {
-        this.getLessons();
         this.setState({
           user: data.userData,
           loggedIn: true,
           displayLogginError: false,
-          user: data.gUser
+          gUser: data.gUser
          });
+        this.getLessons();
       } else {
         this.setState({ displayLogginError: true });
       }

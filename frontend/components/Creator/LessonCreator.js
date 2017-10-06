@@ -407,11 +407,7 @@ class LessonCreator extends React.Component {
                 seeOldSlideFromLesson={this.seeOldSlideFromLesson.bind(this)}
               />
             :
-<<<<<<< HEAD
-              <div className='existingSlides'>No Slides Yet :(</div>
-=======
-              <div style={{color: 'white'}}>No Slides Yet</div>
->>>>>>> related
+              <div className='existingSlides' style={{color: 'white'}} >No Slides Yet :(</div>
           }
 
         </Form>

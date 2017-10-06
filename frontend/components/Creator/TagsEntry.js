@@ -9,7 +9,7 @@ class TagsEntry extends React.Component {
   render() {
     return (
       <div>
-        <div className='tagsEntry' style={{color: 'white'}>Add Tags To Lesson</div>
+        <div className='tagsEntry' style={{color: 'white'}}>Add Tags To Lesson</div>
         <Col>
           <FormControl
             type='text'
