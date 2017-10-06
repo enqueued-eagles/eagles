@@ -22,9 +22,13 @@ class Lesson extends React.Component {
       preReq: [],
       preReqLessons: [],
       postedToClass: false,
-      lame: false
+      lame: false,
+      noPreviousSlideAlert:false,
+      endOfLessonAlert:false
     }
     this.closeLame = this.closeLame.bind(this)
+    this.closeendOfLessonAlert = this.closeendOfLessonAlert.bind(this)
+    this.closenoPreviousSlideAlert = this.closenoPreviousSlideAlert.bind(this)
   }
 
   getUsers() {
@@ -125,11 +129,27 @@ class Lesson extends React.Component {
     })
   }
 
+  closeendOfLessonAlert () {
+    this.setState({
+      endOfLessonAlert: false
+    })
+    this.exit();
+  }
+
+  closenoPreviousSlideAlert () {
+    this.setState({
+      noPreviousSlideAlert: false
+    })
+    this.exit();
+  }
+  
+
   previousSlideClick(index) {
     index--;
     if (index < 0) {
-      alert("There is no previous slide! You will be redirected to the Lesson Home Page.");
-      this.exit();
+      this.setState({
+        noPreviousSlideAlert: true
+      })
     } else {
       this.setState({
         index: index
@@ -141,8 +161,9 @@ class Lesson extends React.Component {
   nextSlideClick(index) {
     index++;
     if (index === this.state.slides.length) {
-      alert('You\'ve made it to the end of the lesson.')
-      this.exit();
+      this.setState({
+        endOfLessonAlert:true
+      })
     } else {
       this.setState({
         index: index
@@ -239,6 +260,42 @@ class Lesson extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeLame}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+
+        <Modal
+          bsSize="small"
+          show={this.state.noPreviousSlideAlert}
+          onHide={this.closenoPreviousSlideAlert}
+          aria-labelledby="contained-modal-title"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title">No previous slide</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            There is no previous slide! You will be redirected to the Lesson Home Page.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closenoPreviousSlideAlert}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+
+        <Modal
+          bsSize="small"
+          show={this.state.endOfLessonAlert}
+          onHide={this.closeendOfLessonAlert}
+          aria-labelledby="contained-modal-title"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title">End of Lesson</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You\'ve made it to the end of the lesson.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closeendOfLessonAlert}>Close</Button>
           </Modal.Footer>
         </Modal>
 
