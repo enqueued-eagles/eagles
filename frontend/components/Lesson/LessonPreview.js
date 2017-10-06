@@ -23,8 +23,8 @@ class LessonPreview extends Component {
             break;
           }
         }
-      })
-    }
+      }
+    });
   }
 
   render() {
