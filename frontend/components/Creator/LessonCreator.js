@@ -57,6 +57,7 @@ class LessonCreator extends React.Component {
 
   // submit new Lesson to the db and set the lesson to the lessonId state property
   onSubmit (event) {
+    console.log('event.target', event.target);
     event.preventDefault();
     var lessonObj = {
       name: this.state.name,

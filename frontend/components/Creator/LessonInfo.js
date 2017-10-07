@@ -32,7 +32,8 @@ class LessonInfo extends React.Component {
       <ListGroup>
           {
             this.state.editingName ?
-            <Form onSubmit={() => {
+            <Form onSubmit={(e) => {
+              e.stopPropagation();
               this.toggleEditingName();
               this.props.submitEdit();
             }}>
