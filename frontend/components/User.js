@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ListGroupItem, Header, Button } from 'react-bootstrap';
 import { ListGroup, DropdownButton, ButtonGroup, MenuItem } from 'react-bootstrap';
 import { Grid, Row, Col, Nav, NavItem, Form, FormControl } from 'react-bootstrap';
-import { FormGroup, ControlLabel, Tab, FieldGroup } from 'react-bootstrap' 
+import { FormGroup, ControlLabel, Tab, FieldGroup } from 'react-bootstrap'
 import { Panel, Modal, ProgressBar, OverlayTrigger } from 'react-bootstrap';
 import LessonPreviewContainer from './Lesson/LessonPreviewContainer';
 import LessonPreview from './Lesson/LessonPreview';
@@ -214,7 +214,7 @@ class User extends Component {
               <br></br>
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
-                  <ControlLabel style={{color: 'white'}} > Avatar URL:</ControlLabel>
+                  <ControlLabel style={{color: 'white'}}> Avatar URL:</ControlLabel>
                   <FormControl
                   inputRef={ (input) => this.avatarURL = input }
                   type="text"
@@ -224,10 +224,10 @@ class User extends Component {
               </Form>
               <br></br>
               <b style={{color: 'white'}}>Profile Completion:</b>
-              <ProgressBar 
-                active 
-                label={`${this.state.progress}%`} 
-                now={this.state.progress} 
+              <ProgressBar
+                active
+                label={`${this.state.progress}%`}
+                now={this.state.progress}
               />
             </Col>
             <Tab.Container id="userEditTabs" defaultActiveKey="overview">
@@ -264,9 +264,9 @@ class User extends Component {
                         </FormGroup>
                         <FormGroup >
                           <ControlLabel style={{color: 'white'}}> Notification E-mail Address:</ControlLabel>
-                          <FormControl 
+                          <FormControl
                           inputRef={ (input) => this.email = input }
-                          type="text" 
+                          type="text"
                           placeholder={this.state.browsingUser.email || "Where do you want your notifications sent?"}/>
                         </FormGroup>
                         <FormGroup >
