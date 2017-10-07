@@ -3,22 +3,17 @@ const gclass = require('./gclass');
 // HELPERS
 
 const getSubmissionsBasedOnRequest = function(profile, lessonID) {
+  console.log('getSubmissions helper running')
    return gclass.getCourseWork(profile, false)
   .then(results => {
-    var courseWorks = results.data;
+    var courseWorks = results.data.courseWork;
 
     var courseWork = courseWorks.find((work) => {
       var url = work.materials[0].link.url
-      console.log('url', url);
       var urlParts = url.split('/');
       var foundLessonID = urlParts[urlParts.length - 1]
       return foundLessonID = lessonID;
     })
-
-    console.log('courseWork', courseWork);
-
-    // get the url from each
-    // compare it against the specific lesson sent by the user
 
     return gclass.getSubmissions(profile, courseWork)
   })
@@ -54,15 +49,11 @@ module.exports.getCourseWork = function(req, res, isForTeacher) {
   })
 }
 
-
-
 // COUMPOUND ROUTES
 
 module.exports.getSubmissionsAsStudent = function(req, res) {
   var lessonID = req.params.lessonId;
   var profile = req.user;
-
-  console.log('lessonID', lessonID)
 
   return getSubmissionsBasedOnRequest(profile, lessonID)
   .then(results => {
@@ -75,12 +66,11 @@ module.exports.getSubmissionsAsStudent = function(req, res) {
 }
 
 module.exports.submitAssignment = function(req, res) {
-  console.log('req.params', req.params);
+  console.log('submit assignment running')
+  console.log('req.params from client. should contain lessonID:', req.params);
   var lessonID = req.params.lessonId;
   var profile = req.user;
   var profileID = req.user.id;
-
-  console.log('lessonID', lessonID)
 
   return getSubmissionsBasedOnRequest(profile, lessonID)
   .then(results => {

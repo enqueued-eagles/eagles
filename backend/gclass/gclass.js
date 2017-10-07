@@ -18,12 +18,12 @@ const getFirstValidCourse = function(profile, courses, isForTeacher) {
     // Only returns true if it is for teacher AND it matches OR if both are false (NOT XOR)
 
     if (!((course.ownerId === profile.id) ^ isForTeacher)) {
-      console.log('found course to use!', course);
+      console.log('gclass 25 found course to use!', course);
       courseToUse = course;
     }
   }
 
-  console.log('courseToUse', courseToUse);
+  console.log('gclass 30 courseToUse', courseToUse);
   return courseToUse
 }
 
@@ -36,12 +36,12 @@ module.exports.getCourses = function(profile) {
 }
 
 module.exports.getCourseWork = function(profile, isForTeacher) {
+  console.log('getCourseWork running')
   const courses = profile.courses;
 
   let courseToUse = getFirstValidCourse(profile, courses, isForTeacher);
-  console.log('courseToUse', courseToUse)
 
-  return gclass.get(`/courses/${courseToUse}/courseWork`, {
+  return gclass.get(`/courses/${courseToUse.id}/courseWork`, {
     headers: { authorization: 'Bearer ' + profile.access }
   })
 }
@@ -99,8 +99,10 @@ module.exports.getSubmissions = function(profile, courseWork) {
   // })
 }
 
+// Couldn't get this to work with axios so I used request
+
 module.exports.submitAssignment = function(profile, courseWorkID, submission) {
-  console.log('submitASsignment running')
+  console.log('submitAssignment running')
   var courses = profile.courses;
   var accessCode = profile.access;
   
