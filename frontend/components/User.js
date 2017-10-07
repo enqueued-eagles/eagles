@@ -14,14 +14,19 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //currentURL is ghetto React Router
       currentURL:'',
+      //currentUser is pulled from the active page's URL
       currentUser: this.props.user,
       currentUserLessons: [],
       currentUserFavorites: [],
+      //browsingUser is the user logged in
       browsingUser: this.props.user,
       browsingUserLessons: [],
       browsingUserFavorites: [],
+      //state to trigger the update alert box
       update:false,
+      //state for progress bar
       progress:0
     }
     this.deleteLesson = this.deleteLesson.bind(this);
@@ -35,7 +40,6 @@ class User extends Component {
   }
 
   componentDidMount() {
-    console.log(`mount ${window.location.pathname.slice(6)}`)
     this.setState({
       currentURL:window.location.pathname.slice(6)
     })
@@ -50,6 +54,7 @@ class User extends Component {
     if (this.state.browsingUser.website) int++
     if (this.state.browsingUser.githubURL) int++
     if (this.state.browsingUser.emailPublic) int++
+    //since there are 5 fields, 100/5 is 20
     int = int*20
     console.log('progress int', int)
     this.setState({
@@ -72,7 +77,7 @@ class User extends Component {
     .then((user) => {
       this.setState({currentUser:user.data[0]})
       console.log(`updatecurrentUserresponse`, this.state.currentUser)
-      // ... i'm too lazy to do this properly.
+      // ... i'm too lazy to fix this legacy code
       this.props.getLessons()
       .then((unfilteredLessons) => {
         return {
@@ -100,7 +105,7 @@ class User extends Component {
     .then((user) => {
       this.setState({browsingUser:user.data[0]})
       console.log(`updatebrowsingUser response`, this.state.browsingUser)
-      // ... i'm too lazy to do this properly.
+      // ... i'm too lazy to fix this legacy code
       this.props.getLessons()
       .then((unfilteredLessons) => {
         return {
@@ -131,11 +136,9 @@ class User extends Component {
       },
       credentials: "include"
     })
-    .then((deletedlesson) => {
-      let newState = this.state.lessons.filter(lesson => lesson._id !== lessonId)
-      console.log('new state: ', newState);
-      this.setState({lessons: newState});
-    })
+    .then(
+      this.updatebrowsingUser()
+    )
     .catch((err) => console.error('Error deleting lessons', err));
   }
 
@@ -182,7 +185,6 @@ class User extends Component {
     console.log('render this.props.user', this.props.user)
     console.log('render this.state.currentUser', this.state.currentUser)
     console.log('render this.state.browsingUser', this.state.browsingUser)
-
     console.log('render this.state.browsingUserLessons', this.state.browsingUserLessons)
     if(this.props.user.username === window.location.pathname.slice(6)){
       console.log('rendering user edit page')
@@ -303,6 +305,7 @@ class User extends Component {
                             index={i}
                             key={i}
                             sessionUserId={this.state.currentUser._id}
+                            deleteLesson = {this.deleteLesson}
                           />
                         )}
                       </ListGroup>
