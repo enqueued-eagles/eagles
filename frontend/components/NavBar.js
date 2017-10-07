@@ -38,13 +38,13 @@ class NavBar extends Component {
                 <FormControl style={{width: 220}} type='text' placeholder='Enter a search term!' onChange={this.retrieveSearchInput.bind(this)}/>
               </FormGroup>
               <Link to='/'>
-              <Button type="submit" onClick={ (event) => {
-                this.handleSearchSubmit(event);
-                this.props.history.push('/');
-              }}>
-              Search
-            </Button>
-          </Link>
+                <Button type="submit" onClick={ (event) => {
+                  this.handleSearchSubmit(event);
+                  this.props.history.push('/');
+                }}>
+                Search
+                </Button>
+              </Link>
           <div className="navbar-right">
             <Link to='/create'>
               <Button bsStyle="" className="buttonz">Create</Button>

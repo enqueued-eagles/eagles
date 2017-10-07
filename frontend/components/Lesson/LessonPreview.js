@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroupItem, Header, Button, Alert} from 'react-bootstrap';
-import axios from 'axios'
+import { ListGroupItem, Header, Button, Image, Grid, Row, Thumbnail, Alert } from 'react-bootstrap';
+import axios from 'axios';
+import LessonSlideListEntry from './LessonSlideListEntry.js';
+import Thumb from './Thumb'
 
 class LessonPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       creator: '',
-      deleteAlert: false
+      deleteAlert: false,
+      slideName: '',
+      numSlides: 0
     }
-    console.log('PROPS.LESSON:', props.lesson);
+    // console.log('PROPS.LESSON:', props.lesson);
     this.getUsername = this.getUsername.bind(this)
     this.handleAlertDismiss=this.handleAlertDismiss.bind(this)
+    this.getSlideUrl = this.getSlideUrl.bind(this)
   }
 
   componentDidMount() {
@@ -34,6 +39,12 @@ class LessonPreview extends Component {
     })
   }
 
+  getSlideUrl() {
+    this.setState({
+      numSlides: this.state.numSlides++
+    })
+  }
+
   render() {
     console.log('deletelessonprop', this.props.deleteLesson)
     if (this.state.deleteAlert) {
@@ -42,9 +53,9 @@ class LessonPreview extends Component {
         <h4>Are you sure you want to delete your lesson?</h4>
         <p>Once you delete your lesson "{this.props.lesson.name}", it will be gone forever! Are you sure?</p>
         <p>
-          <Button 
-            bsStyle="danger" 
-            onClick={ () => this.props.deleteLesson(this.props.lesson._id)} 
+          <Button
+            bsStyle="danger"
+            onClick={ () => this.props.deleteLesson(this.props.lesson._id)}
           >
           Delete it.
           </Button>
@@ -56,19 +67,41 @@ class LessonPreview extends Component {
     }
     return (
         <div className="LessonPreview">
-          <ListGroupItem header={this.props.lesson.name || 'no name'}>
+          <ListGroupItem>
+            <div>
+              <a style={{color:'black', fontSize: 28, fontWeight: 'bold'}}>
+                {this.props.lesson.name || 'no name'}
+              </a>
+              <span style={{float: 'right'}}>
+                {
+                  this.props.sessionUserId === this.props.lesson.userRef ?
+                  <Link to={{
+                    pathname: '/create',
+                    lesson: this.props.lesson,
+                    editingOldSlide: true
+                  }}>
+                    <Image src="https://image.flaticon.com/icons/png/512/7/7706.png" width="25" height="25"/>
+                  </Link>
+                  : null
+                }
+              </span>
+            </div>
             <br />
             {this.props.lesson.description || 'no description'}
             <br />
             <br />
-            <b>Creator:</b> {this.state.creator}
-            <br />
-            <Link to={'/lesson/' + this.props.lesson._id}>
-              <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
-            </Link>{` `}
-            <Link to={'/user/' + this.state.creator}>
-              <Button bsSize="small">Creator's Profile</Button>
-            </Link>{' '}
+            <div style={{alignItems: 'center'}}>
+              <b>Creator:</b> {this.state.creator}
+              <span style={{float: 'right'}}>
+                <Link to={'/lesson/' + this.props.lesson._id}>
+                  <Button bsStyle="primary" bsSize="small" >View Lesson</Button>
+                </Link>{` `}
+                <Link to={'/user/' + this.state.creator}>
+                  <Button bsSize="small">Creator's Profile</Button>
+                </Link>{' '}
+              </span>
+            </div>
+            <br></br>
             {
               this.props.sessionUserId === this.props.lesson.userRef ?
               <Link to={{
@@ -83,19 +116,29 @@ class LessonPreview extends Component {
             {' '}
             {
               this.props.deleteLesson ?
-                <Button 
-                  type="button" 
-                  bsStyle="danger" 
-                  bsSize="small" 
+                <Button
+                  type="button"
+                  bsStyle="danger"
+                  bsSize="small"
                   onClick={ () => this.setState({deleteAlert:true}) }>
                   Delete Lesson
                 </Button>
               : null
             }
+            {this.props.lesson.slides.map((slide, i) => {
+              return (
+                <Thumb
+                  slide={slide}
+                  key={i}
+                  getSlideUrl={this.getSlideUrl}
+                />
+              )
+            })}
         </ListGroupItem>
       </div>
     )
   }
 }
+
 
 export default LessonPreview;

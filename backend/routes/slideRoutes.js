@@ -39,11 +39,11 @@ router.post('/api/slides', function(req, res) {
   var quizUrl = req.body.quizUrl;
   var youTubeThumbnailUrl = req.body.youTubeThumbnailUrl;
   var youTubeTags = req.body.youTubeTags;
-  Slide.create({ 
+  Slide.create({
     name: name,
     lessonRef: lessonRef,
-    youTubeUrl: youTubeUrl, 
-    text: text, 
+    youTubeUrl: youTubeUrl,
+    text: text,
     quizUrl: quizUrl,
     youTubeThumbnailUrl: youTubeThumbnailUrl,
     youTubeTags: youTubeTags
