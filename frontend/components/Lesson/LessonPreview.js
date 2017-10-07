@@ -39,6 +39,11 @@ class LessonPreview extends Component {
     })
   }
 
+  handleDeleteLesson (id){
+    this.handleAlertDismiss();
+    this.props.deleteLesson(id);
+  }
+
   getSlideUrl() {
     this.setState({
       numSlides: this.state.numSlides++
@@ -54,7 +59,8 @@ class LessonPreview extends Component {
         <p>
           <Button
             bsStyle="danger"
-            onClick={ () => this.props.deleteLesson(this.props.lesson._id)}
+            onClick={ () => this.handleDeleteLesson(this.props.lesson._id)
+            }
           >
           Delete it.
           </Button>
