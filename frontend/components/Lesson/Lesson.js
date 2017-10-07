@@ -24,7 +24,8 @@ class Lesson extends React.Component {
       postedToClass: false,
       lame: false,
       noPreviousSlideAlert:false,
-      endOfLessonAlert:false
+      endOfLessonAlert:false,
+      submittedAssignment: false
     }
     this.closeLame = this.closeLame.bind(this)
     this.closeendOfLessonAlert = this.closeendOfLessonAlert.bind(this)
@@ -55,9 +56,13 @@ class Lesson extends React.Component {
   componentDidMount(id) {
     // console.log(this.props)
     id = id || this.props.match.params.id;
-    console.log('fetchingggg.g.......');
+    console.log('fetching on lesson page');
+    console.log('id', id)
     fetch('/api/lesson/' + id, { method: 'GET', credentials: "include" })
-      .then((response) => response.json())
+      .then((response) => {
+        console.log('fetch returning')
+        return response.json()
+      })
       .then((lessonDataJSON) => {
         console.log('lessonDATAJSON', lessonDataJSON)
         this.setState({
@@ -68,7 +73,7 @@ class Lesson extends React.Component {
           preReqLessons: [],
           relatedLessons: []
         });
-        console.log(this.state.specificLesson);
+        console.log('speci lesson', this.state.specificLesson);
       })
       .then((res) => {
          fetch('/api/lessons', {
@@ -241,6 +246,31 @@ class Lesson extends React.Component {
     .catch(err => {console.log('error posting', err)})
   }
 
+  submitAssignment() {
+    var lessonID = this.state.specificLesson._id;
+    var url = '/gclass/submissions/' + lessonID
+    console.log('lesson', this.state.specificLesson)
+    console.log('lessonID', lessonID)
+    console.log('url', url)
+
+    fetch(url, {
+      method: "POST",
+      body: {},
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    .then(results => {
+      console.log('results', results)
+      this.setState({
+        submittedAssignment: true
+      })
+    })
+    .catch(err => {console.log('error posting', err)})
+
+  }
+
   render() {
     return (
       <div>
@@ -361,6 +391,9 @@ class Lesson extends React.Component {
             )}
           </div>
         )}
+        <Button type="button" onClick={this.submitAssignment.bind(this)}>
+          Submit Assignment
+        </Button>
         <div className="relatedLessons" style={{color:'white'}}>
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (

@@ -1,5 +1,31 @@
 const gclass = require('./gclass');
 
+// HELPERS
+
+const getSubmissionsBasedOnRequest = function(profile, lessonID) {
+   return gclass.getCourseWork(profile, false)
+  .then(results => {
+    var courseWorks = results.data;
+
+    var courseWork = courseWorks.find((work) => {
+      var url = work.materials[0].link.url
+      console.log('url', url);
+      var urlParts = url.split('/');
+      var foundLessonID = urlParts[urlParts.length - 1]
+      return foundLessonID = lessonID;
+    })
+
+    console.log('courseWork', courseWork);
+
+    // get the url from each
+    // compare it against the specific lesson sent by the user
+
+    return gclass.getSubmissions(profile, courseWork)
+  })
+}
+
+// SIMPLE ROUTES
+
 module.exports.addCourseWork = function(req, res) {
   console.log('addcoursework running')
   let profile = req.user || req.session.user || req.body.user;
@@ -16,9 +42,9 @@ module.exports.addCourseWork = function(req, res) {
   })
 }
 
-module.exports.getCourseWork = function(req, res) {
+module.exports.getCourseWork = function(req, res, isForTeacher) {
   let profile = req.user;
-  gclass.getCourseWork(profile)
+  gclass.getCourseWork(profile, isForTeacher)
   .then((results) => {
     res.status(201).send(results.data);
   })
@@ -27,6 +53,50 @@ module.exports.getCourseWork = function(req, res) {
     res.status(400).send(err);
   })
 }
+
+
+
+// COUMPOUND ROUTES
+
+module.exports.getSubmissionsAsStudent = function(req, res) {
+  var lessonID = req.params.lessonId;
+  var profile = req.user;
+
+  console.log('lessonID', lessonID)
+
+  return getSubmissionsBasedOnRequest(profile, lessonID)
+  .then(results => {
+    res.status(200).send(results.data)
+  })
+  .catch(err => {
+    console.log('err caught', err);
+    res.status(400).send(err);
+  });
+}
+
+module.exports.submitAssignment = function(req, res) {
+  console.log('req.params', req.params);
+  var lessonID = req.params.lessonId;
+  var profile = req.user;
+  var profileID = req.user.id;
+
+  console.log('lessonID', lessonID)
+
+  return getSubmissionsBasedOnRequest(profile, lessonID)
+  .then(results => {
+    var submissions = results.data.studentSubmissions
+    var submission = submissions.find((submission) => {
+      return submission.userId = profileID;
+    });
+    var courseWorkID = submission.courseWorkId;
+
+    gclass.submitAssignment(profile, courseWorkID, submission)
+    .then(results => res.status(201).send('success!'))
+    .catch(err => res.status(400).send(err))
+  })
+}
+
+
 
 // TESTING 
 
