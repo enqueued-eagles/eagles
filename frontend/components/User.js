@@ -174,7 +174,6 @@ class User extends Component {
       .then((user) => {
         console.log('newuser',user)
         this.updatebrowsingUser()
-        this.updateProgressBar()
       })
     })
     .catch( (err) => console.error('submitOverview axios err', err) )
