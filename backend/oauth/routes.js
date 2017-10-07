@@ -56,10 +56,13 @@ module.exports.resolve = function(req, res) {
           res.redirect('/');
         } else {
           // fix this by making it so create account can redirect to /
+          let num = Math.floor((Math.random() * 150) + 1)
           req.body.username = req.user.emails[0].value;
           req.body.password = req.user.id;
           req.body.email = req.user.emails[0].value;
           req.body.googleID = req.user.id;
+          req.body.avatarURL =  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`
+
           console.log('about to create acct', req.body)
           return checkAuth.createAccount(req, res, true)
         }
