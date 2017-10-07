@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Col, FormControl, ControlLabel, Button, Panel, Image } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -18,8 +19,6 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <a href="/login/google">LOG IN WITH GOOGLE</a>
-
         <Form horizontal onSubmit={(e) => e.preventDefault()}>
           <FormGroup>
             {
@@ -105,6 +104,15 @@ class Login extends Component {
             </FormGroup>
           )}
         </Form>
+        <div style={{display: 'flex', justifyContent: 'center'}} href='/login/google'>
+          {/* <Link {'/login/google'}> */}
+            <Image
+              src="http://northmead.patterson.k12.ca.us/UserFiles/Servers/Server_18037253/Templates/login-google.png"
+              width="200"
+              height="40"
+              ></Image>
+          {/* </Link> */}
+        </div>
       </div>
       )
     }

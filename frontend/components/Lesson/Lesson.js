@@ -394,7 +394,7 @@ class Lesson extends React.Component {
         <Button type="button" onClick={this.submitAssignment.bind(this)}>
           Submit Assignment
         </Button>
-        <div className="relatedLessons" style={{color:'white'}}>
+        <div className="relatedLessons">
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (
             <LessonPreview
