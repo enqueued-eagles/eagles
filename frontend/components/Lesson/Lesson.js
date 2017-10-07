@@ -24,7 +24,8 @@ class Lesson extends React.Component {
       postedToClass: false,
       lame: false,
       noPreviousSlideAlert:false,
-      endOfLessonAlert:false
+      endOfLessonAlert:false,
+      submittedAssignment: false
     }
     this.closeLame = this.closeLame.bind(this)
     this.closeendOfLessonAlert = this.closeendOfLessonAlert.bind(this)
@@ -241,6 +242,27 @@ class Lesson extends React.Component {
     .catch(err => {console.log('error posting', err)})
   }
 
+  submitAssignment() {
+    var lessonID = this.state.specificLesson._id;
+
+    fetch('/gclass/submissions/:' + lessonId, {
+      method: "POST",
+      body: {},
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    })
+    .then(results => {
+      console.log('results', results)
+      this.setState({
+        submittedAssignment: true
+      })
+    })
+    .catch(err => {console.log('error posting', err)})
+
+  }
+
   render() {
     return (
       <div>
@@ -347,6 +369,9 @@ class Lesson extends React.Component {
             )}
           </div>
         )}
+        <Button type="button" onClick={this.submitAssignment.bind(this)}>
+          Submit Assignment
+        </Button>
         <div className="relatedLessons">
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (

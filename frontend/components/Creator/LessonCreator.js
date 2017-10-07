@@ -32,7 +32,7 @@ class LessonCreator extends React.Component {
 
   componentDidMount() {
     if (this.props.location.lesson) {
-      fetch('/slides', {
+      fetch('/api/slides', {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",

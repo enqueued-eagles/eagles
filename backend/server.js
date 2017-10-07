@@ -60,7 +60,10 @@ app.get('/testing', function(req, res) {
 
 // -------------------GCLASS------------------------- //
 app.post('/gclass/coursework', gclassRoutes.addCourseWork);
-app.get('/gclass/coursework', gclassRoutes.getCourseWork);
+app.get('/gclass/coursework/student', (req, res) => gclassRoutes.getCourseWorkStudent(req, res, false));
+app.get('/gclass/coursework/teacher', (req, res) => gclassRoutes.getCourseWorkTeacher(req, res, true));
+app.get('/gclass/submissions/:lessonId', gclassRoutes.getSubmissionsAsStudent);
+app.post('/gclass/submissions/:lessonId', gclassRoutes.submitAssignment);
 
 // -------------------AUTH------------------------- //
 app.get('/api/checklogin', checkAuth.checkLogin);
