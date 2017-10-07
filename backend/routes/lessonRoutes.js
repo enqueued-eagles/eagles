@@ -45,13 +45,17 @@ const sendCongratz = (userEmail, lessonName, numLikes, goal) => {
 
 //find specific lesson
 router.get('/api/lesson/:lessonId', function(req, res) {
+  console.log('heard a lesosn request', req.params.lessonId)
   Lesson.find({_id: req.params.lessonId})
   .then(function(lesson) {
+    console.log('lesson', lesson);
     return lesson[0];
   })
   .then((specificLesson) => {
+    console.log('specificLesson', specificLesson)
     Slide.find({})
     .then((allSlides) => {
+      console.log('allSlides', allSlides)
       specificLesson.slides = allSlides.filter((slide) => {
         if (specificLesson.slides.indexOf(slide._id) >= 0) {
           return slide;
@@ -60,10 +64,12 @@ router.get('/api/lesson/:lessonId', function(req, res) {
       return specificLesson;
     })
     .then((lessonWithSlides) => {
+      console.log('about to send back lesson and slides', lessonWithSlides)
       res.send(lessonWithSlides);
     })
   })
   .catch(function(err) {
+    console.log('about to send back err', err)
     res.send(err);
   })
 });
