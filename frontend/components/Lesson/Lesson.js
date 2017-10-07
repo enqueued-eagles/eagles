@@ -71,7 +71,8 @@ class Lesson extends React.Component {
           keywords: lessonDataJSON.keywords,
           preReq: lessonDataJSON.preReqLessons,
           preReqLessons: [],
-          relatedLessons: []
+          relatedLessons: [],
+          submittedAssignment: false
         });
         console.log('speci lesson', this.state.specificLesson);
       })
@@ -378,22 +379,27 @@ class Lesson extends React.Component {
               <a> You liked this already! </a>
             ) : this.state.firstLike ? <a> You liked this! </a> : null}
             {!this.props.gUser ? (
-              <a href='/login/google' target="_blank">LOG IN TO GOOGLE TO POST TO CLASSROOM</a>
+              <a href='/login/google' target="_blank" style={{color:"white"}}>LOG IN TO GOOGLE TO POST TO CLASSROOM</a>
               ) : (
               !this.state.postedToClass ? (
                 <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>
                   <Image src="/assets/gclass.png" width="25" height="25"/>
                 </Button>
               ) : (
-                <span className="posted-message">Posted to classroom!</span>
+                <span className="posted-message" style={{color:"white"}}>Posted to classroom!</span>
 
               )
             )}
           </div>
         )}
-        <Button type="button" onClick={this.submitAssignment.bind(this)}>
-          Submit Assignment
-        </Button>
+        {!this.state.submittedAssignment ? (
+          <Button type="button" onClick={this.submitAssignment.bind(this)}>
+            Submit Assignment
+          </Button>
+          ) : (
+          <div style={{color:"white"}}>Assignment marked complete in classroom!</div>
+          )
+        }
         <div className="relatedLessons" style={{color:'white'}}>
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (
