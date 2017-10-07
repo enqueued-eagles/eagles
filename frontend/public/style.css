@@ -11,9 +11,29 @@ body {
 }
 
 .navbar-default {
-  background-color: #6ED9A0;
-  border-color: #6ED9A0;
-  background-image: none
+  background: #00D097 !important;
+  border-color: #00D097 !important;
+}
+
+.buttonz {
+  background-color: #00D097 !important;
+  color: white;
+  box-sizing: none;
+  font-size: 16;
+  font-weight: bold;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: left;
+  /*left: 0*/
+  /*width:*/
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: right;
+  margin-right: 0
 }
 
 .index {

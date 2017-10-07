@@ -204,6 +204,7 @@ class RouterWrapper extends Component {
         logout={ this.logout }
         getLessons={ this.getLessons }
         user = {this.state.user.username}
+        isLogged = {this.state.loggedIn}
         >
           { this.state.loggedIn ? // If you are logged in allow all routes
          (<Switch>

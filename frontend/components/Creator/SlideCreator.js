@@ -131,7 +131,7 @@ class SlideCreator extends React.Component {
       <Form horizontal onSubmit={this.onSubmit.bind(this)}>
         <FormGroup>
           <div className='slideCreator'>
-            <ControlLabel>Slide Creator</ControlLabel>
+            <ControlLabel style={{color: 'white'}}>Slide Creator</ControlLabel>
           </div>
         </FormGroup>
         <FormGroup>
