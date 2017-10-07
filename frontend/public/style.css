@@ -49,9 +49,9 @@ body {
 }
 
 .slideNameInLessonSlideListEntry {
-  cursor:pointer;
-  color:blue;
-  text-decoration:underline;
+  /*cursor:pointer;
+  color:blue;*/
+  /*text-decoration:underline;*/
 }
 
 .gclass {

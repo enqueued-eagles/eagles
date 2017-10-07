@@ -275,7 +275,7 @@ class Lesson extends React.Component {
   render() {
     return (
       <div>
-      
+
         <Modal
           bsSize="small"
           show={this.state.lame}
