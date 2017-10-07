@@ -100,6 +100,7 @@ module.exports.getSubmissions = function(profile, courseWork) {
 }
 
 module.exports.submitAssignment = function(profile, courseWorkID, submission) {
+  console.log('submitASsignment running')
   var courses = profile.courses;
   var accessCode = profile.access;
   
@@ -127,7 +128,7 @@ module.exports.submitAssignment = function(profile, courseWorkID, submission) {
         resolve(body)
       }
     });
-  })
+  });
 
   // return gclass.post(url, {
   //   headers: {

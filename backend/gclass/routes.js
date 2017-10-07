@@ -75,6 +75,7 @@ module.exports.getSubmissionsAsStudent = function(req, res) {
 }
 
 module.exports.submitAssignment = function(req, res) {
+  console.log('req.params', req.params);
   var lessonID = req.params.lessonId;
   var profile = req.user;
   var profileID = req.user.id;
