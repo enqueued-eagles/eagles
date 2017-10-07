@@ -46,7 +46,6 @@ class LessonPreview extends Component {
   }
 
   render() {
-    console.log('deletelessonprop', this.props.deleteLesson)
     if (this.state.deleteAlert) {
       return (
       <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
@@ -108,41 +107,19 @@ class LessonPreview extends Component {
                 <Link to={'/user/' + this.state.creator}>
                   <Button bsSize="small">Creator's Profile</Button>
                 </Link>{' '}
+                {
+                  this.props.deleteLesson ?
+                    <Button
+                      type="button"
+                      bsStyle="danger"
+                      bsSize="small"
+                      onClick={ () => this.setState({deleteAlert:true}) }>
+                      Delete Lesson
+                    </Button>
+                  : null
+                }
               </span>
             </div>
-            <br></br>
-            {
-              this.props.sessionUserId === this.props.lesson.userRef ?
-              <Link to={{
-                pathname: '/create',
-                lesson: this.props.lesson,
-                editingOldSlide: true
-              }}>
-                <Button type="button" bsStyle="primary" bsSize="small">Edit Lesson</Button>
-              </Link>
-              : null
-            }
-            {' '}
-            {
-              this.props.deleteLesson ?
-                <Button
-                  type="button"
-                  bsStyle="danger"
-                  bsSize="small"
-                  onClick={ () => this.setState({deleteAlert:true}) }>
-                  Delete Lesson
-                </Button>
-              : null
-            }
-            {this.props.lesson.slides.map((slide, i) => {
-              return (
-                <Thumb
-                  slide={slide}
-                  key={i}
-                  getSlideUrl={this.getSlideUrl}
-                />
-              )
-            })}
         </ListGroupItem>
       </div>
     )

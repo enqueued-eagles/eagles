@@ -49,7 +49,7 @@ class Login extends Component {
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}></Col>
             <Col xs={4} xsOffset={2}>
-              <FormControl type='text' placeholder='Password'
+              <FormControl type='password' placeholder='Password'
                 value={this.state.password}
                 onChange={(e) => this.setState({ password: e.target.value })}
                 onSelect={(e) => this.setState({passwordColor: '#00D097', userColor: '#2A363F', emailColor: '#2A363F'})}
