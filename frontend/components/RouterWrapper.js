@@ -212,7 +212,7 @@ class RouterWrapper extends Component {
               render={() => (
                 <LessonPreviewContainer
                   sessionUserId={this.state.user._id}
-                  lessons= { this.state.lessons }
+                  lessons= { this.state.lessons.slice(1) }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }
                   getUsers={this.getUsers}
