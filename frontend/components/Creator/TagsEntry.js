@@ -13,8 +13,8 @@ class TagsEntry extends React.Component {
         <Col>
           <FormControl
             type='text'
-            value={this.props.keywords}
-            onChange={this.props.changeDisplayedKeywords}
+            value={this.props.keyword}
+            onChange={this.props.changeDisplayedKeyword}
           />
           <Button
             onClick={this.props.keywordSubmit}
