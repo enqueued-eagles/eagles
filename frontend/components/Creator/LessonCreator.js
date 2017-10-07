@@ -248,6 +248,17 @@ class LessonCreator extends React.Component {
     });
   }
 
+  removeKeyword (keywordIdx) {
+    let keywords = [
+      ...this.state.keywords.slice(0, keywordIdx),
+      ...this.state.keywords.slice(keywordIdx + 1)
+    ];
+    this.setState({
+      keywords
+    });
+    setTimeout(this.submitEdit.bind(this), 100);
+  }
+
   changeCreateState (event) {
     console.log('changingcreatestate')
     this.setState({
@@ -336,6 +347,7 @@ class LessonCreator extends React.Component {
                   changeName={this.changeName.bind(this)}
                   changeDescription={this.changeDescription.bind(this)}
                   changeKeywords={this.changeKeywords.bind(this)}
+                  removeKeyword={this.removeKeyword.bind(this)}
                   submitEdit={this.submitEdit.bind(this)}
                 />
                 <div>
@@ -441,6 +453,7 @@ class LessonCreator extends React.Component {
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
               changeKeywords={this.changeKeywords.bind(this)}
+              removeKeyword={this.removeKeyword.bind(this)}
               submitEdit={this.submitEdit.bind(this)}
             />
             <SlideCreator
@@ -463,6 +476,7 @@ class LessonCreator extends React.Component {
               changeName={this.changeName.bind(this)}
               changeDescription={this.changeDescription.bind(this)}
               changeKeywords={this.changeKeywords.bind(this)}
+              removeKeyword={this.removeKeyword.bind(this)}
               submitEdit={this.submitEdit.bind(this)}
             />
             <SlideCreator

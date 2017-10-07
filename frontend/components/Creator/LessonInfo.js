@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, ListGroupItem, Form, FormControl } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Form, FormControl, Button, Image } from 'react-bootstrap';
 
 class LessonInfo extends React.Component {
   constructor(props) {
@@ -79,7 +79,20 @@ class LessonInfo extends React.Component {
                 </Form>
               )
             } else {
-              return <span key={i} onClick={this.toggleEditingKeyword.bind(this, i)}>{` ${keyword} `}</span>
+              return (
+                <Button
+                  key={i}
+                  bsStyle="info"
+                  bsSize="small"
+                >
+                  <span key={i} onClick={this.toggleEditingKeyword.bind(this, i)}>
+                    {`${keyword} `}
+                  </span>
+                  <span onClick={this.props.removeKeyword.bind(null, i)}>
+                    <Image src="assets/delete.png" width="10" height="10" />
+                  </span>
+                </Button>
+              )
             }
           })
         }</ListGroupItem>
