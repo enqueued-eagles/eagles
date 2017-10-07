@@ -104,14 +104,11 @@ class Login extends Component {
             </FormGroup>
           )}
         </Form>
-        <div style={{display: 'flex', justifyContent: 'center'}} href='/login/google'>
-          {/* <Link {'/login/google'}> */}
-            <Image
-              src="http://northmead.patterson.k12.ca.us/UserFiles/Servers/Server_18037253/Templates/login-google.png"
-              width="200"
-              height="40"
-              ></Image>
-          {/* </Link> */}
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} href='/login/google'>
+          <Image src="http://pngimg.com/uploads/google/google_PNG19635.png" width="50" height="50"/>
+          <a href='/login/google' style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+             Sign in with Google
+          </a>
         </div>
       </div>
       )

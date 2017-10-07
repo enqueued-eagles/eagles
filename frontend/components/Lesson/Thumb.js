@@ -9,7 +9,6 @@ class Thumb extends Component {
       thumbnail: '',
       name: ''
     }
-
     this.getThumbnail = this.getThumbnail.bind(this);
   }
 
@@ -17,12 +16,12 @@ class Thumb extends Component {
     this.getThumbnail();
   }
 
+
   getThumbnail() {
     axios.get(`/api/slides/${this.props.slide}`)
     .then(slide => {
       this.setState({
-        thumbnail: slide.data[0].youTubeThumbnailUrl,
-        name: slide.data[0].name
+        thumbnail: slide.data[0].youTubeThumbnailUrl
       })
     })
     .then(res => {

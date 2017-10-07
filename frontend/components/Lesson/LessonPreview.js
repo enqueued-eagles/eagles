@@ -86,9 +86,18 @@ class LessonPreview extends Component {
                 }
               </span>
             </div>
+            <span style={{marginLeft: 15}}>{this.props.lesson.description || 'no description'}</span>
             <br />
-            {this.props.lesson.description || 'no description'}
-            <br />
+            <br></br>
+            {this.props.lesson.slides.map((slide, i) => {
+              return (
+                <Thumb
+                  slide={slide}
+                  key={i}
+                  getSlideUrl={this.getSlideUrl}
+                />
+              )
+            })}
             <br />
             <div style={{alignItems: 'center'}}>
               <b>Creator:</b> {this.state.creator}
