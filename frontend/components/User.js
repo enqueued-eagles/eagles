@@ -118,7 +118,7 @@ class User extends Component {
               <br></br>
               <Form inline onSubmit={this.changeAvatarURL}>
                 <FormGroup controlId="avatarURL" >
-                  <ControlLabel> Avatar URL:</ControlLabel>
+                  <ControlLabel style={{color: 'white'}}> Avatar URL:</ControlLabel>
                   <FormControl
                   id="avatarURL"
                   type="text"
@@ -132,50 +132,50 @@ class User extends Component {
               <Col md={9}>
                 <Nav bsStyle ="tabs" justified
                 onSelect = {this.handleTabSelect}>
-                  <NavItem eventKey="overview" title="Overview">Overview</NavItem>
-                  <NavItem eventKey="lessons" title="Lessons">Lessons</NavItem>
-                  <NavItem eventKey="favorites" title="Favorites">Favorties</NavItem>
+                  <NavItem eventKey="overview" title="Overview" style={{color: 'white'}}>Overview</NavItem>
+                  <NavItem eventKey="lessons" title="Lessons" style={{color: 'white'}}>Lessons</NavItem>
+                  <NavItem eventKey="favorites" title="Favorites" style={{color: 'white'}}>Favorties</NavItem>
                 </Nav>
                 <Tab.Content animation>
                     <Tab.Pane eventKey="overview">
                       <Form onSubmit={this.submitOverview}>
                         <FormGroup >
-                          <ControlLabel> Full Name:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Full Name:</ControlLabel>
                           <FormControl
                           id="fullName"
                           type="text"
                           placeholder={this.state.currentUser.fullName || "What's your name?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Location:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Location:</ControlLabel>
                           <FormControl
                           id="location"
                           type="text"
                           placeholder={this.state.currentUser.location || "Where are you located?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Website:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Website:</ControlLabel>
                           <FormControl
                           id="website"
                           type="text"
                           placeholder={this.state.currentUser.website || "Do you have a website?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Public E-mail Address:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Public E-mail Address:</ControlLabel>
                           <FormControl
                           id="emailPublic"
                           type="text"
                           placeholder={this.state.currentUser.emailPublic || "Where do you want the public to email you?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Github:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Github:</ControlLabel>
                           <FormControl
                           id="githubURL"
                           type="text"
                           placeholder={this.state.currentUser.githubURL || "What's your GitHub Account?"}/>
                         </FormGroup>
                         <FormGroup >
-                          <ControlLabel> Email me every x likes:</ControlLabel>
+                          <ControlLabel style={{color: 'white'}}> Email me every x likes:</ControlLabel>
                           <FormControl
                           id="emailLikeGoal"
                           type="text"
@@ -219,11 +219,11 @@ class User extends Component {
     else {
       return (
         <ListGroup>
-          <ListGroupItem>Username: { this.props.user.username || 'no username!' }</ListGroupItem>
+          <ListGroupItem style={{color: 'white'}}>Username: { this.props.user.username || 'no username!' }</ListGroupItem>
           <ListGroupItem>
             <ButtonGroup vertical block>
               <DropdownButton title="Your Favorite Lessons:" id="Your Favorite Lesson">
-                <MenuItem key={ this.props.user._id + 1 }>
+                <MenuItem key={ this.props.user._id + 1 } style={{color: 'white'}}>
                   { this.state.favoriteLessons.length === 0 ? 'You Have No Favorite Lessons!' :
                     (this.state.favoriteLessons.map((lesson, i) =>
                       <div key={ lesson._id }>
@@ -243,7 +243,7 @@ class User extends Component {
           <ListGroupItem>
             <ButtonGroup vertical block>
               <DropdownButton title="Your Lessons:" id="Your Lessons">
-                <MenuItem key={ this.props.user._id }>
+                <MenuItem key={ this.props.user._id } style={{color: 'white'}}>
                   { this.state.lessons.length === 0 ? 'You Have No Lessons!' :
                     (this.state.lessons.map((lesson, i) =>
                       <div key={ lesson._id }>

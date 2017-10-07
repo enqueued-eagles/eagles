@@ -8,9 +8,20 @@ body {
 }*/
 
 .navbar-default {
-  background-color: #6ED9A0;
-  border-color: #6ED9A0;
-  background-image: none
+  background: #00D097 !important;
+  border-color: #00D097 !important;
+}
+/*{backgroundColor: '#00D097', color: 'white', boxSizing: 'none', fontSize: 16, fontWeight: 'bold'}*/
+.buttonz {
+  background-color: #00D097 !important;
+  color: white;
+  box-sizing: none;
+  font-size: 16;
+  font-weight: bold;
+}
+
+#logout {
+  color: red
 }
 
 .lessonCreator, .slideCreator{
@@ -18,6 +29,19 @@ body {
   margin: 0 auto;
   text-align: center;
   font-size: 250%;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: left;
+  /*left: 0*/
+  /*width:*/
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: right;
+  margin-right: 0
 }
 
 .index {
@@ -34,6 +58,6 @@ body {
 
 .slideNameInLessonSlideListEntry {
   cursor:pointer;
-  color:blue;
+  color:#00D097;
   text-decoration:underline;
 }

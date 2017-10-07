@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Col, FormControl, ControlLabel, Button, Panel } from 'react-bootstrap';
+import { Form, FormGroup, Col, FormControl, ControlLabel, Button, Panel, Image } from 'react-bootstrap';
 
 class Login extends Component {
   constructor(props) {
@@ -8,7 +8,10 @@ class Login extends Component {
       username: '',
       password: '',
       creatingAccount: false,
-      email: ''
+      email: '',
+      userColor: '#2A363F',
+      passwordColor: '#2A363F',
+      emailColor: '#2A363F',
     }
   }
 
@@ -21,65 +24,80 @@ class Login extends Component {
               (<Panel header='Login Error!' bsStyle="danger"></Panel>) : ''
             }
           </FormGroup>
+          <div style={{display: 'flex', justifyContent:'center'}}>
+            <Image src="http://www.learnpdf.com/wp-content/uploads/2014/01/Icon-Learn-PDF-3-Ways-Training-300px.png" width="300" height="300"/>
+          </div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <a style={{color: 'white', fontSize: 50, alignItems: 'center'}}>
+              TEACH YO SELF
+            </a>
+            <br></br>
+          </div>
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}></Col>
-              <Col xs={6} xsOffset={6}>
+              <Col xs={4} xsOffset={2}>
               <FormControl type='text' placeholder='Username'
                 value={this.state.username}
                 onChange={(e) => this.setState({ username: e.target.value })}
+                onSelect={() => this.setState({userColor: '#00D097', passwordColor: '#2A363F', emailColor: '#2A363F'})}
+                style = {{borderColor: `${this.state.userColor}`, borderWidth: 4}}
               />
             </Col>
           </FormGroup>
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}></Col>
-            <Col xs={6} xsOffset={6}>
+            <Col xs={4} xsOffset={2}>
               <FormControl type='text' placeholder='Password'
                 value={this.state.password}
                 onChange={(e) => this.setState({ password: e.target.value })}
+                onSelect={(e) => this.setState({passwordColor: '#00D097', userColor: '#2A363F', emailColor: '#2A363F'})}
+                style = {{borderColor: `${this.state.passwordColor}`, borderWidth: 4}}
               />
             </Col>
           </FormGroup>
           { this.state.creatingAccount ?
           (<FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>Email</Col>
-            <Col xs={6} xsOffset={6}>
+            <Col componentClass={ControlLabel} sm={2}></Col>
+            <Col xs={4} xsOffset={2}>
               <FormControl type='email' placeholder='Email'
                 value={this.state.email}
                 onChange={(e) => this.setState({ email: e.target.value })}
+                onSelect={() => this.setState({emailColor: '#00D097', userColor: '#2A363F', passwordColor: '#2A363F'})}
+                style = {{borderColor: `${this.state.emailColor}`, borderWidth: 4}}
               />
             </Col>
           </FormGroup>) : ''
           }
       { !this.state.creatingAccount ? (
           <FormGroup>
-            <Col xs={6} xsOffset={6}>
-              <Button bsStyle="" style={{backgroundColor: '#6ED9A0', color: 'white', width: 368, boxSizing: 'none'}}
-                onClick={() => this.props.login(this.state.username, this.state.password)}>
-                Log In!
-              </Button>
-            </Col>
-            <Col xs={6} xsOffset={6}>
-              <Button bsStyle="" style={{backgroundColor: '#2A363F', color: 'white', width: 368, boxSizing: 'none'}}
-                onClick={() => this.setState({ creatingAccount: true })}>
-                Create Account
-              </Button>
+            <Col xs={4} xsOffset={4}>
+              <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'nowrap'}}>
+                <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, boxSizing: 'none'}}
+                  onClick={() => this.props.login(this.state.username, this.state.password)}>
+                  Log In!
+                </Button>
+                <Button bsStyle="" style={{backgroundColor: '#2A363F', color: 'white', width: 250, boxSizing: 'none'}}
+                  onClick={() => this.setState({ creatingAccount: true })}>
+                  Create Account
+                </Button>
+              </div>
             </Col>
           </FormGroup>
           ) : (
             <FormGroup>
-            <Col xs={6} xsOffset={6}>
-              <Button bsStyle="" style={{backgroundColor: '#6ED9A0', color: 'white', width: 368, boxSizing: 'none'}}
-                onClick={() => {
-                  this.props.createAccount(this.state.username, this.state.password, this.state.email);
-                }}>
-                Continue
-              </Button>
-          </Col>
-          <Col xs={6} xsOffset={6}>
-            <Button bsStyle="" style={{backgroundColor: '#2A363F', color: 'white', width: 368, boxSizing: 'none'}}
-              onClick={ () => this.setState({ creatingAccount: false }) }>
-              Go Back
-            </Button>
+            <Col xs={4} xsOffset={4}>
+              <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'nowrap'}}>
+                <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, boxSizing: 'none'}}
+                  onClick={() => {
+                    this.props.createAccount(this.state.username, this.state.password, this.state.email);
+                  }}>
+                  Continue
+                </Button>
+                <Button bsStyle="" style={{backgroundColor: '#2A363F', color: 'white', width: 250, boxSizing: 'none'}}
+                  onClick={ () => this.setState({ creatingAccount: false }) }>
+                  Go Back
+                </Button>
+              </div>
           </Col>
             </FormGroup>
           )}
