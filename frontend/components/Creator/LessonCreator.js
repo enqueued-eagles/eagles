@@ -21,7 +21,7 @@ class LessonCreator extends React.Component {
       creatingSlide: false,
       lessonId: lessonInfo ? lessonInfo._id : '',
       keywords: lessonInfo ? lessonInfo.keywords : [],
-      displayedKeywords: '',
+      displayedKeyword: 'enter tag here',
       editingOldSlide: lessonInfo ? lessonInfo.editingOldSlide : false,
       oldSlide: '',
       allLessons: ['none'],
@@ -164,12 +164,14 @@ class LessonCreator extends React.Component {
 
   // amends the keywords associated with the current lesson in the db and sets it in state
   keywordSubmit (event) {
+    console.log('this.state.displayedKeyword', this.state.displayedKeyword)
     event.preventDefault();
-    console.log('keywordSubmit triggered keywords look like: ', this.state.displayedKeywords);
-    var keywords = this.state.displayedKeywords.trim();
+    console.log('keywordSubmit triggered keywords look like: ', this.state.displayedKeyword);
+    var keywords = this.state.displayedKeyword.trim();
     var body = { keywords: [...this.state.keywords, keywords], lessonId: this.state.lessonId };
     this.setState({
-      keywords: body.keywords
+      keywords: body.keywords,
+      displayedKeyword: ''
     });
     console.log('body:', body);
     fetch('/api/lessons', {
@@ -228,9 +230,9 @@ class LessonCreator extends React.Component {
     this.setState({keywords});
   }
 
-  changeDisplayedKeywords (event) {
+  changeDisplayedKeyword (event) {
     this.setState({
-      displayedKeywords: event.target.value
+      displayedKeyword: event.target.value
     });
   }
 
@@ -291,7 +293,7 @@ class LessonCreator extends React.Component {
       creatingSlide: false,
       lessonId: '',
       keywords: [],
-      displayedKeywords: '',
+      displayedKeyword: '',
       editingOldSlide: false,
       oldSlide: ''
     });
@@ -349,8 +351,8 @@ class LessonCreator extends React.Component {
                   </Form>
                 </div><br/>
                 <TagsEntry
-                  keywords={this.state.displayedKeywords}
-                  changeDisplayedKeywords={this.changeDisplayedKeywords.bind(this)}
+                  keyword={this.state.displayedKeyword}
+                  changeDisplayedKeyword={this.changeDisplayedKeyword.bind(this)}
                   keywordSubmit={this.keywordSubmit.bind(this)}
                 />
               </div>
