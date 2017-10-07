@@ -340,37 +340,43 @@ class Lesson extends React.Component {
           index={this.state.index}
           />
         ) : (
+
+
           <div className="lessonSlideList">
             <div className="lesson">
-              <h1 className="lessonTitle" style={{color:'white'}}>{this.state.specificLesson.name}</h1>
+              <div>
+                <b className="lessonTitle" style={{color:'white', fontSize:20}}>{this.state.specificLesson.name}</b>
+                <span style={{float: 'right'}}>
+                  {
+                    this.props.sessionUserId === this.state.specificLesson.userRef ?
+                      <Link to={{
+                        pathname: '/create',
+                        lesson: this.state.specificLesson,
+                        editingOldSlide: true
+                      }}>
+                        <Image src="https://i.imgur.com/AnQW9ou.png" width="25" height="25" color="white"/>
+                      </Link>
+                    : null
+                  }
+                </span>
+              </div>
               <p className="lessonDescription" style={{color:'white'}}>{this.state.specificLesson.description}</p>
               <p className="lessonKeyWords" style={{color:'white'}}> Keywords: {this.state.keywords.join(', ')}</p>
               <br></br>
-              {
-                this.props.sessionUserId === this.state.specificLesson.userRef ?
-                <div>
-                  <Link to={{
-                    pathname: '/create',
-                    lesson: this.state.specificLesson,
-                    editingOldSlide: true
-                  }}>
-                    <Button type="button" bsStyle="primary" bsSize="small">Edit this Lesson</Button>
-                  </Link>
-                </div>
-                : null
-              }
-              <Grid>
-                <Row>
-                {this.state.slides.map((slide, i) => (
-                  <LessonSlideListEntry
-                    slide={slide}
-                    index={i}
-                    key={i}
-                    onLessonSlideListEntryClick={this.onLessonSlideListEntryClick.bind(this)}
-                  />
-                ))}
-                </Row>
-              </Grid>
+              <div>
+                <Grid style={{display: 'flex', justifyContent: 'center'}}>
+                  <Row>
+                    {this.state.slides.map((slide, i) => (
+                      <LessonSlideListEntry
+                        slide={slide}
+                        index={i}
+                        key={i}
+                        onLessonSlideListEntryClick={this.onLessonSlideListEntryClick.bind(this)}
+                      />
+                    ))}
+                  </Row>
+                </Grid>
+              </div>
             </div>
             <Button type="button" onClick={this.likeALesson.bind(this)}>
               <Image src="http://www.freeiconspng.com/uploads/like-button-png-2.png" width="15" height="15"/>
@@ -378,8 +384,14 @@ class Lesson extends React.Component {
             {this.state.liked ? (
               <a> You liked this already! </a>
             ) : this.state.firstLike ? <a> You liked this! </a> : null}
+            <br/>
             {!this.props.gUser ? (
-              <a href='/login/google' target="_blank" style={{color:"white"}}>LOG IN TO GOOGLE TO POST TO CLASSROOM</a>
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} href='/login/google'>
+                <Image src="http://pngimg.com/uploads/google/google_PNG19635.png" width="50" height="50"/>
+                <a href='/login/google' style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+                   Log in to Google to post to classroom!
+                </a>
+              </div>
               ) : (
               !this.state.postedToClass ? (
                 <Button type="button" onClick={this.postLessonToClassroom.bind(this)}>
@@ -392,15 +404,15 @@ class Lesson extends React.Component {
             )}
           </div>
         )}
-        {!this.state.submittedAssignment ? (
-          <Button type="button" onClick={this.submitAssignment.bind(this)}>
+
+        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'nowrap'}}>
+          <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, boxSizing: 'none'}}
+           onClick={this.submitAssignment.bind(this)}>
             Submit Assignment
           </Button>
-          ) : (
-          <div style={{color:"white"}}>Assignment marked complete in classroom!</div>
-          )
-        }
-        <div className="relatedLessons" style={{color:'white'}}>
+        </div>
+
+        <div className="relatedLessons">
           Recommended Prerequisite Lessons:
           {this.state.preReqLessons.map((lesson, i) => (
             <LessonPreview

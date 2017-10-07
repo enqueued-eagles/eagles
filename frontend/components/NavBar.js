@@ -35,7 +35,7 @@ class NavBar extends Component {
                 this.props.history.push('/');
               }}>
               <FormGroup>
-                <FormControl style={{width: 220}} type='text' placeholder='Enter a search term!' onChange={this.retrieveSearchInput.bind(this)}/>
+                <FormControl style={{width: 220}} type='text' placeholder='Search tags!' onChange={this.retrieveSearchInput.bind(this)}/>
               </FormGroup>
               <Link to='/'>
                 <Button type="submit" onClick={ (event) => {
