@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroupItem, Header, Button } from 'react-bootstrap';
+import { ListGroupItem, Header, Button, Alert} from 'react-bootstrap';
 import axios from 'axios'
 
 class LessonPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      creator: ''
+      creator: '',
+      deleteAlert: false
     }
     console.log('PROPS.LESSON:', props.lesson);
     this.getUsername = this.getUsername.bind(this)
+    this.handleAlertDismiss=this.handleAlertDismiss.bind(this)
   }
 
   componentDidMount() {
@@ -20,17 +22,38 @@ class LessonPreview extends Component {
   getUsername () {
     axios.get(`/api/user/${this.props.lesson.userRef}`)
     .then( (user) => {
-      console.log('newuser',user)
-      console.log(1,this.props.sessionUserId)
-      console.log(2,this.props.lesson.userRef)
-      console.log(user.data[0].username)
       this.setState({
         creator:user.data[0].username
       })
     })
   }
 
+  handleAlertDismiss (){
+    this.setState({
+      deleteAlert:false
+    })
+  }
+
   render() {
+    console.log('deletelessonprop', this.props.deleteLesson)
+    if (this.state.deleteAlert) {
+      return (
+      <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+        <h4>Are you sure you want to delete your lesson?</h4>
+        <p>Once you delete your lesson "{this.props.lesson.name}", it will be gone forever! Are you sure?</p>
+        <p>
+          <Button 
+            bsStyle="danger" 
+            onClick={ () => this.props.deleteLesson(this.props.lesson._id)} 
+          >
+          Delete it.
+          </Button>
+          <span> or </span>
+          <Button onClick={this.handleAlertDismiss}>Go Back</Button>
+        </p>
+      </Alert>
+      )
+    }
     return (
         <div className="LessonPreview">
           <ListGroupItem header={this.props.lesson.name || 'no name'}>
@@ -55,6 +78,18 @@ class LessonPreview extends Component {
               }}>
                 <Button type="button" bsStyle="primary" bsSize="small">Edit Lesson</Button>
               </Link>
+              : null
+            }
+            {' '}
+            {
+              this.props.deleteLesson ?
+                <Button 
+                  type="button" 
+                  bsStyle="danger" 
+                  bsSize="small" 
+                  onClick={ () => this.setState({deleteAlert:true}) }>
+                  Delete Lesson
+                </Button>
               : null
             }
         </ListGroupItem>
