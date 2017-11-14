@@ -13,6 +13,11 @@ let config = {
       exclude: /node_modules/, // exclude the node_modules directory
       loader: "babel-loader" // use this (babel-core) loader
     }]
+  },
+  resolve: {
+    modules: [
+      path.join(__dirname, 'node_modules'),
+    ],
   }
 }
 
