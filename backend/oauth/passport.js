@@ -4,9 +4,9 @@ const gclass = require('./../gclass/gclass');
 const schema = require('./../db/schema.js');
 var User = schema.User;
 
-const host = process.env.HOST || '127.0.0.1';
+const host = process.env.HOST;
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 const scope = [
   'https://www.googleapis.com/auth/classroom.courses',

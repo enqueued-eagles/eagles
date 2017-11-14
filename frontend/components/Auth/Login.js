@@ -74,11 +74,11 @@ class Login extends Component {
           <FormGroup>
             <Col xs={4} xsOffset={4}>
               <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'nowrap'}}>
-                <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, boxSizing: 'none'}}
+                <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, marginLeft: 4, marginRight: 4, boxSizing: 'none'}}
                   onClick={() => this.props.login(this.state.username, this.state.password)}>
-                  Log In!
+                  Log In
                 </Button>
-                <Button bsStyle="" style={{backgroundColor: '#2A363F', color: 'white', width: 250, boxSizing: 'none'}}
+                <Button bsStyle="" style={{backgroundColor: '#00D097', color: 'white', width: 250, marginLeft: 4, marginRight: 4, boxSizing: 'none'}}
                   onClick={() => this.setState({ creatingAccount: true })}>
                   Create Account
                 </Button>
@@ -104,10 +104,9 @@ class Login extends Component {
             </FormGroup>
           )}
         </Form>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} href='/login/google'>
-          <Image src="http://pngimg.com/uploads/google/google_PNG19635.png" width="50" height="50"/>
-          <a href='/login/google' style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
-             Sign in with Google
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
+          <a href='/login/google'>
+            <Image src="assets/google_login.png" width="55%" height="55%"/>
           </a>
         </div>
       </div>

@@ -2,13 +2,14 @@
 Run server to persist data
 routers in separate files
 */
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const database = require('./db/database.js');
 const path = require('path');
 const morgan = require('morgan');
 const bodyparser = require('body-parser');
 const session = require('express-session');
+const compression = require('compression');
 
 // create express instance
 const app = express();
@@ -33,13 +34,16 @@ app.use(bodyparser.json());
 
 // set cookie for auth
 app.use(session({
-  secret: 'super secret',
+  secret: process.env.SESSION_SECRET,
   cookie: { 
     maxAge: 6000000,
     secure: false,
     httpOnly: false
   }
 }))
+
+// compress outgoing files
+app.use(compression());
 
 // Add passport middleware to initialize req.user object
 app.use(passport.initialize());
@@ -87,14 +91,13 @@ app.all('/api/query', utilRoutes);
 
 // redirect any uncaught routes 
 app.use((req, res) => {
-  console.log('yo the stupid app.use is triggering EVERYWHERE')
   console.log('session is NOT destroyed')
 
   res.sendFile(path.join(__dirname, './../frontend/public/index.html'));
 });
 
 // server listens for requests
-let port = process.env.PORT || 3000;
+let port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`<('.'<) Server's up on port ${port}`)
