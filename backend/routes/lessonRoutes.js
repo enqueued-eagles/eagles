@@ -21,7 +21,7 @@ const sendCongratz = (userEmail, lessonName, numLikes, goal) => {
         service: "Gmail",
         auth: {
             user: "learningwithlessons@gmail.com",
-            pass: "test123test"
+            pass: process.env.EMAIL_PASS
           }
         });
 
