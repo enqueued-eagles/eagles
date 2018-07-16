@@ -15,7 +15,8 @@ class RouterWrapper extends Component {
       lessons: [],
       loggedIn: false,
       displayLogginError: false,
-      user: {}
+      user: {},
+      gUser: {}
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -23,14 +24,35 @@ class RouterWrapper extends Component {
     this.createAccount = this.createAccount.bind(this);
     this.queryDataBaseWithSearchInput = this.queryDataBaseWithSearchInput.bind(this);
     this.organizeSearchResultsBasedOnMostLikes = this.organizeSearchResultsBasedOnMostLikes.bind(this);
+    this.getUsers = this.getUsers.bind(this);
+    this.checkIfLoggedIn = this.checkIfLoggedIn.bind(this);
+  }
+
+  componentWillMount() {
+    this.checkIfLoggedIn();
   }
 
   componentDidMount() {
     this.getLessons();
   }
 
+  getUsers() {
+    return fetch('/api/user', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then((users) => {
+      return users
+    })
+    .catch((err) => console.log('Error getting lessons', err));
+  }
+
   getLessons() {
-    return fetch('/lessons', {
+    return fetch('/api/lessons', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,6 +61,7 @@ class RouterWrapper extends Component {
     })
     .then((res) => res.json())
     .then((lessons) => {
+      console.log('all lessons:', lessons)
       this.setState({lessons});
       return lessons
     })
@@ -48,9 +71,9 @@ class RouterWrapper extends Component {
   queryDataBaseWithSearchInput(searchInput) {
     this.getLessons()
     .then((results) => {
-      var filteredLessons = this.state.lessons.filter((lesson) => { 
+      var filteredLessons = this.state.lessons.filter((lesson) => {
         var lowerSearchInput = searchInput.toLowerCase();
-        if (lesson.keyWords.includes(lowerSearchInput) || lowerSearchInput === '') {
+        if (lesson.keywords.includes(lowerSearchInput) || lowerSearchInput === '') {
           return lesson;
         }
       });
@@ -72,12 +95,15 @@ class RouterWrapper extends Component {
   }
 
   createAccount(username, password, email) {
+    let num = Math.floor((Math.random() * 150) + 1)
+
     let data = {
       username,
       password,
-      email
+      email,
+      avatarURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`
     };
-    fetch('/users', {
+    fetch('/api/user', {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -89,10 +115,11 @@ class RouterWrapper extends Component {
     .then((data) => {
       console.log('got data', data);
       if(data.loggedIn === true) {
-        this.setState({ 
+        this.setState({
           user: data.userData,
           loggedIn: true,
-          displayLogginError: false
+          displayLogginError: false,
+          gUser: data.gUser
          });
       } else {
         this.setState({ displayLogginError: true });
@@ -107,7 +134,7 @@ class RouterWrapper extends Component {
       password: password,
       email: email
     };
-    fetch('/login', {
+    fetch('/api/login', {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -119,12 +146,13 @@ class RouterWrapper extends Component {
     .then((data) => {
       console.log('login got data', data);
       if(data.loggedIn === true) {
-        this.getLessons();
-        this.setState({ 
+        this.setState({
           user: data.userData,
           loggedIn: true,
-          displayLogginError: false
+          displayLogginError: false,
+          gUser: data.gUser
          });
+        this.getLessons();
       } else {
         this.setState({ displayLogginError: true });
       }
@@ -132,51 +160,88 @@ class RouterWrapper extends Component {
     .catch((err) => console.log('Error Logging In!', err));
   }
 
+  checkIfLoggedIn() {
+    fetch('/api/checklogin', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.loggedIn === true) {
+        this.setState({
+          user: data.userData,
+          loggedIn: true,
+          displayLogginError: false,
+          gUser: data.gUser
+        });
+      }
+    });
+  }
+
   logout() {
     console.log('logging out');
-    fetch('/logout', {
+    fetch('/api/logout', {
       method: "GET",
       credentials: "include"
     });
-    this.setState({ 
+    this.setState({
       loggedIn: false,
       displayLogginError: false,
-      user: {}
+      user: {},
+      gUser: {}
      });
   }
+
 
   render() {
     return (
       <BrowserRouter>
-        <App 
-        queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput } 
-        logout={ this.logout } 
+        <App
+        queryDataBaseWithSearchInput={ this.queryDataBaseWithSearchInput }
+        logout={ this.logout }
         getLessons={ this.getLessons }
+        user = {this.state.user.username}
+        isLogged = {this.state.loggedIn}
         >
           { this.state.loggedIn ? // If you are logged in allow all routes
          (<Switch>
             <Route exact path='/'
               render={() => (
-                <LessonPreviewContainer 
-                  lessons= { this.state.lessons }
+                <LessonPreviewContainer
+                  sessionUserId={this.state.user._id}
+                  lessons= { this.state.lessons.slice(1) }
                   organizeSearchResultsBasedOnMostLikes={ this.organizeSearchResultsBasedOnMostLikes }
                   getLessons={ this.getLessons }
-                /> 
+                  getUsers={this.getUsers}
+                />
               )}
             />
             <Route path='/lesson/:id'
-              component={ Lesson }
-            />
-            <Route path='/create'
-              render={ () => (
-                <LessonCreator 
-                  username={this.state.user.username} 
-                  userRef={this.state.user._id} 
-                /> 
+              render={({match}) => (
+                <Lesson
+                  match={match}
+                  sessionUserId={this.state.user._id}
+                  getLessons={this.getLessons}
+                  gUser={this.state.gUser.id}
+                />
               )}
             />
-            <Route path='/user' render={ () => 
-                <User 
+            <Route path='/create'
+              render={({location}) => (
+                <LessonCreator
+                  location={location}
+                  username={this.state.user.username}
+                  userRef={this.state.user._id}
+                  getLessons={this.getLessons}
+                />
+              )}
+            />
+
+            <Route path='/user/:id' render={ () =>
+                <User
                   user={ this.state.user }
                   getLessons={ this.getLessons }
                 />
@@ -184,13 +249,13 @@ class RouterWrapper extends Component {
             />
             <Route path='/logout' render={ () => (
               <Logout logout={ this.logout }/>
-            )} 
+            )}
             />
           </Switch>) : // if not, everything goes to the login component
           (<Switch>
-              <Route path='*' render={ () => 
-                <Login 
-                  login={ this.login } 
+              <Route path='*' render={ () =>
+                <Login
+                  login={ this.login }
                   displayLogginError={ this.state.displayLogginError }
                   createAccount={ this.createAccount }
                 />

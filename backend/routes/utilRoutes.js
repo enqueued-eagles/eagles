@@ -3,15 +3,15 @@ const axios = require('axios');
 const router = express.Router();
 const dotenv = require('dotenv').config({path: '../.env'})
 
-router.get('/query', function(req, res) {
+router.get('/api/query', function(req, res) {
   // console.log('sending request with query string')
   axios({
-    method: 'get', 
+    method: 'get',
     url: 'https://www.googleapis.com/youtube/v3/videos',
     params: {
       id: req.query.string,
       part: 'snippet,contentDetails,statistics',
-      key: process.env.KEY
+      key: 'AIzaSyD1BKXrtZUjovVjZfLlidO9IbigBJQre_8'
     }
   })
   .then((response) => {

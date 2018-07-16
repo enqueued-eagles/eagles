@@ -8,29 +8,34 @@ class LessonPreviewContainer extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.lessons) this.props.getLessons();
+    this.props.getLessons();
   }
 
   render() {
     return (
       <div className="LessonPreviewContainer">
-        Order by:
-        
+        <a style={{color: 'white'}}>
+          Order by:
+        </a>
+
         <Button bsStyle="primary" bsSize="small" onClick={this.props.organizeSearchResultsBasedOnMostLikes} >by Likes</Button>
         <Button bsStyle="primary" bsSize="small" >by Date</Button>
         <ListGroup>
-        {this.props.lessons.map((lesson, i) => 
-          <LessonPreview 
-            lesson={lesson} 
+        {this.props.lessons.map((lesson, i) =>
+          <LessonPreview
+            sessionUserId={this.props.sessionUserId}
+            lesson={lesson}
             index={i}
             key={i}
-          /> 
+            userRef={lesson.userRef}
+            getUsers={this.props.getUsers}
+          />
         )}
         </ListGroup>
       </div>
     )
   };
-} 
-  
+}
+
 
 export default LessonPreviewContainer;

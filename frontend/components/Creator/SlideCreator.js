@@ -27,6 +27,7 @@ class SlideCreator extends React.Component {
     });
   }
   onSubmit (event) {
+    console.log('is this working?');
     event.preventDefault();
     if (this.state.name !== '') {
       if (this.state.youTubeUrl !== '') {
@@ -40,7 +41,7 @@ class SlideCreator extends React.Component {
             })
             // youtubeDataObj.id;
             // youTubeDataObj.snippet.title
-            fetch('/slides', {
+            fetch('/api/slides', {
               method: "POST",
               body: JSON.stringify(this.state),
               headers: {
@@ -62,7 +63,7 @@ class SlideCreator extends React.Component {
           });
         }
       } else {
-        fetch('/slides', {
+        fetch('/api/slides', {
           method: "POST",
           body: JSON.stringify(this.state),
           headers: {
@@ -72,10 +73,12 @@ class SlideCreator extends React.Component {
         })
         .then((something) => something.json())
         .then(result => {
+          console.log('NOTICE ME AAAAAAAAAAAAAAAAAA');
           console.log(result, ' that was result this.state is', this.state);
           this.props.fetch(result);
           this.reset();
         })
+        .catch(err => console.log('onSubmit ERROR:', err));
       }
     } else {
         alert('Slide name required. Please enter a slide name.');
@@ -86,7 +89,7 @@ class SlideCreator extends React.Component {
     var id = this.props.slide._id;
     var body = this.state;
     body.id = id;
-    fetch('/slides',{
+    fetch('/api/slides',{
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
@@ -106,7 +109,7 @@ class SlideCreator extends React.Component {
   }
 
   youTubeQueryToServer(searchString, cb) {
-    fetch('/query?string=' + searchString, {
+    fetch('/api/query?string=' + searchString, {
       method: "GET",
        headers: {
           "Content-Type": "application/json",
@@ -128,11 +131,11 @@ class SlideCreator extends React.Component {
       <Form horizontal onSubmit={this.onSubmit.bind(this)}>
         <FormGroup>
           <div className='slideCreator'>
-            <ControlLabel>Slide Creator</ControlLabel>
+            <ControlLabel style={{color: 'white'}}>Slide Creator</ControlLabel>
           </div>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide Name</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide Name</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide Name'
               value={this.state.name}
@@ -141,7 +144,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide youTubeUrl</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide youTubeUrl</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide youTube Url'
               value={this.state.youTubeUrl}
@@ -150,7 +153,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide Text</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide Text</Col>
           <Col sm={10}>
             <FormControl type='text' placeholder='Slide Text'
               value={this.state.text}
@@ -159,7 +162,7 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>Slide QuizUrl</Col>
+          <Col componentClass={ControlLabel} sm={2} style={{color: 'white'}}>Slide QuizUrl</Col>
           <Col sm={10}>
             <FormControl type='Quiz Url' placeholder='Quiz Url'
               value={this.state.quizUrl}
@@ -168,27 +171,30 @@ class SlideCreator extends React.Component {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
-              (<Button type="submit" bsStyle="primary" bsSize="small">Create The Slide</Button>) : 
-              (<Button onClick={this.updateOldSlide.bind(this)} bsStyle="primary" bsSize="small">
-                Update Slide
-              </Button>) 
-            }
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col smOffset={2} sm={2}>
-            { this.state.old === '' ? 
-              (<Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
-                Go Back
-              </Button>)
-              :
-              (<Button onClick={this.props.changeEditingOldSlide} bsStyle="warning" bsSize="small">
-                Finish Update
-              </Button>)
-            }
-          </Col>
+          {
+            this.state.old === '' ?
+            <div>
+              <Col smOffset={2} sm={2}>
+                <Button type="submit" bsStyle="primary" bsSize="small">
+                  Create Slide
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={this.props.changeCreateState} bsStyle="warning" bsSize="small">
+                  Go Back
+                </Button>
+              </Col>
+            </div>
+          :
+            <Col smOffset={2} sm={2}>
+              <Button onClick={() => {
+                this.updateOldSlide();
+                this.props.changeEditingOldSlide();
+              }} bsStyle="primary" bsSize="small">
+                Finish Updates
+              </Button>
+            </Col>
+          }
         </FormGroup>
       </Form>
     );

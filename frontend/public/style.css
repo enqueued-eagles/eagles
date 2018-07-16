@@ -1,5 +1,6 @@
 body {
   padding: 5%;
+  background-color: #2A363F;
 }
 
 .lessonCreator, .slideCreator{
@@ -7,6 +8,32 @@ body {
   margin: 0 auto;
   text-align: center;
   font-size: 250%;
+}
+
+.navbar-default {
+  background: #00D097 !important;
+  border-color: #00D097 !important;
+}
+
+.buttonz {
+  background-color: #00D097 !important;
+  color: white;
+  box-sizing: none;
+  font-size: 16;
+  font-weight: bold;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: left;
+  /*left: 0*/
+  /*width:*/
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: right;
+  margin-right: 0
 }
 
 .index {
@@ -17,12 +44,28 @@ body {
   display: inline;
   margin-left: 5px;
   margin-right: 5px;
-  padding: 0px; 
+  padding: 0px;
   border: 0px;
 }
 
 .slideNameInLessonSlideListEntry {
-  cursor:pointer;
-  color:blue;
-  text-decoration:underline;
+  /*cursor:pointer;
+  color:blue;*/
+  /*text-decoration:underline;*/
+}
+
+.gclass {
+  background-image: url("./assets/gclass.png");
+  background-size: cover;
+  width: 45px;
+  height: 45px;
+  background-position: center center
+}
+
+.existingSlides, .tagsEntry {
+  font-weight: 700;
+}
+
+.col-xs-6 {
+    width: 100%;
 }

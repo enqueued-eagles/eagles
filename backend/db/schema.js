@@ -1,5 +1,5 @@
 /*
-Schemas for each part. 
+Schemas for each part.
 user,tutorial,lesson,slide
 //don't mind the {type:String, required: true} it could just be String
 
@@ -16,8 +16,15 @@ var userSchema = new Schema({
   password: {type: String, required: true},
   lessons: [String],
   favorites: [String],
-  createdLessons:[String],
-  email: String
+  email: String,
+  githubURL: String,
+  emailPublic: String,
+  emailLikeGoal: Number,
+  avatarURL: String,
+  fullName: String,
+  location: String,
+  website: String,
+  googleID: String
 });
 var User = mongoose.model('User', userSchema);
 
@@ -27,10 +34,11 @@ var lessonSchema = new Schema({
   name: {type: String, required: true},
   userRef: String,
   description: String,
-  keyWords: [String],
+  keywords: [String],
   slides: [],
   likes: Number,
-  userLikes: [String]
+  userLikes: [String],
+  preReqLessons: [String],
 });
 var Lesson = mongoose.model('Lesson', lessonSchema);
 
@@ -52,4 +60,3 @@ module.exports = {
   Lesson: Lesson,
   Slide: Slide
 }
-
